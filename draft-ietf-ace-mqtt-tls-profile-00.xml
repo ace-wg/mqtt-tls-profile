@@ -519,7 +519,7 @@
                         For the basic operation described in this section, the Username field MUST be set to the access token.
                         The Password field MUST be set to the keyed message digest (MAC) or signature associated with the access token
 			for proof-of-possession.
-                        The client MAY apply  the PoP key either to the entire request by computing a keyed message digest
+                        The client applies  the PoP key to the entire request by computing a keyed message digest
    			(for symmetric key) or a digital signature (for asymmetric key).
 			The CONNECT message is assumed to have enough randomness in the payload, and
 		         inside a TLS session (excluding the 0-RTT case) will not be exposed to a replay attack.
