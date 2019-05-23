@@ -1,15 +1,24 @@
 # MQTT-TLS profile of ACE
 
-This is the working area for the working group draft "MQTT-TLS profile of ACE".
+This is the working area for the IETF [ACE Working Group](https://datatracker.ietf.org/wg/ace/documents/) Internet-Draft, "MQTT-TLS profile of ACE".
 
-For the latest published draft see [https://tools.ietf.org/html/draft-sengul-ace-mqtt-tls-profile](https://tools.ietf.org/html/draft-sengul-ace-mqtt-tls-profile).
+* [Editor's Copy](https://ace-wg.github.io/mqtt-tls-profile/#go.draft-ietf-ace-mqtt-tls-profile.html)
+* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-ace-mqtt-tls-profile)
+* [Compare Editor's Copy to Working Group Draft](https://ace-wg.github.io/mqtt-tls-profile/#go.draft-ietf-ace-mqtt-tls-profile.diff)
 
 ## Building the Draft
+
+Formatted text and HTML versions of the draft can be built using `make`.
+
+```sh
+$ make
+```
+
+This requires that you have the necessary software installed.  See
+[the instructions](https://github.com/martinthomson/i-d-template/blob/master/doc/SETUP.md).
 
 
 ## Contributing
 
-Please review our current issues list before submitting feedback.
-Also, do please submit your feedback to the ACE mailing list ([info](https://www.ietf.org/mailman/listinfo/ace)) with the subject: "MQTT-TLS profile of ACE" or "draft-ietf-ace-mqtt-tls-profile"
-
-Note: All materials in this repository are considered Contributions to the IETF Standards Process. Any commit, pull request, issue, comment or other change made to this repository is considered as a contribution to the IETF Standards Process ([IETF](https://www.ietf.org)).
+See the
+[guidelines for contributions](https://github.com/ace-wg/mqtt-tls-profile/blob/master/CONTRIBUTING.md).
