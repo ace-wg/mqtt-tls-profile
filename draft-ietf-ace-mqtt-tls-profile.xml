@@ -169,7 +169,7 @@
 		The necessary protocol interactions are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
 		In addition, this document describes a reduced set of protocol interactions suited to <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
 		Both versions are expected to be supported in practice, and therefore, covered
-		in this document.
+		in this document. However, it is RECOMMENDED to use MQTT v5.0 as it works more naturally with ACE-style authentication and authorisation.
             </t>
             <t>
                 MQTT is a publish-subscribe protocol and supports two main types of client operation: publish and subscribe.
