@@ -214,9 +214,9 @@
                 </list>
             </t>
 	    <t>
-	      These exchanges are described basedon the <xref target="MQTT-OASIS-Standard-v5">MQTT v5 - the OASIS Standard</xref>.
+	      These exchanges are described basedon the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
 	      A more basic operation is described in <xref target="MQTTv311"></xref> for the <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
-	      This basic operation MAY also be supported in MQTT v5.
+	      This basic operation MAY also be supported in MQTT v5.0.
 	    </t>
 
             <section title="Requirements Language">
@@ -252,7 +252,7 @@
                 <t>
                     The document describes message exchanges as MQTT protocol interactions. For additional information,
                     please refer to the
-		    <xref target="MQTT-OASIS-Standard-v5">MQTT v5 - the OASIS Standard</xref> or the <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
+		    <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref> or the <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
                 </t>
                 <t>
                     <list hangIndent="8" style="hanging">
@@ -318,9 +318,18 @@
                             <vspace blankLines="0"/>
                             Subscribe acknowledgment.
                         </t>
-			<t hangText="PINGREQ">
-			  A ping request sent from a client to the broker.  It signals to the broker that the client is alive, and
-			  is used to confirm that the broker is still alive.
+			            <t hangText="PINGREQ">
+                            <vspace blankLines="0"/>
+			                A ping request sent from a client to the broker.  It signals to the broker that the client is alive, and
+			                 is used to confirm that the broker is still alive.
+			            </t>
+                        <t hangText="Will">
+                            <vspace blankLines="0"/>
+                            An application message published by the Server after the network connection is
+                            closed in cases where the network connection is not closed normally.
+                            If the Will Flag is set, then the payload of the CONNECT message has information
+                            about the Will message. The Will Message consists of the Will Properties, Will Topic,
+                            and Will Payload fields in the CONNECT message.
 			</t>
                     </list>
                 </t>
@@ -330,8 +339,8 @@
 
         <section title="Protocol Interactions" anchor="protocol-interactions">
           <t> This section describes the following exchanges between clients, the broker, and
-	  the authorization server according to the <xref target="MQTT-OASIS-Standard-v5">MQTT v5 - the OASIS Standard
-	  </xref>.  In addition,  <xref target="MQTTv311"></xref> describes how these exchanges can also be supported using the
+	  the authorization server according to the MQTT v5.0.  In addition,  <xref target="MQTTv311"></xref>
+	  describes how these exchanges can also be supported using the
 	  MQTT v3.1.1.
             </t>
             <t>
@@ -450,7 +459,7 @@
 		
 		  <t>
 		    After the token acquisition, the client connects to the RS (broker) using the CONNECT message of MQTT.
-		    <xref target="mqtt5_connect_message"></xref> shows the structure of the MQTT CONNECT control message used in MQTT v5.
+		    <xref target="mqtt5_connect_message"></xref> shows the structure of the MQTT CONNECT control message used in MQTT v5.0.
 		  </t>
 	
 		  <figure align="center" anchor="mqtt5_connect_message"
@@ -478,16 +487,17 @@
 	       session flags MUST be set appropriately: the Clean Start Flag MUST be set to 1
 	       and Session Expiry Interval MUST be set to 0.
 	    </t>
-
 	     <t>
-               The Will flag indicates that a Will message needs to be sent when a client disconnection occurs.
+                The Will flag indicates that a Will message needs to be sent after the network connection is
+               closed in cases where the network connection is not closed normally.
                The situations in which the Will message
                is published include disconnections due to I/O or network failures, and the server closing the
                networking connection due to a protocol error.
                The client may set the Will flag as desired <!-- (marked as 'X' in <xref target="mqtt_connect_flags"> </xref>) -->.
                If the Will flag is set to 1 and the broker accepts the connection request, the broker must
                store the Will message, and  publish it when the network connection is closed according to Will QoS and
-	       Will retain parameters, and MQTT Will management rules.
+	       Will retain parameters, and MQTT Will management rules.  To avoid publishing Will Messages in the case of temporary network disconnections,
+           the client my specify a Will Delay Interval in Will Properties.
                <xref target="disconnections"></xref> explains how the broker deals with the retained messages in further detail.
             </t>
 
@@ -496,7 +506,6 @@
 	      token transport via username and password, which is described in  <xref target="MQTTv311"></xref> for MQTT v3.1.1.
 	      The rest of this section describes the AUTH method.
 	    </t>
-	
 	    <t>
 	        To use the AUTH method, the username flag MUST be set to 0, and the password flag MUST be set to 0.
 		The client can set the Authentication Method as a property of a CONNECT packet by setting
@@ -540,7 +549,6 @@
 	      AS Information contains the absolute URI of AS, and MAY also contain a cnonce as described in the Section 5.1 of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
 	      This information MAY be CBOR encoded.
 	    </t>
-		
              </section>
                 <section title="Token Validation" anchor="token_validation">
                     <t>
@@ -571,11 +579,10 @@
                     </t>
                     <t>
                         The broker uses the scope field in the token (or in the introspection result) to determine the publish and
-                        subscribe permissions for the client. If the Will flag is set,
-			then the broker MUST check that the token allows the publication of the
-                        Will message too.
-		    </t>	
-			
+                        subscribe permissions for the client. If the Will flag is set,then the broker MUST check that the token allows the publication of the
+                        Will message too. If the client specified a Will Delay Interval, then the broker also needs to take this
+                        interval into account to authorise Will messages.
+		    </t>
                     <t>
                       If the token is not self-contained and the broker uses token introspection,
 		      it MAY cache the validation result to decide whether to accept
@@ -642,7 +649,7 @@
                    authorization error has occurred for previously subscribed topics, e.g., token expiry.
                    In the case of an authorization error, the broker disconnects the client.
 		   To disconnect the client, the RS SHOULD send a DISCONNECT message with the reason code '0x87 (Not authorized)'. Note that
-		   the server-side DISCONNECT is a new feature of MQTT v5 (in MQTT v3.1.1,
+		   the server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
 		   the server needs to drop the connection).
 		   RS MUST stop forwarding messages to the unauthorized subscribers.
                  </t>
@@ -713,7 +720,7 @@
                 <t>
                     In case of disconnections due to network errors or server disconnection due to a protocol error
                     (which includes authorization errors), the Will message must be sent if the client supplied
-                    a Will in the CONNECT request message.  The token provided in the CONNECT request must cover the Will topic.
+                    a Will in the CONNECT request message.  The client's token scopes MUST include the Will topic.
                     The Will message MUST be published to the Will topic when the network connection is closed regardless of whether the corresponding
 		    token has expired. In the case of a server-side DISCONNECT, the server returns the '0x87 Not Authorized' return code
                    to the client.
@@ -846,10 +853,10 @@
 	  <xref target="I-D.ietf-ace-oauth-authz"></xref>. Therefore, the security considerations outlined
 	  in <xref target="I-D.ietf-ace-oauth-authz"></xref> apply to this work.
 	  </t>
-	  <t> In addition, the security considerations outlined in <xref target="MQTT-OASIS-Standard-v5">MQTT v5 - the OASIS Standard</xref>
+	  <t> In addition, the security considerations outlined in <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>
 	  and <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>
 	   apply.  Mainly, this document provides an authorization solution for MQTT,
-	   the responsibility of which is left to the specific implementation in  MQTT v5 standard.
+	   the responsibility of which is left to the specific implementation in  MQTT v5.0 standard.
 	 In the following, we comment on a few relevant issues based on the current MQTT specifications.
 	  </t>
 
@@ -977,10 +984,10 @@
         <section anchor="app-profile-requirements" title="Checklist for profile requirements">
             <t>
                 <list style="symbols">
-                  <t>AS discovery: For MQTT v5 or  MQTT v3.1.1,  the clients/client authorization servers need to be
+                  <t>AS discovery: For MQTT v5.0 or  MQTT v3.1.1,  the clients/client authorization servers need to be
 		  configured out-of-band. RS does not provide any hints
                   to help AS discovery.
-		   AS discovery is possible with the MQTT v5 described in <xref target="connect_v5"></xref>.
+		   AS discovery is possible with the MQTT v5.0 described in <xref target="connect_v5"></xref>.
                     </t>
                     <t>The communication protocol between the client and RS: MQTT</t>
                     <t>The security protocol between the client and RS: TLS</t>
@@ -1001,7 +1008,7 @@
                         not protected.
                     </t>
                     <t>Token transport: In MQTT CONNECT message for both versions of MQQ.  AUTH extensions also used for authentication and re-authentication for
-		    MQTT v5 as described in <xref target="connect_v5"></xref>.</t>
+		    MQTT v5.0 as described in <xref target="connect_v5"></xref>.</t>
                 </list>
             </t>
         </section>
@@ -1017,7 +1024,7 @@
                 must verify the validity of the token (i.e., through local validation or introspection).
                 After publishing the token, the client disconnects from the broker and is expected to try reconnecting over TLS.
             </t>
-            <t> In MQTT v5, the broker can return 'Not authorized' error to a PUBLISH request for QoS greater or equal to 1.
+            <t> In MQTT v5.0, the broker can return 'Not authorized' error to a PUBLISH request for QoS greater or equal to 1.
 	        In MQTT v3.1.1, after the client published to the "authz-info" topic, it is not possible for the broker to communicate
                 the result of the token verification. In any case, any token authorization failure affect the subsequent TLS handshake, which can prompt the client to
                 obtain a valid token.
