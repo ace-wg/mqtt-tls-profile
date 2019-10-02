@@ -190,12 +190,17 @@
                 To provide communication confidentiality and resource server authentication, TLS is used.
             </t>
             <t>
-                While Client-Broker communication is in MQTTS, the Clients and Broker communicate with
-                the Authorization Server using HTTPS. To this end, the client MAY use a separate
-                Client Authorization Server.
+                While the Client-Broker communication is in MQTTS, it is RECOMMENDED that
+                the Clients and the Broker communicate with
+                the Authorization Server via HTTPS. If the Clients are resource-constrained, the Clients MAY use a separate
+                Client Authorization Server to communicate with the Authorization Server, and which onboards
+                the Client with the received token. The details of these interactions are not in the scope
+                of this document.
+            </t>
+            <t>
                 Also, if the Broker supports token introspection, it uses HTTPS to communicate with the
                 authorization server.
-                These interfaces MAY be implemented using other protocols, e.g., CoAP or MQTT.
+                These interfaces MAY be implemented using other protocols, e.g., CoAP, HTTP/2, BLE and QUIC.
                 This document makes the same assumptions as the Section 4 of
 		        <xref target="I-D.ietf-ace-oauth-authz"> the
                 ACE framework</xref> regarding Client and RS registration with the AS and establishing of keying material.
@@ -256,6 +261,10 @@
                 </t>
                 <t>
                     <list hangIndent="8" style="hanging">
+                        <t hangText="MQTTS">
+                            <vspace blankLines="0"/>
+                            Secured transport profile of MQTT.  MQTTS runs over TLS.
+                        </t>
                         <t hangText="Broker">
                             <vspace blankLines="0"/>
                             The Server in MQTT and acts as an intermediary between Clients that publish Application Messages,
@@ -378,10 +387,14 @@
                 </t>
                 <t>
                     <xref target="protocol_flow"></xref> shows the basic protocol flow during connection
-                    establishment.
-                    The Client MAY use a separate Client Authorization Server for the HTTPS interaction, or if
+                    establishment. It is RECOMMENDED that the Client and Broker support HTTPS interfaces
+                    to communicate to AS.
+                    If the Client is resource-constrained, the Client MAY be onboarded with a token
+                    by Client Authorization Server, which carries out the HTTPS interaction on behalf of
+                     the Client. Optionally, if
                     the AS supports MQTTS, these steps MAY be carried out in MQTTS.
-                    The interactions between a Client and its Client Authorization Server, and the
+                    The interactions between a Client and its Client Authorization Server for token
+                    onboarding, and the
                     MQTTS support for token request are out of scope of this document.
                     Steps (D) and (E) are optional.
                 </t>
