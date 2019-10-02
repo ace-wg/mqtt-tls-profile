@@ -228,7 +228,7 @@
             <section title="ACE-Related Terminology">
                 <t>
                     The terminology for entities in the architecture is defined in OAuth 2.0 <xref target="RFC6749">RFC
-                    6749 </xref> and <xref target="I-D.ietf-ace-actors">ACE actors</xref>, such as "Client" (C),
+                    6749 </xref> such as "Client" (C),
                      "Resource Server" (RS) and "Authorization Server" (AS).
                 </t>
                 <t>
@@ -946,8 +946,6 @@
         <references title="Informative References">
             <!-- Here we use entities that we defined at the beginning. -->
             <!-- A reference written by by an organization not a person. -->
-
-            <?rfc include="reference.I-D.ietf-ace-actors.xml"?>
 	    <?rfc include="reference.I-D.ietf-ace-cwt-proof-of-possession.xml"?>
             &RFC4949;
             &RFC6749;
