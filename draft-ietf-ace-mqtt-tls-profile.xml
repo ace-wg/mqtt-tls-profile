@@ -169,7 +169,8 @@
                  on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
 		        In addition, this document describes a reduced set of protocol interactions suited
                  to <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
-		        Both versions are expected to be supported in practice, and therefore, covered
+		        It is expected that MQTT implementations will retain
+                backward compatibility for MQTT v3.1.1 clients, and therefore, covered
 		        in this document. However, it is RECOMMENDED to use MQTT v5.0 as it works more naturally
                  with ACE-style authentication and authorization.
             </t>
@@ -217,9 +218,10 @@
                 </list>
             </t>
 	        <t>
-	        These exchanges are described basedon the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
-	        A more basic operation is described in <xref target="MQTTv311"></xref> for the <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
-	        This basic operation MAY also be supported in MQTT v5.0.
+	        These exchanges are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
+            For brokers supporting MQTT v.3.1.1 Clients for backward compatibility,
+	        a more basic operation is described in <xref target="MQTTv311"></xref> for the <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
+	        MQTT v5.0 brokers MAY also only support the basic operation; however, this is NOT RECOMMENDED.
 	        </t>
 
             <section title="Requirements Language">
