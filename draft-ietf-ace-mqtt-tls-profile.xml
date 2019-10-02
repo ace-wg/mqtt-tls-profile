@@ -468,13 +468,12 @@
 		                This section describes how the Client transports the token to the Broker
                          (RS) via the CONNECT control message after the TLS handshake.
                           This is similar to an earlier proposal by Fremantle et al.
-                           <xref target="fremantle14"></xref>. Alternatively, the token may be used for the TLS
-                            session establishment as described in
+                           <xref target="fremantle14"></xref>. Alternatively, the token may be used
+                            for the TLS session establishment as described in
                         the <xref target="I-D.gerdes-ace-dtls-authorize">DTLS profile for ACE</xref>.
-                         In this case, both
-                        the TLS PSK and RPK handshakes MAY be supported.
-                        This may additionally require that the Client transports the token to the Broker before the
-                        connection establishment.
+                         In this case, both the TLS PSK and RPK handshakes MAY be supported.
+                        This may additionally require that the Client transports the token to the Broker
+                         before the connection establishment.
                         To this end, the Broker MAY support /authz-info endpoint via the "authz-info" topic.
 			            Then, to transport the token, Clients publish to "authz-info" topic unauthorized.
                           The topic "authz-info" MUST be publish-only for Clients (i.e.,
@@ -507,72 +506,119 @@
         ]]></artwork>
             </figure>
 	                <t>
-	                    To communicate the necessary connection parameters, the Client uses the appropriate flags of the
-                        CONNECT message. To achieve a clean session (i.e., the session should start without an existing session), the
-	                    session flags MUST be set appropriately: the Clean Start Flag MUST be set to 1
-	                    and Session Expiry Interval MUST be set to 0.
+	                    A CONNECT message is composed of a fixed header, a variable header and a payload.
+                        The Connect Flags in the variable header specify the behavior of the MQTT connection.
+                         It also indicates the presence or absence of fields in the Payload.
+                        The payload contains one or more encoded fields, namely a unique Client
+                         identifier for the Client, a Will Topic, Will Payload, User Name and Password.
+                          All but the Client identifier can be omitted depending on flags in the Variable Header.
+                    </t>
+                    <t>
+                     Connect Flags include Clean Start, Will, Will QoS, Will Retain, Password and Username flags.
+                    <xref target="mqtt_connect_flags"></xref> shows how the MQTT connect
+                     flags MUST be set to initiate a connection with the Broker.
+                    </t>
+                    <figure align="center" anchor="mqttv5_connect_flags" title="MQTT CONNECT flags. (Rsvd=Reserved)">
+                    <artwork align="left"><![CDATA[
++-----------------------------------------------------------+
+|User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
+| flag    |flag |           |        |         |     |      |
++-----------------------------------------------------------+
+| 0       | 0   |    X      |   X X  |   X     |  1   |  0  |
++-----------------------------------------------------------+
+         ]]></artwork>
+         </figure>
+                    <t>
+                         To achieve a clean session (i.e., the session should start without an existing session), the
+	                    the Clean Start Flag MUST be set to 1. In addition, if the Session Expiry Interval in the CONNECT
+                        message, it MUST be set to 0.
 	                </t>
 	                <t>
-                        The Will Flag indicates that a Will message needs to be sent after the network connection is
-                        closed in cases where the network connection is not closed normally.
+                        The Will Flag indicates that a Will message needs to be sent if network connection is
+                         not closed normally.
                         The situations in which the Will message
-                        is published include disconnections due to I/O or network failures, and the server closing the
-                        networking connection due to a protocol error.
-                        The Client may set the Will Flag as desired <!-- (marked as 'X' in <xref target="mqtt_connect_flags"> </xref>) -->.
+                        is published include disconnections due to I/O or network failures,
+                         and the server closing the network connection due to a protocol error.
+                        The Client may set the Will Flag as desired (marked as 'X' in <xref target="mqttv5_connect_flags"> </xref>).
                         If the Will Flag is set to 1 and the Broker accepts the connection request, the Broker must
                         store the Will message, and  publish it when the network connection is closed according to Will QoS and
-	                    Will retain parameters, and MQTT Will management rules.  To avoid publishing Will Messages in the case of temporary network disconnections,
+	                    Will retain parameters, and MQTT Will management rules.  To avoid publishing Will Messages
+                         in the case of temporary network disconnections,
                         the Client my specify a Will Delay Interval in Will Properties.
                         <xref target="disconnections"></xref> explains how the Broker deals with the retained messages in further detail.
                     </t>
-	    <t>
-	      For token transport, the RS MUST support AUTH (Authentication Exchange) method. The RS SHOULD also support
-	      token transport via username and password, which is described in  <xref target="MQTTv311"></xref> for MQTT v3.1.1.
-	      The rest of this section describes the AUTH method.
-	    </t>
-	    <t>
-	        To use the AUTH method, the username flag MUST be set to 0, and the password flag MUST be set to 0.
-		The Client can set the Authentication Method as a property of a CONNECT packet by setting
-		Auth Properties (with the property identifier 0x15).
-	        The Client must MUST set the UTF-8 encoded string containing the name of the
-		authentication method as 'ace'. If the RS does not support this profile, it sends a CONNACK with a
-		Reason Code of '0x8C (Bad authentication method)'.
-	    </t>
-
-	    <t>
-	      The Authentication Method is followed by the Authentication Data, which has a property identifier 0x16.
-	      Authentication Data is binary data and is defined by  the authentication method. The RS MAY support different
-	      implementations for transporting the Authentication Data. The first option is that Authentication Data contains both the token and
-	      the keyed message digest (MAC) or signature. The Client MUST apply the PoP key to the entire request by computing a keyed message digest
-   	     (for symmetric key) or a digital signature (for asymmetric key). The CONNECT message is assumed to have enough randomness in the payload, and
-              inside a TLS session (excluding the 0-RTT case) will not be exposed to a replay attack.
-	       When either cannot be guaranteed, the Authentication Data MAY also contain a nonce.
-	       The encoding of this field MAY use CBOR and COSE. <!--Fix this-->
-	    </t>
-	    <t>
-	      The token is validated as described in  <xref target="token_validation"></xref>  and the
-	      server responds with a CONNACK.  The reason code of the CONNACK is '0x00 (Success)' if the authentication is successful.
-	      In case of an invalid PoP token, the CONNACK reason code is '0x87 (Not Authorized)'.
-	    </t>
-
-	    <t>
-	      The second option that RS may accept is a challenge/response protocol. If the Authentication Data only
-	      includes the token, the RS MUST respond with an AUTH packet, with the Authenticate Reason Code set to
-	      '0x18 (Continue Authentication)'. This packet includes the Authentication Method, which MUST be set to
-	      'ace' and Authentication Data. The Authentication Data MUST NOT be empty and contains
-	      a challenge for the Client. The Client responds to this with an AUTH packet with a reason code
-	      '0x18 (Continue Authentication)'. Similarly, the Client packet sets the Authentication Method to 'ace'.
-	      The Authentication Data in the Client's response contains the signature or MAC computed over the RS's challenge.
-	      To this, the server responds with a CONNACK and return code '0x00 (Success)' if the authentication is successful.
-	      In case of an invalid PoP token, the CONNACK reason code is '0x87 (Not Authorized)'.
-	    </t>
-
-	    <t>
-	      Finally, this document allows the CONNECT message to have an empty Authentication Data field. This is the AS discovery option
-	      and the RS responds with the CONNACK reason code '0x87 (Not Authorized)' and includes a User Property for the AS information.
-	      AS Information contains the absolute URI of AS, and MAY also contain a cnonce as described in the Section 5.1 of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
-	      This information MAY be CBOR encoded. <!--Fix this-->
-	    </t>
+	                <t>
+	                    For token transport, the RS MUST support AUTH (Authentication Exchange) method.
+                         The RS SHOULD also support
+	                    token transport via username and password, which is described in  <xref target="MQTTv311"></xref> for MQTT v3.1.1.
+	                    The rest of this section describes the AUTH method, for which the username and password flags MUST be set to 0.
+		                The Client can set the Authentication Method as a property of a CONNECT packet by
+                        using the property identifier 21 (0x15).
+                        This is followed by a UTF-8 Encoded String containing the name of the
+                         authentication method, which MUST be set to 'ace'. If the RS does not support this profile,
+                         it sends a CONNACK with a Reason Code of '0x8C (Bad authentication method)'.
+	                </t>
+                    <t>
+                        The Authentication Method is followed by the Authentication Data,
+                         which has a property identifier 22 (0x16) and is binary data.
+                         Based on the Authentication Data, this profile allows:
+                        <list style="symbols">
+                            <t>Proof-of-Possession over payload</t>
+                            <t>Proof-of-Possession via challenge/response</t>
+                            <t>Authorisation Server discovery</t>
+                        </list>
+                    </t>
+                    <section title="Proof-of-Possession over Payload" anchor="pop_payload">
+	                    <t>
+                            For this option, the Authentication Data contains both the token
+                             and the keyed message digest (MAC) or the Client signature.
+                             The Client MUST apply the PoP key to the CONNECT payload.
+                              The CONNECT payload has at least a Client Identifier, and if the Will Flag is set to 1,
+                              may contain Will-related information. The Client Identifier may be 1-23 UTF-8 encoded bytes,
+                               and contain only the characters "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".
+                               However, the Broker may except longer Client Identifiers,
+                                and characters not included in the list given above.
+                                Since Clean Start is a MUST, Clients MUST change their Client Identifier,
+                                if the Client Identifier is the only source of randomness
+                               in the payload, to defend against a replay attack. If the Clients reuse their Client
+                               Identifier, the Authentication Data MUST also contain a nonce.
+	                    </t>
+	                    <t>
+	                        The token is validated as described in  <xref target="token_validation"></xref>
+                          and the server responds with a CONNACK.  The reason code of the
+                           CONNACK is '0x00 (Success)' if the authentication is successful.
+	                        In case of an invalid PoP token, the CONNACK reason code
+                         is '0x87 (Not Authorized)'.
+	                    </t>
+                    </section>
+                    <section title="Proof-of-Possession via challenge/response" anchor="pop_challenge">
+	                <t>
+	                    For this option, the RS follows a challenge/response protocol.
+                         If the Authentication Data only includes the token,
+                          the RS MUST respond with an AUTH packet,
+                           with the Authenticate Reason Code set to '0x18 (Continue Authentication)'.
+                            This packet includes the Authentication Method, which MUST be set to 'ace'
+                             and Authentication Data. The Authentication Data MUST NOT be empty and contains
+                             a challenge for the Client. The Client responds to this with an AUTH packet
+                              with a reason code '0x18 (Continue Authentication)'.
+                               Similarly, the Client packet sets the Authentication Method to 'ace'.
+                                The Authentication Data in the Client's response contains
+                                 the signature or MAC computed over the RS's challenge. To this,
+                                  the server responds with a CONNACK and return code '0x00 (Success)'
+                                   if the authentication is successful.
+                            In case of an invalid PoP token, the CONNACK reason code is '0x87 (Not Authorized)'.
+	                    </t>
+                    </section>
+                    <section title="Authorisation Server Discovery" anchor="as_discovery">
+	                    <t>
+	                        Finally, this document allows the CONNECT message to have an empty Authentication
+                            Data field. This is the AS discovery option and the RS responds with the CONNACK
+                          reason code '0x87 (Not Authorized)' and includes a User Property for
+                           the AS information. AS Information contains the absolute URI of AS,
+                            and MAY also contain a cnonce as described in the Section 5.1
+                             of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
+	                    </t>
+                    </section>
              </section>
                 <section title="Token Validation" anchor="token_validation">
                     <t>
@@ -1020,7 +1066,7 @@
                             target="app-authzinfo"></xref>,
                         not protected.
                     </t>
-                    <t>Token transport: In MQTT CONNECT message for both versions of MQQ.  AUTH extensions also used for authentication and re-authentication for
+                    <t>Token transport: In MQTT CONNECT message for both versions of MQTT.  AUTH extensions also used for authentication and re-authentication for
 		    MQTT v5.0 as described in <xref target="connect_v5"></xref>.</t>
                 </list>
             </t>
