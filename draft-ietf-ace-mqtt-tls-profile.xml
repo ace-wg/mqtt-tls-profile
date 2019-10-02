@@ -164,8 +164,10 @@
         <section title="Introduction">
             <t>
                 This document specifies a profile for the ACE framework <xref target="I-D.ietf-ace-oauth-authz"></xref>.
-                In this profile, Clients and a resource server use MQTT to communicate. The protocol relies on TLS for
-                communication security between entities. The necessary protocol interactions are described based
+                In this profile, Clients and a resource server use MQTT to communicate.
+                The protocol relies on TLS for
+                communication security between entities. The necessary protocol interactions
+                 are described based
                  on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
 		        In addition, this document describes a reduced set of protocol interactions suited
                  to <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
@@ -187,7 +189,8 @@
                 In this document, message topics are treated as resources.
                 Clients use an access token, bound to a key (the proof-of-possession key) to authorize
                 with the MQTT Broker their connection and publish/subscribe permissions to topics. In the context
-                of this ACE profile, the MQTT Broker acts as the resource server.
+                of this ACE profile, the MQTT Broker acts as the resource server. In the rest of the
+                 document RS and Broker are used interchangeably.
                 To provide communication confidentiality and resource server authentication, TLS is used.
             </t>
             <t>
@@ -574,10 +577,12 @@
                 <section title="Token Validation" anchor="token_validation">
                     <t>
                         RS MUST verify the validity of the token.
-                        This validation MAY be done locally (e.g., in the case of a self-contained token) or the RS MAY send an introspection request to the AS.
-                        If introspection is used, this section follows similar steps to those described in Sections 5.7
-                        of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
-                        The communication between AS and RS MAY be HTTPS, but it, in every case, MUST be confidential,
+                        This validation MAY be done locally (e.g., in the case of a self-contained token)
+                         or the RS MAY send an introspection request to the AS.
+                        If introspection is used, this section follows similar steps to those described in
+                         Sections 5.7 of <xref target="I-D.ietf-ace-oauth-authz">the
+                          ACE framework</xref>.
+                        The communication between AS and RS MUST be confidential,
                         mutually authenticated and integrity protected.
                     </t>
                     <t>
@@ -586,33 +591,37 @@
                         parameter of the introspection response.
                     </t>
                     <t>
-                        The access token is constructed by the AS such that RS can associate the access token with
-                        the Client key.
+                        The access token is constructed by the AS such that RS can associate the
+                         access token with the Client key.
                         This document assumes that the Access Token is a PoP token as
                         described in <xref target="I-D.ietf-ace-oauth-authz"></xref>.
-                        Therefore, the necessary information is contained in the 'cnf' claim of the access token and
-                        may use either public or shared key
-                        approaches.
-                        The Client uses the signature or the MAC embedded in the CONNECT message (e.g., Authentication Data field in MQTTv5)
-			to prove the possession of the key.
-                        The resource server validates the signature or the MAC
+                        Therefore, the necessary information is contained in the 'cnf'
+                         claim of the access token and may use either public or shared key
+                        approaches. The Client uses the signature or the MAC embedded
+                         in the CONNECT message (e.g., Authentication Data field in MQTTv5)
+                          to prove the possession of the key.
+                        The RS validates the signature or the MAC
                         over the contents of the packet, authenticating the Client.
                     </t>
                     <t>
-                        The Broker uses the scope field in the token (or in the introspection result) to determine the publish and
-                        subscribe permissions for the Client. If the Will Flag is set,then the Broker MUST check that the token allows the publication of the
-                        Will message too. If the Client specified a Will Delay Interval, then the Broker also needs to take this
-                        interval into account to authorise Will messages.
-		    </t>
+                        The Broker uses the scope field in the token (or in the introspection result)
+                         to determine the publish and subscribe permissions for the Client.
+                          If the Will Flag is set,then the Broker MUST check that the token
+                           allows the publication of the Will message. If the Client
+                            specified a Will Delay Interval, then the Broker also needs
+                             to take this interval into account to authorise a Will message.
+		            </t>
                     <t>
-                      If the token is not self-contained and the Broker uses token introspection,
-		      it MAY cache the validation result to decide whether to accept
-                        subsequent PUBLISH and SUBSCRIBE messages. PUBLISH and SUBSCRIBE
-                        messages, which are sent after a connection set-up, do not contain access tokens.
-                        If the introspection result is not cached, then the RS needs to introspect the saved token for
-                        each request.
+                      If the token is not self-contained and the Broker uses token
+                       introspection, it MAY cache the validation result to decide
+                        whether to accept subsequent PUBLISH and SUBSCRIBE messages.
+                         PUBLISH and SUBSCRIBE messages, which are sent after a connection
+                          set-up, do not contain access tokens. If the introspection result
+                           is not cached, then the RS needs to introspect the saved token for
+                        each request. The Broker SHOULD use a cache time out to introspect
+                         tokens regularly.
                     </t>
-		    <t>
+		            <t>
                       Scope strings SHOULD be encoded as a permission, followed by an underscore, followed by a topic filter.
 		      Two permissions apply to topics: 'publish' and 'subscribe'.
 		      An example scope field may contain multiple such strings, space delimited, e.g., 'publish_topic1 subscribe_topic2/#'.
@@ -874,7 +883,8 @@
 	  <t>To authorize a Client's publish and subscribe requests in an ongoing session, the RS caches the access token after accepting the
 	  connection from the Client. However, if some permissions are revoked in the meantime,
 	  the RS may still grant publish/subscribe to revoked topics until the session ends or the token expires.
-	  When permissions change dynamically, it is expected that AS follows a reasonable expiration strategy for the access tokens.
+      If the RS caches, the token introspection responses, then the RS should use a reasonable cache timeout to introspect tokens regularly.
+	  When permissions change dynamically, it is expected that AS also follows a reasonable expiration strategy for the access tokens.
 	  </t>
 	  <t> The RS may monitor Client behaviour to detect potential security problems, especially those affecting availability.
 	  These include repeated token transfer attempts to the public "authz-info" topic, repeated connection attempts,
