@@ -435,7 +435,8 @@
                         When requesting an access token from the AS, the Client MAY include parameters in its request as
                         defined in Section 5.6.1
                         of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
-                        The content type is set to "application/json". The profile parameter is set to 'mqtt_tls'.
+                        MUST use the media format 'application/ace+json'. The profile parameter is set to 'mqtt_tls'.
+                        The OAuth 2.0 AS uses a JSON structure in the payload of its responses both to client and RS.
                     </t>
                     <t>
                         If the AS successfully verifies the access token request and authorizes the Client for the
@@ -445,13 +446,13 @@
                             target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
                         The included token is assumed to be Proof-of-Possession (PoP) token by default.
                         Hence,  a 'cnf' parameter with a symmetric or asymmetric PoP key is returned.
-                         The token may be a reference, or a CBOR or JWT web token.
+                         The token MAY be a reference, JWT or CWT. <!--Fix Here-->
                           Note that the 'cnf' parameter in the web tokens
                         are to be consumed by the resource server and not the Client.
                           For more information on Proof of Possession semantics in JWTs
 			            see <xref target="RFC7800">RFC 7800</xref> and for CWTs,
 			            see <xref target="I-D.ietf-ace-cwt-proof-of-possession">Proof-of-Possession Key
-                         Semantics for CBOR Web Tokens (CWTs)</xref>.
+                         Semantics for CBOR Web Tokens (CWTs)</xref>. <!--Fix This-->
                     </t>
                     <t>
                         In the case of an error, the AS returns error responses for
@@ -543,7 +544,7 @@
    	     (for symmetric key) or a digital signature (for asymmetric key). The CONNECT message is assumed to have enough randomness in the payload, and
               inside a TLS session (excluding the 0-RTT case) will not be exposed to a replay attack.
 	       When either cannot be guaranteed, the Authentication Data MAY also contain a nonce.
-	       The encoding of this field MAY use CBOR and COSE.
+	       The encoding of this field MAY use CBOR and COSE. <!--Fix this-->
 	    </t>
 	    <t>
 	      The token is validated as described in  <xref target="token_validation"></xref>  and the
@@ -567,7 +568,7 @@
 	      Finally, this document allows the CONNECT message to have an empty Authentication Data field. This is the AS discovery option
 	      and the RS responds with the CONNACK reason code '0x87 (Not Authorized)' and includes a User Property for the AS information.
 	      AS Information contains the absolute URI of AS, and MAY also contain a cnonce as described in the Section 5.1 of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
-	      This information MAY be CBOR encoded.
+	      This information MAY be CBOR encoded. <!--Fix this-->
 	    </t>
              </section>
                 <section title="Token Validation" anchor="token_validation">
@@ -627,7 +628,10 @@
                     <t>
                         Based on the validation result (obtained either via local inspection or using the /introspection
                         interface of the AS), the Broker MUST send a CONNACK message to the Client.
-                        If the RS accepts the connection, it MUST store the token.
+                        If the RS accepts the connection, it MUST store the token until the end of connection.
+                        On Client or RS disconnection, the token is discarded, and the Client MUST provide a token
+                         inside the CONNECT message.
+
                     </t>
                 </section>
             </section>
@@ -702,7 +706,7 @@
 		 <t>
                     The token expiration is checked by checking the 'exp' claim of a CWT/JWT or via performing an
                     introspection request with the Authorization server as described in Section 5.7 of <xref
-                        target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
+                        target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>. <!--Fix this-->
                     Token expirations may trigger the RS to send PUBACK, SUBACK and DISCONNECT messages with return code set to 'Not authorised'.
 		    To these messages, the Client MAY respond with re-authentication.
                  </t>
@@ -996,7 +1000,7 @@
                     </t>
                     <t>Content format: For the HTTPS interactions with AS, "application/json".  The MQTT payloads may be
                         formatted
-                        JSON or CBOR.
+                        JSON or CBOR. <!--Fix this-->
                     </t>
                     <t>PoP protocols: Either symmetric or asymmetric keys can be supported.</t>
                     <t>Unique profile identifier: mqtt_tls</t>
