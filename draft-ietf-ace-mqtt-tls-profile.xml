@@ -164,14 +164,13 @@
         <section title="Introduction">
             <t>
                 This document specifies a profile for the ACE framework <xref target="I-D.ietf-ace-oauth-authz"></xref>.
-                In this profile, Clients and a resource server use MQTT to communicate.
+                In this profile, Clients and a resource server use MQTT to exchange application-layer messages.
                 The protocol relies on TLS for
-                communication security between entities. The necessary protocol interactions
-                 are described based
-                 on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
+                communication security between entities. The MQTT protocol interactions
+                 are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
 		        In addition, this document describes a reduced set of protocol interactions suited
                  to <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
-		        It is expected that MQTT implementations will retain
+		        It is expected that MQTT deployments will retain
                 backward compatibility for MQTT v3.1.1 clients, and therefore, covered
 		        in this document. However, it is RECOMMENDED to use MQTT v5.0 as it works more naturally
                  with ACE-style authentication and authorization.
@@ -189,49 +188,37 @@
                 In this document, message topics are treated as resources.
                 Clients use an access token, bound to a key (the proof-of-possession key) to authorize
                 with the MQTT Broker their connection and publish/subscribe permissions to topics. In the context
-                of this ACE profile, the MQTT Broker acts as the resource server. In the rest of the
+                of this ACE profile, the MQTT Broker acts as the Resource Server (RS). In the rest of the
                  document RS and Broker are used interchangeably.
-                To provide communication confidentiality and resource server authentication, TLS is used.
-            </t>
-            <t>
-                While the Client-Broker communication is in MQTTS, it is RECOMMENDED that
-                the Clients and the Broker communicate with
-                the Authorization Server via HTTPS. If the Clients are resource-constrained, the Clients MAY use a separate
-                Client Authorization Server to communicate with the Authorization Server, and which onboards
-                the Client with the received token. The details of these interactions are not in the scope
-                of this document.
-            </t>
-            <t>
-                Also, if the Broker supports token introspection, it uses HTTPS to communicate with the
-                authorization server.
-                These interfaces MAY be implemented using other protocols, e.g., CoAP, HTTP/2, BLE and QUIC.
+                To provide communication confidentiality and Resource Server authentication, TLS is used.
                 This document makes the same assumptions as the Section 4 of
 		        <xref target="I-D.ietf-ace-oauth-authz"> the
                 ACE framework</xref> regarding Client and RS registration with the AS and establishing of keying material.
             </t>
-
             <t>This document describes the authorization of the following exchanges between
                 Clients and the Broker.
-            </t>
-            <t>
                 <list style="symbols">
                     <t>Connection establishment between the Clients and the Broker</t>
                     <t>Publish messages from the Clients to the Broker, and from the Broker to the Clients</t>
                     <t>Subscribe messages from the Clients to the Broker</t>
                 </list>
+                While the Client-Broker exchanges are over MQTT, the required Client-AS and RS-AS interactions are
+                described for HTTPS-based communication, using 'application/ace+json' content type, and unless otherwise
+                specified, uses JSON encoding. The token may be a reference, or JWT.
+                For JWT tokens, this document follows <xref target="RFC7800">RFC 7800</xref>
+                for PoP semantics for JWTs. The Client-AS and RS-AS may also be based on CoAP. It is also possible to use
+                'application/ace+cbor' content type, and CBOR encoding, and CWT and associated PoP semantics to reduce the protocol memory and bandwidth
+                requirements.  For more information on Proof of Possession semantics d for CWTs,
+			            see <xref target="I-D.ietf-ace-cwt-proof-of-possession">Proof-of-Possession Key
+                         Semantics for CBOR Web Tokens (CWTs)</xref>.
             </t>
-	        <t>
-	        These exchanges are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
-            For brokers supporting MQTT v.3.1.1 Clients for backward compatibility,
-	        a more basic operation is described in <xref target="MQTTv311"></xref> for the <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
-	        MQTT v5.0 brokers MAY also only support the basic operation; however, this is NOT RECOMMENDED.
-	        </t>
 
             <section title="Requirements Language">
                 <t>
                     The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
                     "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",  "MAY", and "OPTIONAL" in this
-                    document are to be interpreted as described in BCP 14 <xref target="RFC2119"></xref> <xref target="RFC8174"></xref>, when, and only when, they appear in all capitals, as shown here.
+                    document are to be interpreted as described in BCP 14 <xref target="RFC2119"></xref> <xref target="RFC8174"></xref>,
+                     when, and only when, they appear in all capitals, as shown here.
                 </t>
             </section>
 
@@ -275,23 +262,23 @@
                             The Server in MQTT and acts as an intermediary between Clients that publish Application Messages,
                             and the Clients that made Subscriptions.
                         </t>
+                        <t hangText="Application Message">
+                            <vspace blankLines="0"/>
+                            The data carried by the MQTT protocol. The data has an associated QoS level and a Topic
+                            Name.
+                        </t>
                         <t hangText="Topic Name">
                             <vspace blankLines="0"/>
-                            The label attached to an application message, which is matched to a subscription.
+                            The label attached to an Application Message, which is matched to a Subscription.
+                        </t>
+                        <t hangText="Subscription">
+                            <vspace blankLines="0"/>
+                            A subscription comprises a Topic Filter and a maximum Quality of Service (QoS).
                         </t>
                         <t hangText="Topic Filter">
                             <vspace blankLines="0"/>
                             An expression that indicates interest in one or more Topic Names. Topic Filters may include
                             wildcards.
-                        </t>
-                        <t hangText="Subscription">
-                            <vspace blankLines="0"/>
-                            A subscription comprises a Topic Filter and a maximum quality of service (QoS).
-                        </t>
-                        <t hangText="Application Message">
-                            <vspace blankLines="0"/>
-                            The data carried by the MQTT protocol. The data has an associated QoS level and a Topic
-                            name.
                         </t>
                     </list>
                 </t>
@@ -301,7 +288,6 @@
                     authorization are not explained.
                     These include, for instance, the PUBREL and PUBCOMP packets used in the 4-step handshake required
                     for the QoS level 2.
-
                     <list hangIndent="8" style="hanging">
                         <t hangText="CONNECT">
                             <vspace blankLines="0"/>
@@ -347,22 +333,17 @@
                             An application message published by the Server after the network connection is
                             closed in cases where the network connection is not closed normally.
                             If the Will Flag is set, then the payload of the CONNECT message has information
-                            about the Will message. The Will Message consists of the Will Properties, Will Topic,
+                            about the Will message. The Will message consists of the Will Properties, Will Topic,
                             and Will Payload fields in the CONNECT message.
 			            </t>
                     </list>
                 </t>
             </section>
-
         </section>
         <section title="Protocol Interactions" anchor="protocol-interactions">
             <t>
                 This section describes the following exchanges between Clients, the Broker, and
-	            the authorization server according to the MQTT v5.0.  In addition,  <xref target="MQTTv311"></xref>
-	            describes how these exchanges can also be supported using the
-	            MQTT v3.1.1.
-            </t>
-            <t>
+	            the Authorization Server according to the MQTT v5.0.
                 <list style="symbols">
                     <t>Authorizing connection establishment between the Clients and the Broker</t>
                     <t>Authorizing publish messages from the publisher Clients to the Broker, and from the Broker to the
@@ -370,38 +351,34 @@
                     </t>
                     <t>Authorizing subscribe messages from Clients to the Broker</t>
                 </list>
+                <xref target="MQTTv311"></xref>
+	            describes how these exchanges can also be supported using the
+	            MQTT v3.1.1.  MQTT v5.0 brokers MAY also only support the basic operation; however, this is NOT RECOMMENDED.
             </t>
             <t>
-                Message topics are treated as resources.
+                In this profile document, message topics are treated as resources.
                 The Clients are assumed to have identified the publish/subscribe topics of interest out-of-band
                 (topic discovery is not a feature of the MQTT protocol).
-            </t>
-            <t>
                 A connection request carries a token specifying the permissions that the Client has (e.g., publish
                 permission to a given topic).
                 A resource owner can pre-configure policies at the AS that give Clients publish or subscribe
                 permissions to different topics.
             </t>
-
             <section title="Authorizing Connection Establishment" anchor="token_acquisition">
                 <t>
                     This section specifies how Clients establish an authorized connection to an MQTT
-                    Broker. The token request and response
-                    use the /token endpoint of the authorization server, as specified in Section 5 of the <xref
-                    target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
-                </t>
-                <t>
-                    <xref target="protocol_flow"></xref> shows the basic protocol flow during connection
-                    establishment. It is RECOMMENDED that the Client and Broker support HTTPS interfaces
-                    to communicate to AS.
-                    If the Client is resource-constrained, the Client MAY be onboarded with a token
-                    by Client Authorization Server, which carries out the HTTPS interaction on behalf of
-                     the Client. Optionally, if
-                    the AS supports MQTTS, these steps MAY be carried out in MQTTS.
+                    Broker.  <xref target="protocol_flow"></xref> shows the basic protocol flow during connection
+                    establishment.The token request and response
+                    use the /token endpoint of the authorization server, specified in the Section 5.6 of the <xref
+                    target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional,
+                    and use the introspection endpoint, specified in the Section 5.7 of the ACE framework.
+                    The Client and Broker use HTTPS to communicate to AS through these endpoints.
+                    If the Client is resource-constrained, a Client Authorisation Server may carry out
+                    the token request on behalf of the Client, and later, onboard the Client with the token.
+                     Also, these interfaces may be implemented using other protocols, e.g., CoAP or MQTT.
                     The interactions between a Client and its Client Authorization Server for token
                     onboarding, and the
-                    MQTTS support for token request are out of scope of this document.
-                    Steps (D) and (E) are optional.
+                    MQTTS support for token requests are out of scope of this document.
                 </t>
                 <figure align="center" anchor="protocol_flow" title="Connection establishment">
                     <artwork align="left"><![CDATA[
@@ -415,7 +392,7 @@
    |   |                  |_____________________|
    |   |                  |                     |
 +--v-------------+        |  Pub/Sub Interface  |
-|  Authorzation  |        |     (MQTTS)         |
+|  Authorization |        |     (MQTTS)         |
 |  Server        |        +-----------^---------+
 |________________|            |       |
    |    ^             (C)Connection  (F)Connection
@@ -432,13 +409,14 @@
      response (optional)
            ]]></artwork>
                 </figure>
+
                 <section title="Client Token Request to the Authorization Server (AS)">
                     <t>
                         The first step in the protocol flow (Figure 1 (A)) is the token acquisition by the Client from the AS.
                         When requesting an access token from the AS, the Client MAY include parameters in its request as
                         defined in Section 5.6.1
                         of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
-                        MUST use the media format 'application/ace+json'. The profile parameter is set to 'mqtt_tls'.
+                        The media format is 'application/ace+json'. The profile parameter MUST be set to 'mqtt_tls'.
                         The OAuth 2.0 AS uses a JSON structure in the payload of its responses both to client and RS.
                     </t>
                     <t>
@@ -448,14 +426,10 @@
                         The response includes the parameters described in Section 5.6.2 of <xref
                             target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
                         The included token is assumed to be Proof-of-Possession (PoP) token by default.
-                        Hence,  a 'cnf' parameter with a symmetric or asymmetric PoP key is returned.
-                         The token MAY be a reference, JWT or CWT. <!--Fix Here-->
+                        This document follows <xref target="RFC7800">RFC 7800</xref> for PoP semantics for JWTs
+                        The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key is returned.
                           Note that the 'cnf' parameter in the web tokens
                         are to be consumed by the resource server and not the Client.
-                          For more information on Proof of Possession semantics in JWTs
-			            see <xref target="RFC7800">RFC 7800</xref> and for CWTs,
-			            see <xref target="I-D.ietf-ace-cwt-proof-of-possession">Proof-of-Possession Key
-                         Semantics for CBOR Web Tokens (CWTs)</xref>. <!--Fix This-->
                     </t>
                     <t>
                         In the case of an error, the AS returns error responses for
@@ -464,7 +438,8 @@
                     </t>
                 </section>
                 <section title="Client Connection Request to the Broker" anchor="connect_v5">
-		            <t>
+                    <section title="Option for Token Transport" anchor="token_transport_options">
+		                <t>
 		                This section describes how the Client transports the token to the Broker
                          (RS) via the CONNECT control message after the TLS handshake.
                           This is similar to an earlier proposal by Fremantle et al.
@@ -481,6 +456,8 @@
                         This option is described in more detail in
                         <xref target="app-authzinfo"></xref>.
 		            </t>
+                    </section>
+                    <section title="Token Transport in CONNECT" anchor="token_transport_connect">
 		            <t>
 		                After the token acquisition, the Client connects to the RS (Broker)
                          using the CONNECT message of MQTT.
@@ -619,6 +596,7 @@
                              of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
 	                    </t>
                     </section>
+                </section>
              </section>
                 <section title="Token Validation" anchor="token_validation">
                     <t>
