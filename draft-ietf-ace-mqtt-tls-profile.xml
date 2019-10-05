@@ -65,7 +65,7 @@
 
             <address>
                 <postal>
-                    <street>2 Kingdom Street</street>
+                    <street>4 Kingdom Street</street>
 
                     <!-- Reorder these if your country does things differently -->
 
@@ -155,7 +155,7 @@
                 Environments) to enable
                 authorization in an MQTT-based publish-subscribe messaging system.
                 Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize
-                publisher and subscriber Clients.
+                MQTT Clients.
                 The protocol relies on TLS for confidentiality and server authentication.
             </t>
         </abstract>
@@ -165,21 +165,21 @@
         <section title="Introduction">
             <t>
                 This document specifies a profile for the ACE framework <xref target="I-D.ietf-ace-oauth-authz"></xref>.
-                In this profile, Clients and a resource server use MQTT to exchange application-layer messages.
+                In this profile, Clients and a Broker use MQTT to exchange Application messages.
                 The protocol relies on TLS for
                 communication security between entities. The MQTT protocol interactions
                  are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
-		        In addition, this document describes a reduced set of protocol interactions suited
+                 It is expected that MQTT deployments will retain
+                backward compatibility for MQTT v3.1.1 clients, and therefore,
+		        this document describes a reduced set of protocol interactions suited
                  to <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
-		        It is expected that MQTT deployments will retain
-                backward compatibility for MQTT v3.1.1 clients, and therefore, covered
-		        in this document. However, it is RECOMMENDED to use MQTT v5.0 as it works more naturally
+		        However, it is RECOMMENDED to use MQTT v5.0 as it works more naturally
                  with ACE-style authentication and authorization.
             </t>
             <t>
                 MQTT is a publish-subscribe protocol and supports two main types of Client operation:
                 publish and subscribe. Once connected, a Client can publish to multiple topics,
-                and subscribe to multiple topics; however, for this document, these actions are described separately.
+                and subscribe to multiple topics.
                 The MQTT Broker is responsible for distributing messages published by the publishers
                  to the appropriate subscribers. Each publish message contains a Topic Name,
                  which is used by the Broker to filter the subscribers for the message.
@@ -205,11 +205,11 @@
                 </list>
                 While the Client-Broker exchanges are over MQTT, the required Client-AS and RS-AS interactions are
                 described for HTTPS-based communication, using 'application/ace+json' content type, and unless otherwise
-                specified, uses JSON encoding. The token may be a reference, or JWT.
+                specified, using JSON encoding. The token may be a reference, or JWT.
                 For JWT tokens, this document follows <xref target="RFC7800">RFC 7800</xref>
                 for PoP semantics for JWTs. The Client-AS and RS-AS may also be based on CoAP. It is also possible to use
                 'application/ace+cbor' content type, and CBOR encoding, and CWT and associated PoP semantics to reduce the protocol memory and bandwidth
-                requirements.  For more information on Proof of Possession semantics d for CWTs,
+                requirements.  For more information on Proof of Possession semantics for CWTs,
 			            see <xref target="I-D.ietf-ace-cwt-proof-of-possession">Proof-of-Possession Key
                          Semantics for CBOR Web Tokens (CWTs)</xref>.
             </t>
@@ -261,7 +261,7 @@
                         <t hangText="Broker">
                             <vspace blankLines="0"/>
                             The Server in MQTT and acts as an intermediary between Clients that publish Application Messages,
-                            and the Clients that made Subscriptions.
+                            and the Clients that made Subscriptions. The Broker acts as the Resource Server for the Clients.
                         </t>
                         <t hangText="Application Message">
                             <vspace blankLines="0"/>
@@ -334,7 +334,7 @@
                             An application message published by the Server after the network connection is
                             closed in cases where the network connection is not closed normally.
                             If the Will Flag is set, then the payload of the CONNECT message has information
-                            about the Will message. The Will message consists of the Will Properties, Will Topic,
+                            about the Will. The Will consists of the Will Properties, Will Topic,
                             and Will Payload fields in the CONNECT message.
 			            </t>
                     </list>
@@ -347,8 +347,8 @@
 	            the Authorization Server according to the MQTT v5.0.
                 <list style="symbols">
                     <t>Authorizing connection establishment between the Clients and the Broker</t>
-                    <t>Authorizing publish messages from the publisher Clients to the Broker, and from the Broker to the
-                        subscriber Clients
+                    <t>Authorizing publish messages from the Clients to the Broker, and from the Broker to the
+                        Clients
                     </t>
                     <t>Authorizing subscribe messages from Clients to the Broker</t>
                 </list>
@@ -360,8 +360,6 @@
                 In this profile document, message topics are treated as resources.
                 The Clients are assumed to have identified the publish/subscribe topics of interest out-of-band
                 (topic discovery is not a feature of the MQTT protocol).
-                A connection request carries a token specifying the permissions that the Client has (e.g., publish
-                permission to a given topic).
                 A resource owner can pre-configure policies at the AS that give Clients publish or subscribe
                 permissions to different topics.
             </t>
@@ -373,7 +371,7 @@
                     use the /token endpoint of the authorization server, specified in the Section 5.6 of the <xref
                     target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional,
                     and use the introspection endpoint, specified in the Section 5.7 of the ACE framework.
-                    The Client and Broker use HTTPS to communicate to AS through these endpoints.
+                    The Client and Broker use HTTPS to communicate to AS via these endpoints.
                     If the Client is resource-constrained, a Client Authorisation Server may carry out
                     the token request on behalf of the Client, and later, onboard the Client with the token.
                      Also, these interfaces may be implemented using other protocols, e.g., CoAP or MQTT.
@@ -427,8 +425,8 @@
                         The response includes the parameters described in Section 5.6.2 of <xref
                             target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
                         The included token is assumed to be Proof-of-Possession (PoP) token by default.
-                        This document follows <xref target="RFC7800">RFC 7800</xref> for PoP semantics for JWTs
-                        The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key is returned.
+                        This document follows <xref target="RFC7800">RFC 7800</xref> for PoP semantics for JWTs.
+                        The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key.
                           Note that the 'cnf' parameter in the web tokens
                         are to be consumed by the resource server and not the Client.
                     </t>
@@ -461,7 +459,7 @@
                          the client MAY either have the ability to receive and validate a certificate
                           or a raw public key from the Broker. The client needs to use
                            this raw public key in the TLS handshake together
-                        with an out-of-band validation technique (see <xref target="RFC7800">RFC 7250</xref>
+                        with an out-of-band validation technique (see <xref target="RFC7250">RFC 7250</xref>
                         for details).
                     </t>
                     <t>
@@ -1002,6 +1000,7 @@
             &RFC2119;
             &RFC4648;
 	    &RFC8174;
+        &RFC7250;
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
