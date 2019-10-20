@@ -565,27 +565,27 @@
 	                    </t>
                          <figure align="center" anchor="pop_challenge_response" title="PoP Challenge/Response Protocol Flow - Success">
                     <artwork align="left"><![CDATA[
-                                Resource
-                    Client      Server
-                     |             |
-                     |<===========>| TLS connection establishment
-                     |             |
-                     |             |
-                     +------------>| CONNECT with Authentication Data
-                     |             | contains only token
-                     |             |
-                     <-------------+ AUTH '0x18 (Continue Authentication)'
-                     |             | challenge
-                     |             |
-                     |------------>| AUTH '0x18 (Continue Authentication)'
-                     |             | signature
-                     |             |
-                     |             |-----+ Token validation (may involve introspection)
-                     |             |     |
-                     |             |<----+
-                     |             |
-                     |<------------+ CONNACK '0x00 (Success)'
-                     ]]></artwork>
+                    Resource
+        Client      Server
+         |             |
+         |<===========>| TLS connection establishment
+         |             |
+         |             |
+         +------------>| CONNECT with Authentication Data
+         |             | contains only token
+         |             |
+         <-------------+ AUTH '0x18 (Continue Authentication)'
+         |             | challenge
+         |             |
+         |------------>| AUTH '0x18 (Continue Authentication)'
+         |             | signature
+         |             |
+         |             |-----+ Token validation 
+         |             |     | (may involve introspection)
+         |             |<----+
+         |             |
+         |<------------+ CONNACK '0x00 (Success)'
+         ]]></artwork>
                     </figure>
                     </section>
                     <section title="Unauthorised Request: Authorisation Server Discovery" anchor="as_discovery">
@@ -791,13 +791,13 @@
        +------------------------------------------------------+
        | Payload                                              |
        |     Client Identifier                                |
-       |     Username as access token (UTF-8)     	          |
+       |     Username as access token (UTF-8)                 |
        |     Password length (2 Bytes)                        |
        |     Password data as signature/MAC (binary)          |
        +------------------------------------------------------+
         ]]></artwork>
           </figure>
-	  <t>
+          <t>
             <xref target="mqtt_connect_flags"></xref> shows how the MQTT connect flags MUST be set to initiate
              a connection with the Broker.
           </t>
