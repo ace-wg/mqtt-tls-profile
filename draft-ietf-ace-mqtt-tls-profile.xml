@@ -416,7 +416,7 @@
                         This is similar to an earlier proposal by Fremantle et al.
                         <xref target="fremantle14"></xref>. Alternatively, the token may be used
                         for the TLS session establishment as described in
-                        the <xref target="I-D.gerdes-ace-dtls-authorize">DTLS profile for ACE</xref>.
+                        the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.
                          In this case, both the TLS PSK and RPK handshakes MAY be supported.
                         This may additionally require that the Client transports the token to the Broker
                          before the connection establishment.
@@ -1001,7 +1001,7 @@
 
             <?rfc include="reference.I-D.ietf-ace-oauth-authz.xml"?>
 
-            <?rfc include="reference.I-D.gerdes-ace-dtls-authorize.xml"?>
+            <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
 
         </references>
 
