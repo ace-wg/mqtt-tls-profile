@@ -757,8 +757,8 @@
                     the most recent message from the publisher of that particular topic without waiting
                      for the next PUBLISH message.
                     The Broker MUST continue publishing
-                    the retained messages until the tokens for those messages have expired,
-                    or other RETAIN messages are published on the associated topics.
+                    each retained message until the token for that message has expired,
+                    or another RETAIN message is published on the associated topic.
                 </t>
                 <t>
                     In case of disconnections due to network errors or server disconnection due to a protocol error
