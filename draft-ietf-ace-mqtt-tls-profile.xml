@@ -749,15 +749,16 @@
             </section>
             <section title="Handling Disconnections and Retained Messages" anchor="disconnections">
 		        <t>
-                    In the case of a Client DISCONNECT, due to the Clean Session flag, the Broker
-                    deletes all session state but MUST keep the retained messages.
+                    In the case of a Client DISCONNECT, due to the Clean Start flag (or Clean Session flag with MQTT v3.1.1), the Broker
+                    deletes all session state but MUST keep the retained messages and token expiry information.
                     By setting a RETAIN flag in a PUBLISH message,
                     the publisher indicates to the Broker that it should store the most
-                    recent message for the associated topic.  Hence, the new subscribers can receive
-                    the last sent message from the publisher of that particular topic without waiting
+                    recent message for the associated topic.  Hence, new subscribers can receive
+                    the most recent message from the publisher of that particular topic without waiting
                      for the next PUBLISH message.
                     The Broker MUST continue publishing
-                    the retained messages as long as the associated tokens are valid.
+                    each retained message until the token for that message has expired,
+                    or another RETAIN message is published on the associated topic.
                 </t>
                 <t>
                     In case of disconnections due to network errors or server disconnection due to a protocol error
