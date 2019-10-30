@@ -165,10 +165,11 @@
                 with the MQTT Broker their connection and publish/subscribe permissions to topics. In the context
                 of this ACE profile, the MQTT Broker acts as the Resource Server (RS). In the rest of the
                  document RS and Broker are used interchangeably.
-                To provide communication confidentiality and Resource Server authentication, TLS is used.
+                To provide communication confidentiality and Resource Server authentication, TLS is used,
+                and TLS 1.3 is RECOMMENDED.
                 This document makes the same assumptions as the Section 4 of
 		        <xref target="I-D.ietf-ace-oauth-authz"> the
-                ACE framework</xref> regarding Client and RS registration with the AS and establishing of keying material.
+                ACE framework</xref> regarding Client and RS registration with the Authorization Server (AS) and setting up keying material.
             </t>
             <t>This document describes the authorization of the following exchanges between
                 Clients and the Broker.
@@ -234,13 +235,18 @@
                         </t>
                         <t hangText="Broker">
                             <vspace blankLines="0"/>
-                            The Server in MQTT and acts as an intermediary between Clients that publish Application Messages,
+                            The Server in MQTT. It acts as an intermediary between Clients that publishes Application Messages,
                             and the Clients that made Subscriptions. The Broker acts as the Resource Server for the Clients.
                         </t>
                         <t hangText="Application Message">
                             <vspace blankLines="0"/>
                             The data carried by the MQTT protocol. The data has an associated QoS level and a Topic
                             Name.
+                        </t>
+                        <t hangText="QoS level">
+                            <vspace blankLines="0"/>
+                            The level of assurance for the delivery of an Application Message. The QoS level can be 0-2,
+                            where "0" indicates "At most once delivery", "1" "At least once delivery", and "2" "Exactly once delivery".
                         </t>
                         <t hangText="Topic Name">
                             <vspace blankLines="0"/>
@@ -301,15 +307,19 @@
 			            <t hangText="PINGREQ">
                             <vspace blankLines="0"/>
 			                A ping request sent from a Client to the Broker.  It signals to the Broker that the Client is alive, and
-			                 is used to confirm that the Broker is still alive.
+			                 is used to confirm that the Broker is still alive. The "Keep Alive" period is set in the CONNECT message.
+			            </t>
+                        <t hangText="PINGRESP">
+                            <vspace blankLines="0"/>
+			                Response sent by the Broker to the Client in response to PINGREQ. It indicates the Broker is alive.
 			            </t>
                         <t hangText="Will">
                             <vspace blankLines="0"/>
-                            An application message published by the Server after the network connection is
-                            closed in cases where the network connection is not closed normally.
-                            If the Will Flag is set, then the payload of the CONNECT message has information
-                            about the Will. The Will consists of the Will Properties, Will Topic,
-                            and Will Payload fields in the CONNECT message.
+                            If the network connection is not closed normally, the Server sends a last Will message
+                            for the Client, if the Client provided one in its CONNECT message.
+                            If the Will Flag is set, then the payload of the CONNECT message includes information
+                            about the Will. The information consists of the Will Properties, Will Topic,
+                            and Will Payload fields.
 			            </t>
                     </list>
                 </t>
@@ -320,7 +330,7 @@
                 This section describes the following exchanges between Clients, the Broker, and
 	            the Authorization Server according to the MQTT v5.0.
                 <list style="symbols">
-                    <t>Authorizing connection establishment between the Clients and the Broker</t>
+                    <t>Authorizing connection requests from the Clients to the Broker</t>
                     <t>Authorizing publish messages from the Clients to the Broker, and from the Broker to the
                         Clients</t>
                     <t>Authorizing subscribe messages from Clients to the Broker</t>
@@ -336,23 +346,23 @@
                 A resource owner can pre-configure policies at the AS that give Clients publish or subscribe
                 permissions to different topics.
             </t>
-            <section title="Authorizing Connection Establishment" anchor="token_acquisition">
+            <section title="Authorizing Connection Requests" anchor="token_acquisition">
                 <t>
-                    This section specifies how Clients establish an authorized connection to an MQTT
+                    This section specifies how Client connections can be authorized by an MQTT
                     Broker.  <xref target="protocol_flow"></xref> shows the basic protocol flow during connection
-                    establishment.The token request and response
+                    set-up.The token request and response
                     use the /token endpoint of the authorization server, specified in the Section 5.6 of the <xref
                     target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional,
                     and use the introspection endpoint, specified in the Section 5.7 of the ACE framework.
                     The Client and Broker use HTTPS to communicate to AS via these endpoints.
                     If the Client is resource-constrained, a Client Authorisation Server may carry out
                     the token request on behalf of the Client, and later, onboard the Client with the token.
-                     Also, these interfaces may be implemented using other protocols, e.g., CoAP or MQTT.
+                     Also, these interfaces may be implemented using protocols other than HTTPS, e.g., CoAP or MQTT.
                     The interactions between a Client and its Client Authorization Server for token
                     onboarding, and the
                     MQTTS support for token requests are out of scope of this document.
                 </t>
-                <figure align="center" anchor="protocol_flow" title="Connection establishment">
+                <figure align="center" anchor="protocol_flow" title="Connection set-up">
                     <artwork align="left"><![CDATA[
                           +---------------------+
                           | Client              |
@@ -385,10 +395,11 @@
                 <section title="Client Token Request to the Authorization Server (AS)">
                     <t>
                         The first step in the protocol flow (Figure 1 (A)) is the token acquisition by the Client from the AS.
-                        When requesting an access token from the AS, the Client MAY include parameters in its request as
-                        defined in Section 5.6.1
-                        of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
-                        The media format is 'application/ace+json'. The profile parameter MUST be set to 'mqtt_tls'.
+                        When requesting an access token from the AS, the Client follows the token request as is
+                        described in Section 5.6.1
+                        of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>, howevever, it MUST
+                        set the profile parameter to 'mqtt_tls'.
+                        The media format is 'application/ace+json'.
                         The OAuth 2.0 AS uses a JSON structure in the payload of its responses both to client and RS.
                     </t>
                     <t>
@@ -415,11 +426,11 @@
                         (RS) via the CONNECT control message after the TLS handshake.
                         This is similar to an earlier proposal by Fremantle et al.
                         <xref target="fremantle14"></xref>. Alternatively, the token may be used
-                        for the TLS session establishment as described in
+                        for the TLS session set-up as described in
                         the <xref target="I-D.gerdes-ace-dtls-authorize">DTLS profile for ACE</xref>.
                          In this case, both the TLS PSK and RPK handshakes MAY be supported.
                         This may additionally require that the Client transports the token to the Broker
-                         before the connection establishment.
+                         before requesting to an authorized connection.
                         To this end, the Broker MAY support /authz-info endpoint via the "authz-info" topic.
 			            Then, to transport the token, Clients publish to "authz-info" topic unauthorized.
                         The topic "authz-info" MUST be publish-only for Clients (i.e.,
@@ -568,7 +579,7 @@
                                 Resource
                     Client      Server
                      |             |
-                     |<===========>| TLS connection establishment
+                     |<===========>| TLS connection set-up
                      |             |
                      |             |
                      +------------>| CONNECT with Authentication Data
@@ -641,8 +652,8 @@
                     </t>
                     <t>
                         If the RS accepts the connection, it MUST store the token until the end of connection.
-                        On Client or RS disconnection, the token is discarded, and the Client MUST provide a token
-                        inside each CONNECT message.
+                        On Client or RS disconnection, the Client is expected to provide a token again
+                        inside the next CONNECT message.
                     </t>
                     <t>
                         If the token is not self-contained and the Broker uses token
