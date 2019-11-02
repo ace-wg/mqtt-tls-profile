@@ -501,14 +501,17 @@
 |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
 | flag    |flag |           |        |         |     |      |
 +-----------------------------------------------------------+
-| 0       | 0   |    X      |   X X  |   X     |  1   |  0  |
+| 0       | 0   |    X      |   X X  |   X     |  X   |  0  |
 +-----------------------------------------------------------+
          ]]></artwork>
          </figure>
                     <t>
-                        To achieve a clean session (i.e., the session starts without an existing session),
-	                    the Clean Start Flag MUST be set to 1. In addition, if the Session Expiry Interval is present in the CONNECT
-                        message, it MUST be set to 0.
+                        In MQTT v5, to achieve a clean session (i.e., the session starts without an existing session),
+	                    the Client sets the Clean Start Flag to 1 and,
+                        the Session Expiry Interval to 0 in the CONNECT
+                        message. However, in this profile, the Broker MUST always
+                        start with a clean session regardless of how these parameters are set. The Broker
+                        MUST set the Session Present flag to 0 in the CONNACK packet as a response.
 	                </t>
 	                <t>
                         The Will Flag indicates that a Will message needs to be sent if network connection is
@@ -668,7 +671,8 @@
                         Based on the validation result (obtained either via local inspection or using the /introspection
                         interface of the AS), the Broker MUST send a CONNACK message to the Client.
                         The reason code of the
-                        CONNACK is '0x00 (Success)' if the authentication is successful.
+                        CONNACK is '0x00 (Success)' if the authentication is successful, and MUST set Session Present to 0
+                         in the CONNACK packet to signal a clean session to the Client.
 	                    In case of an invalid PoP token, the CONNACK reason code
                         is '0x87 (Not Authorized)'.
                     </t>
