@@ -281,6 +281,15 @@
                             CONNACK packet. CONNACK packets
                             contain return codes indicating either a success or an error state to a Client.
                         </t>
+                        <t hangText="AUTH">
+                            <vspace blankLines="0"/>
+                            Authentication Exchange. An AUTH packet is sent from the Client to the Broker or
+                            to the Broker to the Client as part of an extended authentication exchange.
+                            AUTH Properties include Authentication Method and Authentication Data.
+                            The Authentication Method is set in the CONNECT packet, and consequent
+                            AUTH packets follow the same Authentication Method.
+                            The contents of the Authentication Data are defined by the Authentication Method.
+                        </t>
                         <t hangText="PUBLISH">
                             <vspace blankLines="0"/>
                             Publish packet that can be sent from a Client to the Broker, or from the Broker to a
@@ -462,7 +471,7 @@
                           All but the Client identifier can be omitted depending on flags in the Variable Header.
 		            </t>
 		  <figure align="center" anchor="mqtt5_connect_message"
-                            title="MQTT v5 CONNECT control message with ACE authentication method. (CPT=Control Packet Type)">
+                            title="MQTT v5 CONNECT control message with ACE authentication. (CPT=Control Packet Type)">
 		    <artwork align="left"><![CDATA[
        0            8            16            24            32
        +------------------------------------------------------+
@@ -516,17 +525,17 @@
                         <xref target="disconnections"></xref> explains how the Broker deals with the retained messages in further detail.
                     </t>
 	                <t>
-	                    For token transport, the RS SHOULD support AUTH (Authentication Exchange) method.
+	                    For token transport, the RS SHOULD support the use of AUTH (Authentication Exchange).
                          The RS MAY support
 	                    token transport via username and password, which is described in  <xref target="MQTTv311"></xref> for MQTT v3.1.1.
-	                    The rest of this section describes the AUTH method, for which the username and password flags MUST be set to 0.
+	                    The rest of this section describes using AUTH packets for authentication and authorisation,
+                        for which the username and password flags MUST be set to 0.
                     </t>
                     <t>
-                        To implement the AUTH (Authentication Exchange) method, the Client MUST
-                         set the Authentication Method as a property of a CONNECT packet by
-                        using the property identifier 21 (0x15).
+                        To use AUTH packets, the Client MUST set the Authentication Method
+                        as a property of a CONNECT packet by using the property identifier 21 (0x15).
                         This is followed by a UTF-8 Encoded String containing the name of the
-                         authentication method, which MUST be set to 'ace'. If the RS does not support this profile,
+                         Authentication Method, which MUST be set to 'ace'. If the RS does not support this profile,
                          it sends a CONNACK with a Reason Code of '0x8C (Bad authentication method)'.
 	                </t>
                     <t>
@@ -764,7 +773,7 @@
 		        <t>
 		            To re-authenticate, the Client sends an AUTH packet with reason code '0x19 (Re-authentication)'.
                     The Client MUST
-		            set the authentication method as 'ace' and transport the new token in the Authentication Data.
+		            set the Authentication Method as 'ace' and transport the new token in the Authentication Data.
 		            The Client and the RS go through the same steps for proof of possession validation
                      as described in <xref target="connect_v5"></xref>.
 		            If the re-authentication fails, the server
@@ -1115,7 +1124,7 @@
             <t> Clarified HTTPS use for C-AS and RS-AS communication. Removed reference to actors document, and clarified the use of client authorization server.</t>
             <t> Clarified the Connect message payload and Client Identifier. </t>
             <t> Presented different methods for passing the token, and PoP. </t>
-            <t> Added new figures for AUTH methods, updated CONNECT message figure. </t>
+            <t> Added new figures to explain AUTH packets exchang, updated CONNECT message figure. </t>
         </list>
     </t>
 	</section>
