@@ -604,8 +604,9 @@
                     </section>
                     <section title="Unauthorised Request: Authorisation Server Discovery" anchor="as_discovery">
 	                    <t>
-	                        Finally, this document allows the CONNECT message to have an empty Authentication
-                            Data field. This is the AS discovery option and the RS responds with the CONNACK
+	                        Finally, this document allows the CONNECT message to have the Authentication Method
+                            set to 'ace' followed by an empty Authentication Data field.
+                             This is the AS discovery option and the RS responds with the CONNACK
                             reason code '0x87 (Not Authorized)' and includes a User Property (identified by 38 (0x26)) for
                             the AS creation hints as dedined in the Section 5.1.2
                              of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
