@@ -634,14 +634,14 @@
                         To authenticate the Client, the RS validates the signature or the MAC, depending on how the PoP protocol is implemented.
                         To authorize the Client, the Broker uses the scope field in the token (or in the introspection result).
                         The scope field contains the publish and subscribe permissions for the Client.
-                        If the Will Flag is set,then the Broker MUST check that the token
-                        allows the publication of the Will message.
 		            </t>
                     <t>
                         Scope strings SHOULD be encoded as a permission, followed by an underscore, followed by a topic filter.
                         Two permissions apply to topics: 'publish' and 'subscribe'.
                         An example scope field may contain multiple such strings, space delimited, e.g., 'publish_topic1 subscribe_topic2/#'.
                         Hence, this access token would give 'publish' permission to the 'topic1', 'subscribe' permission to all the subtopics of 'topic2'.
+                        If the Will Flag is set,then the Broker MUST check that the token
+                        allows the publication of the Will message (i.e., there is scope with "publish_" followed by the Will Topic).
                     </t>
                 </section>
                 <section title="The Broker's Response to Client Connection Request">
@@ -779,8 +779,9 @@
                     In case of disconnections due to network errors or server disconnection due to a protocol error
                     (which includes authorization errors), the Will message must be sent if the Client supplied
                     a Will in the CONNECT message.  The Client's token scopes MUST include the Will Topic.
-                    The Will message MUST be published to the Will Topic when the network connection is closed regardless of whether the corresponding
-		            token has expired. In the case of a server-side DISCONNECT, the server returns the '0x87 Not Authorized' return code
+                    The Will message MUST be published to the Will Topic regardless of whether the corresponding
+		            token has expired.
+                     In the case of a server-side DISCONNECT, the server returns the '0x87 Not Authorized' return code
                    to the Client.
                 </t>
             </section>
