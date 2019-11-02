@@ -737,7 +737,8 @@
             <section anchor="reauthentication" title="Token Expiration and Reauthentication">
                 <t>
                     The Broker MUST check for token expiration whenever a CONNECT, PUBLISH or SUBSCRIBE message is received
-                    or sent. The Broker SHOULD check for token expiration on receiving a PINGREQUEST message. This may allow
+                    or sent. The Broker SHOULD check for token expiration on receiving a PINGREQUEST message.
+                    The Broker MAY also check for token expiration periodically e.g., every hour. This may allow
 		            for early detection of a token expiry.
 		        </t>
 		        <t>
