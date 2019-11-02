@@ -614,8 +614,13 @@
                 </section>
                 <section title="Token Validation" anchor="token_validation">
                     <t>
-                        The RS MUST verify the validity of the token.
-                        This validation MAY be done locally (e.g., in the case of a self-contained token)
+                        The RS MUST verify the validity of the token either locally
+                        (e.g., in the case of a self-contained token) or the RS MAY send an introspection request to the AS.
+                        RS MUST verify the claims according to the rules set in the
+                        Section 5.8.1.1 of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
+                    </t>
+                    <!--
+                    <t>This validation MAY be done locally (e.g., in the case of a self-contained token)
                         or the RS MAY send an introspection request to the AS.
                         If introspection is used, this section follows similar steps to those described in
                          Sections 5.7 of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
@@ -630,6 +635,7 @@
                         the 'aud' field corresponds to RS. It also has to check whether the 'nbf' and the 'iat'
                         claims are present and valid.
 		            </t>
+                    -->
                     <t>
                         To authenticate the Client, the RS validates the signature or the MAC, depending on how the PoP protocol is implemented.
                         To authorize the Client, the Broker uses the scope field in the token (or in the introspection result).
