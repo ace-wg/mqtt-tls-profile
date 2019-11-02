@@ -459,7 +459,7 @@
                           All but the Client identifier can be omitted depending on flags in the Variable Header.
 		            </t>
 		  <figure align="center" anchor="mqtt5_connect_message"
-                            title="MQTT CONNECT control message. (CPT=Control Packet Type, Rsvd=Reserved, len.=length, Proto.=Protocol)">
+                            title="MQTT v5 CONNECT control message with ACE method. (CPT=Control Packet Type)">
 		    <artwork align="left"><![CDATA[
        0            8            16            24            32
        +------------------------------------------------------+
@@ -474,7 +474,7 @@
        |          Auth. Data (0x16)   | empty or token or     |
        |                                token + PoP data      |
        +------------------------------------------------------+
-       |           Payload: Client Identifier                 |
+       |                     Payload                          |
        +------------------------------------------------------+
         ]]></artwork>
             </figure>
