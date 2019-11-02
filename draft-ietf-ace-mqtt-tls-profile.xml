@@ -746,8 +746,9 @@
                     introspection request with the Authorization server as described in Section 5.7 of <xref
                         target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
                     Token expirations may trigger the RS to send PUBACK, SUBACK and DISCONNECT messages with return code
-                     set to 'Not authorised'.
-		            As a response, the Client MAY re-authenticate
+                     set to 'Not authorised'. After sending a DISCONNECT message, the network connection is closed, and
+                     no more messages can be sent.
+		            However, as a response to the PUBACK and SUBACK, the Client MAY re-authenticate
                     by sending an AUTH packet with a Reason Code of 0x19 (Re-authentication)
                 </t>
 		        <t>
