@@ -459,7 +459,7 @@
                           All but the Client identifier can be omitted depending on flags in the Variable Header.
 		            </t>
 		  <figure align="center" anchor="mqtt5_connect_message"
-                            title="MQTT v5 CONNECT control message with ACE method. (CPT=Control Packet Type)">
+                            title="MQTT v5 CONNECT control message with ACE authentication method. (CPT=Control Packet Type)">
 		    <artwork align="left"><![CDATA[
        0            8            16            24            32
        +------------------------------------------------------+
