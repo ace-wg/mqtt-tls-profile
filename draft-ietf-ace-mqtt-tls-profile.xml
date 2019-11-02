@@ -178,7 +178,7 @@
                     <t>Publish messages from the Clients to the Broker, and from the Broker to the Clients</t>
                     <t>Subscribe messages from the Clients to the Broker</t>
                 </list>
-                While the Client-Broker exchanges are over MQTT, the required Client-AS and RS-AS interactions are
+                While the Client-Broker exchanges are only over MQTT, the required Client-AS and RS-AS interactions are
                 described for HTTPS-based communication, using 'application/ace+json' content type, and unless otherwise
                 specified, using JSON encoding. The token may be a reference, or JWT.
                 For JWT tokens, this document follows <xref target="RFC7800">RFC 7800</xref>
@@ -355,9 +355,12 @@
                     target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional,
                     and use the introspection endpoint, specified in the Section 5.7 of the ACE framework.
                     The Client and Broker use HTTPS to communicate to AS via these endpoints.
+                    The Client and Broker only use MQTT to communicate between them.
+                </t>
+                <t>
                     If the Client is resource-constrained, a Client Authorisation Server may carry out
                     the token request on behalf of the Client, and later, onboard the Client with the token.
-                     Also, these interfaces may be implemented using protocols other than HTTPS, e.g., CoAP or MQTT.
+                     Also, the C-AS and Broker-AS interfaces may be implemented using protocols other than HTTPS, e.g., CoAP or MQTT.
                     The interactions between a Client and its Client Authorization Server for token
                     onboarding, and the
                     MQTTS support for token requests are out of scope of this document.
