@@ -877,13 +877,13 @@
        +------------------------------------------------------+
        | Payload                                              |
        |     Client Identifier                                |
-       |     Username as access token (UTF-8)     	          |
+       |     Username as access token (UTF-8)                 |
        |     Password length (2 Bytes)                        |
        |     Password data as signature/MAC (binary)          |
        +------------------------------------------------------+
         ]]></artwork>
           </figure>
-	  <t>
+          <t>
             <xref target="mqtt_connect_flags"></xref> shows how the MQTT connect flags MUST be set to initiate
              a connection with the Broker.
           </t>
