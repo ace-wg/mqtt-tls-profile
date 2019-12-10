@@ -146,21 +146,22 @@
                  are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
                  It is expected that MQTT deployments will retain
                 backward compatibility for MQTT v3.1.1 clients, and therefore,
-		        this document also describes a reduced set of protocol interactions suited
-                 to <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
-		        However, it is RECOMMENDED to use MQTT v5.0 as it works more naturally
+		        this document also describes a reduced set of protocol interactions for
+                <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
+		        However, MQTT v5.0 is the RECOMMENDED version as it works more naturally
                  with ACE-style authentication and authorization.
             </t>
             <t>
                 MQTT is a publish-subscribe protocol and
                 after connecting to the MQTT Broker, a Client can publish and subscribe to multiple topics.
                 The MQTT Broker is responsible for distributing messages published by the publishers
-                 to the appropriate subscribers. Publisher messages contains a Topic Name,
-                 which is used by the Broker to filter the subscribers for the message.
-                Subscribers must subscribe to the topics to receive the corresponding messages.
+                 to their subscribers. Messages are published under a Topic Name,
+                 and subscribers must subscribe to the Topic Names to receive the corresponding messages.
+                 The Broker uses the Topic Name in a published message to determine which
+                 subscribers to relay the messages.
             </t>
             <t>
-                In this document, message topics are treated as resources.
+                In this document, topics, more specifically, Topic Names, are treated as resources.
                 The Clients are assumed to have identified the publish/subscribe topics of interest out-of-band
                 (topic discovery is not a feature of the MQTT protocol).
                 A resource owner can pre-configure policies at the AS that give Clients publish or subscribe
@@ -169,28 +170,22 @@
             <t>
                 Clients use an access token, bound to a proof-of-possession (PoP) key to authorize
                 with the MQTT Broker their connection and publish/subscribe permissions to topics. In the context
-                of this ACE profile, the MQTT Broker acts as the Resource Server (RS). In the rest of the
-                 document RS and Broker are used interchangeably.
-                 This document describes the following exchanges between
+                of this ACE profile, the Broker acts as the Resource Server (RS). In the rest of the
+                 document the terms "RS" and "Broker" are used interchangeably.
+                 This document describes the following exchanges between the
                 Clients and the Broker.
                 <list style="symbols">
                     <t>Authorizing connection requests from the Clients to the Broker</t>
-                    <t>Authorizing publish messages from the Clients to the Broker, and from the Broker to the
+                    <t>Authorizing publish requests from the Clients to the Broker, and from the Broker to the
                         Clients</t>
-                    <t>Authorizing subscribe messages from Clients to the Broker</t>
+                    <t>Authorizing subscribe requests from Clients to the Broker</t>
                 </list>
-                <!--<list style="symbols">
-                    <t>Connection establishment between the Clients and the Broker</t>
-                    <t>Publish messages from the Clients to the Broker, and from the Broker to the Clients</t>
-                    <t>Subscribe messages from the Clients to the Broker</t>
-                </list>-->
             </t>
             <t>
-                To provide communication confidentiality and Resource Server authentication, TLS is used,
-                and TLS 1.3 is RECOMMENDED.
-                This document makes the same assumptions as the Section 4 of
+                To provide communication confidentiality and RS authentication, TLS is used and
+                TLS 1.3 is RECOMMENDED. This document makes the same assumptions as the Section 4 of
 		        <xref target="I-D.ietf-ace-oauth-authz"> the
-                ACE framework</xref> regarding Client and RS registration with the Authorization Server (AS)
+                ACE framework</xref> regarding Client and RS registration with the AS
                 and setting up keying material.
                 While the Client-Broker exchanges are only over MQTT, the required Client-AS and
                 RS-AS interactions are
@@ -199,8 +194,9 @@
                 specified, using JSON encoding. The token may be a reference, or JSON Web Token (JWT).
                 For JWT tokens, this document follows <xref target="RFC7800">RFC 7800</xref>
                 for PoP semantics for JWTs. The Client-AS and RS-AS may also be other than HTTPS e.g., CoAP or MQTT.
-                It may also be possible to use
-                'application/ace+cbor' content type, and CBOR encoding, and CBOR Web Token (CWT) and associated PoP semantics to reduce the protocol memory and bandwidth
+                Implementations MAY also use
+                'application/ace+cbor' content type, and CBOR encoding, and CBOR Web Token (CWT) and
+                 associated PoP semantics to reduce the protocol memory and bandwidth
                 requirements.  For more information on Proof of Possession semantics for CWTs,
 			    see <xref target="I-D.ietf-ace-cwt-proof-of-possession">Proof-of-Possession Key
                 Semantics for CBOR Web Tokens (CWTs)</xref>.
@@ -220,10 +216,6 @@
                     The terminology for entities in the architecture is defined in OAuth 2.0 <xref target="RFC6749">RFC
                     6749 </xref> such as "Client" (C),
                      "Resource Server" (RS) and "Authorization Server" (AS).
-                </t>
-                <t>
-                    The term "endpoint" is used following its OAuth definition, to denote resources such as /token and
-                    /introspect at the AS.
                 </t>
                 <t>
                     The term "Resource" is used to refer to an MQTT Topic Name, which is defined in <xref target="mqtt-defs"></xref>.
