@@ -399,7 +399,7 @@
                  from the AS.
                 When requesting an access token from the AS, the Client follows the token request as
                 described in Section 5.6.1
-                of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>, howevever, it MUST
+                of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>, howevever, it MUST
                 set the profile parameter to 'mqtt_tls'.
                 The media format is 'application/ace+json'.
                 The AS uses JSON in the payload of its responses to both to the Client and the RS.
@@ -420,10 +420,10 @@
                 <xref target="I-D.ietf-ace-oauth-params"></xref>.
             </t>
             <t> The AS returns error responses for JSON-based interactions
-                following Section 5.2 of <xref target="RFC6749">RFC 6749</xref>.
+                following the Section 5.2 of <xref target="RFC6749">RFC 6749</xref>.
                 When CBOR is used, the interactions must implement
-                the Section 5.6.3 of the <xref
-                target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>
+                the Section 5.6.3 of <xref
+                target="I-D.ietf-ace-oauth-authz">ACE framework</xref>
             </t>
         </section>
         <section title="Client Connection Request to the Broker (C)" anchor="connect_v5">
@@ -439,10 +439,10 @@
                         <t>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization,
                             including the "authz-info" topic. Publishing to the "authz-info" topic is described in <xref target="app-authzinfo"></xref>.</t>
                         <t>"TLS:Anon-MQTT:ace": The token is transported inside the CONNECT message, and MUST be
-                            validated using one of the methods described in <xref target="app-authzinfo"></xref>. This also supports
+                            validated using one of the methods described in <xref target="app-authzinfo"></xref>. This option also supports
                             a tokenless connection request for AS discovery.</t>
                         <t>"TLS:Known(RPK/PSK)-MQTT:none": For the RPK, the token MUST have been published to the "authz-info" topic.
-                            For the PSK, the token MAY have be provided in the "psk_identity".
+                            For the PSK, the token MAY be, alternatively, provided in the "psk_identity".
                             The TLS session set-up is as described in
                             <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.</t>
                         <t>"TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen. In any case, the token transported in the CONNECT
@@ -451,13 +451,16 @@
                      It is RECOMMENDED that the Client follows TLS:Anon-MQTT:ace.
                 </t>
                 <t>
-                    The Broker MUST be authenticated during TLS handshake.
-                    If the Client authentication included TLS:Known(RPK/PSK),
+                    The Broker MUST be authenticated during the TLS handshake.
+                    If the Client authentication uses TLS:Known(RPK/PSK),
                     then the Broker is authenticated using the respective method.
-                    For the other Client Authentication cases, to authenticate the Broker,
-                    the client MAY either have the ability to receive and validate a server-side certificate
-                    or an RPK from the Broker against the 'rs_cnf' parameter in the
-                    token.
+                    Otherwise, to authenticate the Broker, the client MUST validate a
+                    public key from a X.509 certificate or an RPK from the Broker against the
+                     'rs_cnf' parameter in the token response.
+                     The AS MAY include the thumbprint of the RS's X.509 certificate in the 'rs_cnf'
+                     (thumbrint as defined in <xref target="I-D.ietf-cose-x509"></xref>),
+                     then the client MUST validate the RS certificate
+                     against this thumbprint.
                 </t>
             </section>
             <section anchor="app-authzinfo" title="authz-info: The Authorization Information Topic">
@@ -1063,6 +1066,7 @@
 
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
+             <?rfc include="reference.I-D.ietf-cose-x509.xml"?>
 
         </references>
 
