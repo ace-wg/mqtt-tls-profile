@@ -423,7 +423,7 @@
                 following the Section 5.2 of <xref target="RFC6749">RFC 6749</xref>.
                 When CBOR is used, the interactions must implement
                 the Section 5.6.3 of <xref
-                target="I-D.ietf-ace-oauth-authz">ACE framework</xref>
+                target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
             </t>
         </section>
         <section title="Client Connection Request to the Broker (C)" anchor="connect_v5">
@@ -436,7 +436,7 @@
                     for Raw Public Keys (RPK) and Pre-Shared Keys (PSK), respectively.
                     Combined, the Client authentication takes the following options:
                     <list style="symbols">
-                        <t>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization,
+                        <t>" an": This option is used only for the topics that do not require authorization,
                             including the "authz-info" topic. Publishing to the "authz-info" topic is described in <xref target="app-authzinfo"></xref>.</t>
                         <t>"TLS:Anon-MQTT:ace": The token is transported inside the CONNECT message, and MUST be
                             validated using one of the methods described in <xref target="app-authzinfo"></xref>. This option also supports
@@ -467,19 +467,42 @@
                 <t> In the cases when the Client MUST transport the token to the Broker before
                     the TLS handshake, the Client connects to the Broker and publishes its token to the
                     "authz-info" topic.
-                    The "authz-info" topic MUST be publish-only for Clients (i.e.,
+                    The "authz-info" topic MUST be publish-only (i.e.,
                     the Clients are not allowed to subscribe to it).
-                    The Broker stores and indexes all tokens received to this topic in its key store
-                    similar to  <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.
-                </t>
-                <t>
-                    The Broker must verify the validity of the token
-                    (i.e., through local validation or introspection)
-                    as described in <xref target="token_validation"></xref>.
-                    The Broker returns 'Not authorized' error to a PUBLISH request if
-                    the QoS level of this PUBLISH message is greater or equal to 1.
+                    "authz-info" is not protected, and hence, the Client authenticates
+                    with the RS using the "TLS:Anon-MQTT:None" option.
                     After publishing the token, the Client disconnects from the Broker and
                     is expected to try reconnecting over TLS.
+                </t>
+                <t>
+                    The Broker stores and indexes all tokens received to this topic in its key store
+                    similar to  <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.
+                    This profile follows the recommendation of
+                    Section 5.8.1 of <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>,
+                    and expects that RS stores only one token per proof-of-possession key, and any other
+                    token linked to the same key overwrites existing token at the RS.
+                </t>
+                <t>
+                    The Broker MUST verify the validity of the token
+                    (i.e., through local validation or introspection)
+                    as described in <xref target="token_validation"></xref>.
+                    To validate the token, RS MAY need to introspect the token with the AS
+                    e.g., if the token is a reference.
+                    If the token is not valid, the Broker MUST discard the token.
+                    Depending on the QoS level of the PUBLISH message, the Broker may return
+                    the error response as a PUBACK or a DISCONNECT message.
+                </t>
+                <t>
+                    If the QoS level is equal to 0, and token is invalid or the claims
+                    cannot be obtained in the case of an introspected token, the Broker MUST
+                    send a DISCONNECT message with the reason code '0x87 (Not authorized)'.
+                    If the token does not parse to a token, the RS MUST send a DISCONNECT with
+                    the reason code '0x99 (Payload format invalid)'.
+                </t>
+                <t>
+                    For the QoS level of the PUBLISH message is greater than or equal to 1,
+                    the Broker MAY return 'Not authorized' in PUBACK.  If the token does not parse to a token,
+                    the PUBACK reason code is '0x99 (Payload format invalid)'.
                 </t>
             </section>
             <section anchor="token-CONNECT" title="Transporting Access Token Inside the MQTT CONNECT">
@@ -830,8 +853,9 @@
             </t>
             <t>In MQTT v3.1.1, after the Client published to the "authz-info" topic,
                it is not possible for the Broker to communicate
-                the result of the token verification.
-                In any case, any token authorization failure affect the subsequent TLS handshake,
+                the result of the token validation as PUBACK reason codes or server-side DISCONNECT
+                messages are not supported.
+                In any case, an invalid token would fail the subsequent TLS handshake,
                  which can prompt the Client to
                 obtain a valid token.
             </t>
