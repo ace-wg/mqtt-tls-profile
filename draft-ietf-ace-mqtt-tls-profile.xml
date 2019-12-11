@@ -346,9 +346,9 @@
         </section>
         <section title="Authorizing Connection Requests" anchor="token_acquisition">
             <t>
-                This section specifies how Client connections can be authorized by an MQTT
+                This section specifies how Client connections are authorized by the MQTT
                 Broker.<xref target="protocol_flow"></xref> shows the basic protocol flow during connection
-                set-up.The token request and response use the /token endpoint of the authorization server,
+                set-up.The token request and response use the /token endpoint at the AS,
                 specified in the Section 5.6 of the <xref
                 target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional,
                 and use the introspection endpoint, specified in the Section 5.7 of the ACE framework.
@@ -356,7 +356,7 @@
                 The Client and Broker use only MQTT to communicate between them.
             </t>
             <t>
-                If the Client is resource-constrained, the Client's Authorisation Server may carry out
+                If the Client is resource-constrained, a Client Authorisation Server may carry out
                 the token request on behalf of the Client, and later, onboard the Client with the token.
                 Also, the C-AS and Broker-AS interfaces may be implemented using protocols other than HTTPS,
                 e.g., CoAP or MQTT.
@@ -397,12 +397,12 @@
             <t>
                 The first step in the protocol flow (Figure 1 (A)) is the token acquisition by the Client
                  from the AS.
-                When requesting an access token from the AS, the Client follows the token request as is
+                When requesting an access token from the AS, the Client follows the token request as
                 described in Section 5.6.1
                 of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>, howevever, it MUST
                 set the profile parameter to 'mqtt_tls'.
                 The media format is 'application/ace+json'.
-                The AS uses a JSON structure in the payload of its responses both to the Client and the RS.
+                The AS uses JSON in the payload of its responses to both to the Client and the RS.
             </t>
             <t>
                 If the AS successfully verifies the access token request and authorizes the Client for the
@@ -414,14 +414,16 @@
                 This document follows <xref target="RFC7800">RFC 7800</xref> for PoP semantics for JWTs.
                 The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key.
                 The 'cnf' parameter in the web tokens
-                are to be consumed by the resource server and not the Client.
+                are to be consumed by the RS and not the Client.
                 The PoP token may include a 'rs_cnf' parameter containing the information
                 about the public key used by the RS to authenticate as described in
                 <xref target="I-D.ietf-ace-oauth-params"></xref>.
             </t>
-            <t> In the case of an error, the AS returns error responses for
-                HTTP-based interactions as ASCII
-                codes in JSON content, as defined in Section 5.2 of <xref target="RFC6749">RFC 6749</xref>.
+            <t> The AS returns error responses for JSON-based interactions
+                following Section 5.2 of <xref target="RFC6749">RFC 6749</xref>.
+                When CBOR is used, the interactions must implement
+                the Section 5.6.3 of the <xref
+                target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>
             </t>
         </section>
         <section title="Client Connection Request to the Broker (C)" anchor="connect_v5">
