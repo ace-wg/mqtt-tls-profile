@@ -172,14 +172,18 @@
                 with the MQTT Broker their connection and publish/subscribe permissions to topics. In the context
                 of this ACE profile, the Broker acts as the Resource Server (RS). In the rest of the
                  document the terms "RS" and "Broker" are used interchangeably.
-                 This document describes the following exchanges between the
+                 This document describes how to authorise the following exchanges between the
                 Clients and the Broker.
                 <list style="symbols">
-                    <t>Authorizing connection requests from the Clients to the Broker</t>
-                    <t>Authorizing publish requests from the Clients to the Broker, and from the Broker to the
+                    <t>Connection requests from the Clients to the Broker</t>
+                    <t>Publish requests from the Clients to the Broker, and from the Broker to the
                         Clients</t>
-                    <t>Authorizing subscribe requests from Clients to the Broker</t>
+                    <t>Subscribe requests from Clients to the Broker</t>
                 </list>
+                This document does not protect the contents of the PUBLISH message from the Broker, and hence,
+                the content of the the PUBLISH message is not signed or encrypted separately for the subscribers.
+                This functionality may be implemented using the proposal outlined in <xref target="I-D.palombini-ace-coap-pubsub-profile">
+                the CoAP Pub-Sub Profile</xref>.
             </t>
             <t>
                 To provide communication confidentiality and RS authentication, TLS is used and
@@ -503,6 +507,9 @@
                     For the QoS level of the PUBLISH message is greater than or equal to 1,
                     the Broker MAY return 'Not authorized' in PUBACK.  If the token does not parse to a token,
                     the PUBACK reason code is '0x99 (Payload format invalid)'.
+                </t>
+                <t>
+                    It must be noted that when the AS sends the 'Not A'
                 </t>
             </section>
             <section anchor="token-CONNECT" title="Transporting Access Token Inside the MQTT CONNECT">
@@ -1091,6 +1098,7 @@
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
              <?rfc include="reference.I-D.ietf-cose-x509.xml"?>
+             <?rfc include="reference.I-D.palombini-ace-coap-pubsub-profile"?>
 
         </references>
 
