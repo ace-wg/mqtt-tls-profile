@@ -525,10 +525,10 @@
 		            <xref target="mqtt5_connect_message"></xref> shows the structure of the
                     MQTT CONNECT message used in MQTT v5.0.
                     A CONNECT message is composed of a fixed header, a variable header and a payload.
-                    The fixed header contains Control Packet Type (CPT), Reserved, and Remaining Length.
-                    The Variable Header contains the Protocol Name, Protocol Level, Connect Flags, Keep Alive, and Properties.
-                    The Connect Flags in the variable header specify the behavior of the MQTT connection.
-                    It also indicates the presence or absence of fields in the Payload.
+                    The fixed header contains the Control Packet Type (CPT), Reserved, and Remaining Length fields.
+                    The Variable Header contains the Protocol Name, Protocol Level, Connect Flags, Keep Alive, and Properties fields.
+                    The Connect Flags in the variable header specify the properties of the MQTT session.
+                    It also indicates the presence or absence of some fields in the Payload.
                     The payload contains one or more encoded fields, namely a unique Client
                     identifier for the Client, a Will Topic, Will Payload, User Name and Password.
                     All but the Client identifier can be omitted depending on flags in the Variable Header.
@@ -554,21 +554,22 @@
         ]]></artwork>
            </figure>
             <t>
-                The CONNECT message flags include Username, Password, Will retain, Will QoS, Will Flag,
+                The CONNECT message flags are Username, Password, Will retain, Will QoS, Will Flag,
                 Clean Start, and Reserved.
                 <xref target="mqtt_connect_flags"></xref> shows how the MQTT connect
                 flags MUST be set to use AUTH packets for authentication and authorisation.
-                For AUTH, the username and password flags MUST be set to 0.
-                 The RS MAY support token transport using username and password
-                (the CONNECT message for that option is described in  <xref target="MQTTv311"></xref> for MQTT v3.1.1).
+                To use AUTH, the username and password flags MUST be set to 0.
+                The RS MAY support token transport using username and password and the
+                CONNECT message for that option is described in  <xref target="MQTTv311"></xref> for MQTT v3.1.1, which is
+                the only option available to MQTT v3.1.1.
             </t>
             <figure align="center" anchor="mqttv5_connect_flags" title="CONNECT flags for AUTH">
                 <artwork align="left"><![CDATA[
 +-----------------------------------------------------------+
 |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
-| flag    |flag |           |        |         |     |      |
+|   Flag  |Flag |           |        |         |Start|      |
 +-----------------------------------------------------------+
-| 0       | 0   |    X      |   X X  |   X     |  X   |  0  |
+| 0       | 0   |    X      |   X X  |   X     |  X  |  0   |
 +-----------------------------------------------------------+
          ]]></artwork>
          </figure>
@@ -582,16 +583,17 @@
                 store the Will message, and  publish it when the network connection is closed according to Will QoS and
 	            Will retain parameters, and MQTT Will management rules.  To avoid publishing Will Messages
                 in the case of temporary network disconnections,
-                the Client may specify a Will Delay Interval in Will Properties.
+                the Client may specify a Will Delay Interval in the Will Properties.
                 <xref target="disconnections"></xref> explains how the Broker deals with the retained messages in further detail.
             </t>
              <t>
-                In MQTT v5, to achieve a clean session (i.e., the session starts without an existing session),
+                In MQTT v5, to achieve a clean session (i.e., the session does not continue an existing session),
 	            the Client sets the Clean Start Flag to 1 and,
                 the Session Expiry Interval to 0 in the CONNECT
                 message. However, in this profile, the Broker MUST always
                 start with a clean session regardless of how these parameters are set. The Broker
-                MUST set the Session Present flag to 0 in the CONNACK packet as a response.
+                MUST set the Session Present flag to 0 in the CONNACK packet to signal the Client that the Broker
+                started a clean session.
 	        </t>
 	    </section>
         <section anchor="AUTH-method" title="Authentication Using AUTH Property">
