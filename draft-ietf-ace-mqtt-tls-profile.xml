@@ -1024,8 +1024,11 @@
             <t>The privacy considerations outlined in <xref target="I-D.ietf-ace-oauth-authz"></xref> apply to this work.
             </t>
 	        <t>In MQTT, the RS is a central trusted party and may forward potentially sensitive information
-	        between Clients. Clients may choose to encrypt the payload of their messages.
-	        However, this would not provide privacy for other properties of the message such as Topic Name.
+	        between Clients. This document does not protect the contents of the PUBLISH message from the Broker, and hence,
+                the content of the the PUBLISH message is not signed or encrypted separately for the subscribers.
+                This functionality may be implemented using the proposal outlined in <xref target="I-D.palombini-ace-coap-pubsub-profile">
+                the CoAP Pub-Sub Profile</xref>.
+	        However, this solution would still not provide privacy for other properties of the message such as Topic Name.
 	        </t>
         </section>
     </middle>
