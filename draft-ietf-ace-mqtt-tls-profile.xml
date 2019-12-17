@@ -15,6 +15,7 @@
     <!ENTITY RFC7250 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7250.xml">
     <!ENTITY RFC8446 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8446.xml">
     <!ENTITY RFC5705 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5705.xml">
+    <!ENTITY RFC8447 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8447.xml">
 	]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -70,7 +71,7 @@
                     <code>W2 6BD</code>
                     <country>UK</country>
                 </postal>
-                <email>Cigdem.Sengul@nominet.uk</email>
+                <email>csengul@acm.org</email>
                 <!-- uri and facsimile elements may also be added -->
             </address>
         </author>
@@ -509,7 +510,10 @@
                     the PUBACK reason code is '0x99 (Payload format invalid)'.
                 </t>
                 <t>
-                    It must be noted that when the AS sends the 'Not A'
+                    It must be noted that when the AS sends the 'Not authorized' response, this corresponds
+                    to the token being invalid, and not that the actual PUBLISH message was not authorized.
+                    Given that the "authz-info" is a public topic, this response is not
+                    expected to cause a confusion.
                 </t>
             </section>
             <section anchor="token-CONNECT" title="Transporting Access Token Inside the MQTT CONNECT">
@@ -612,18 +616,19 @@
                 <list style="symbols">
                     <t>Proof-of-Possession using a challenge from the TLS session</t>
                     <t>Proof-of-Possession via Broker generated challenge/response</t>
-                    <t>Unauthorised request: Authorisation Server discovery</t>
+                    <t>Unauthorised request and Authorisation Server discovery</t>
                 </list>
             </t>
         <section title="Proof-of-Possession Using a Challenge from the TLS session" anchor="pop_nonce">
 	        <t>
                 For this option, the Authentication Data MUST contain the token
                 and the keyed message digest (MAC) or the Client signature.
-                The challenge that is used as part of the proof-of-possession, i.e., to
-                calculate
-                the keyed message digest (MAC) or the Client signature,
-                is obtained using using a TLS exporter (<xref target="RFC5705"></xref>
+                The secret that is used for the proof-of-possession calculation, i.e., to
+                calculate the keyed message digest (MAC) or the Client signature,
+                is obtained using a TLS exporter (<xref target="RFC5705"></xref>
                 for TLS 1.2 and for TLS 1.3, Section 7.5 of <xref target="RFC8446"></xref>).
+                The secret is exported from TLS using the exporter label 'EXPORTER-ACE-Sign-Challenge',
+                an empty context, and length of 32 bytes.
                 The token is also validated as described in  <xref target="token_validation"></xref>
                 and the server responds with a CONNACK with the appropriate response code.
 	        </t>
@@ -637,11 +642,11 @@
                 with the Authenticate Reason Code set to '0x18 (Continue Authentication)'.
                 This packet includes the Authentication Method, which MUST be set to 'ace'
                 and Authentication Data. The Authentication Data MUST NOT be empty and contains
-                a challenge for the Client. The Client responds to this with an AUTH packet
+                an 8-byte nonce as a challenge for the Client. The Client responds to this with an AUTH packet
                 with a reason code '0x18 (Continue Authentication)'.
                 Similarly, the Client packet sets the Authentication Method to 'ace'.
-                The Authentication Data in the Client's response contains
-                the signature or MAC computed over the RS's challenge. Next,
+                The Authentication Data in the Client's response contains a client-generated 8-byte nonce, and
+                the signature or MAC computed over the RS nonce concatenated with the client nonce. Next,
                 the token is validated as described in  <xref target="token_validation"></xref>.
 	        </t>
                 <figure align="center" anchor="pop_challenge_response" title="PoP Challenge/Response Protocol Flow - Success">
@@ -656,10 +661,10 @@
                      |             | contains only token
                      |             |
                      <-------------+ AUTH '0x18 (Continue Authentication)'
-                     |             | challenge
+                     |             | 8-byte nonce as RS challenge
                      |             |
                      |------------>| AUTH '0x18 (Continue Authentication)'
-                     |             | signature
+                     |             | 8-byte client nonce + signature/MAC
                      |             |
                      |             |-----+ Token validation (may involve introspection)
                      |             |     |
@@ -977,17 +982,22 @@
 
         <!-- Possibly a 'Acknowledgements'/ 'Contributors' section ... -->
         <section anchor="IANA" title="IANA Considerations">
-          <t>The following registrations are done for the ACE OAuth Profile Registry following the procedure specified in
+         <t>
+            This document registers 'EXPORTER-ACE-Sign-Challenge from <xref target="pop_nonce"></xref>
+            in the TLS Exporter Label Registry
+            <xref target="RFC8447">TLS-REGISTRIES</xref>.
+         </t>
+         <t>In addition, the following registrations are done for the ACE OAuth Profile Registry following the procedure specified in
 	        <xref target="I-D.ietf-ace-oauth-authz"></xref>.
-	    </t>
+	     </t>
+
 	  <t>Note to the RFC editor: Please replace all occurrences of "[RFC-XXXX]" with the RFC number of this specification
 	  and delete this paragraph.
 	  </t>
-	  <t>Profile name: mqtt_tls</t>
-	  <t>Profile description: Profile for delegating Client authentication and authorization using MQTT as the application protocol
+	  <t>Name: mqtt_tls</t>
+	  <t>Description: Profile for delegating Client authentication and authorization using MQTT as the application protocol
 	  and TLS For transport layer security.</t>
-	  <t>Profile ID: </t>
-	  <t>Change controller: IESG </t>
+	  <t>CBOR Value: </t>
 	  <t>Reference: [RFC-XXXX]</t>
         </section>
 
@@ -1060,6 +1070,7 @@
         &RFC7250;
         &RFC8446;
         &RFC5705;
+        &RFC8447;
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
