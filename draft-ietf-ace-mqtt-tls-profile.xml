@@ -697,31 +697,22 @@
                     Validation of the signature or MAC MUST fail if the signature algorithm is set to "none",
                     when the key used for the signature algorithm cannot be determined, or
                     the computed and received signature/MAC do not match.
-                    To authorize the Client, the Broker uses the scope field in the token (or in the introspection result).
-                    The scope field contains the publish and subscribe permissions for the Client.
 		        </t>
-                <t>
-                    Scope strings SHOULD be encoded as a permission, followed by an underscore, followed by a topic filter.
-                    Two permissions apply to topics: 'publish' and 'subscribe'.
-                    An example scope field may contain multiple such strings, space delimited, e.g., 'publish_topic1 subscribe_topic2/#'.
-                    Hence, this access token would give 'publish' permission to the 'topic1', 'subscribe' permission to all the subtopics of 'topic2'.
-                    If the Will Flag is set,then the Broker MUST check that the token
-                    allows the publication of the Will message (i.e., the scope is "publish_" followed by the Will Topic).
-                </t>
             </section>
             <section title="The Broker's Response to Client Connection Request">
                    <t>
                         Based on the validation result (obtained either via local inspection or using the /introspection
                         interface of the AS), the Broker MUST send a CONNACK message to the Client.
                         The reason code of the
-                        CONNACK is '0x00 (Success)' if the authentication is successful.
+                        CONNACK is '0x00 (Success)' if the token validation is successful.
                         The Broker MUST also set Session Present to 0
                          in the CONNACK packet to signal a clean session to the Client.
 	                    In case of an invalid PoP token, the CONNACK reason code
                         is '0x87 (Not Authorized)'.
                     </t>
                     <t>
-                        If the Broker accepts the connection, it MUST store the token until the end of connection.
+                        If the Broker accepts the connection, it MUST store the token until the end of
+                        the connection.
                         On Client or Broker disconnection, the Client is expected to provide a token again
                         inside the next CONNECT message.
                     </t>
@@ -738,7 +729,22 @@
             </section>
         </section>
     </section>
-    <section title="Authorizing PUBLISH Messages">
+    <section title="Authorizing PUBLISH and SUBSCRIBE Messages">
+        <t>
+            To authorize a Client's PUBLISH and SUBSCRIBE messages,
+            the Broker needs to use the scope field in the token (or in the introspection result).
+            The scope field contains the publish and subscribe permissions for the Client.
+            Scope strings SHOULD be encoded as a permission, followed by an underscore, followed by a topic filter.
+            Topic filters are implemented as described in MQTT specification and includes special wildcard characters.
+            The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+',
+            matches one topic level.
+            Two permissions apply to topic filters: 'publish' and 'subscribe'.
+            An example scope field may contain multiple such strings, space delimited, e.g., 'publish_topic1 subscribe_topic2/#' publish_+/topic3.
+            Hence, this access token would give 'publish' permission to the 'topic1', 'subscribe' permission to all the subtopics of 'topic2',
+            and 'publish' permission to topic3, skipping one level.
+            If the Will Flag is set,then the Broker MUST check that the token
+            allows the publication of the Will message (i.e., the scope is "publish_" followed by the Will Topic).
+        </t>
         <section title="PUBLISH Messages from the Publisher Client to the Broker">
             <t>
                 On receiving the PUBLISH message, the Broker MUST use the type of
@@ -780,7 +786,6 @@
                 the server needs to drop the connection).
             </t>
         </section>
-    </section>
     <section title="Authorizing SUBSCRIBE Messages">
         <t>
             In MQTT, a SUBSCRIBE message is sent from a Client to the Broker
@@ -803,6 +808,7 @@
 		    Therefore, the Client may receive success codes for a subset of its Topic Filters while being
 		    unauthorized for the rest.
         </t>
+    </section>
     </section>
     <section anchor="reauthentication" title="Token Expiration and Reauthentication">
         <t>
