@@ -723,7 +723,7 @@
                         PUBLISH and SUBSCRIBE messages, which are sent after a connection
                         set-up, do not contain access tokens. If the introspection result
                         is not cached, then the RS needs to introspect the saved token for
-                        each request. The Broker SHOULD use a cache time out to introspect
+                        each request. The Broker SHOULD also use a cache time out to introspect
                         tokens regularly.
                     </t>
             </section>
@@ -735,30 +735,31 @@
             the Broker needs to use the scope field in the token (or in the introspection result).
             The scope field contains the publish and subscribe permissions for the Client.
             Scope strings SHOULD be encoded as a permission, followed by an underscore, followed by a topic filter.
+            Two permissions apply to topic filters: 'publish' and 'subscribe'.
             Topic filters are implemented as described in MQTT specification and includes special wildcard characters.
             The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+',
             matches one topic level.
-            Two permissions apply to topic filters: 'publish' and 'subscribe'.
+        </t>
+        <t>
             An example scope field may contain multiple such strings, space delimited, e.g., 'publish_topic1 subscribe_topic2/#' publish_+/topic3.
-            Hence, this access token would give 'publish' permission to the 'topic1', 'subscribe' permission to all the subtopics of 'topic2',
-            and 'publish' permission to topic3, skipping one level.
+            This access token gives 'publish' permission to the 'topic1', 'subscribe' permission to all the subtopics of 'topic2',
+            and 'publish' permission to all topic3, skipping one level.
             If the Will Flag is set,then the Broker MUST check that the token
             allows the publication of the Will message (i.e., the scope is "publish_" followed by the Will Topic).
         </t>
         <section title="PUBLISH Messages from the Publisher Client to the Broker">
             <t>
                 On receiving the PUBLISH message, the Broker MUST use the type of
-                message (i.e., PUBLISH) and the Topic name in the message header to compare against the
-                cached token or its introspection result.
+                message (i.e., PUBLISH) and the Topic name in the message header to match against the
+                scope string in the cached token or its introspection result.
+                Following the example above, a client sending a PUBLISH message to 'a/topic3' would be
+                allowed to publish, as the scope includes the  string 'publish_+/topic3'.
             </t>
             <t>
                 If the Client is allowed to publish to the topic,
-                the RS must publish the message to all valid subscribers of the topic. The Broker
-                may also return an acknowledgment
-                message if the QoS level is greater than or equal to 1.
-		    </t>
-		    <t> In case of an authorization failure, an error MAY be returned to the Client.
-                For this the QoS level of the PUBLISH message, should be set to greater than or equal to 1.
+                the RS must publish the message to all valid subscribers of the topic.
+		       In the case of an authorization failure, an error MAY be returned to the Client.
+                For this the QoS level of the PUBLISH message MUST be set to greater than or equal to 1.
                 This guarantees that RS responds with either a PUBACK or PUBREC packet with reason code
                 '0x87 (Not authorized)'.
 	        </t>
@@ -796,8 +797,8 @@
         </t>
         <t>
             On receiving the SUBSCRIBE message, the Broker MUST use the type of message (i.e.,
-            SUBSCRIBE) and the Topic Filter in the message header to compare
-            against the stored token or introspection result.
+            SUBSCRIBE) and the Topic Filter in the message header to match
+            against a scope string of the stored token or introspection result.
         </t>
         <t>
             As a response to the SUBSCRIBE message, the Broker issues a SUBACK message.
