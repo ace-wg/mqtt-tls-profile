@@ -845,7 +845,7 @@
     <section title="Handling Disconnections and Retained Messages" anchor="disconnections">
 		<t>
             In the case of a Client DISCONNECT,  the Broker
-            deletes all session state but MUST keep the retained messages.
+            deletes all the session state but MUST keep the retained messages.
             By setting a RETAIN flag in a PUBLISH message,
             the publisher indicates to the Broker that it should store the most
             recent message for the associated topic.  Hence, the new subscribers can receive
@@ -931,9 +931,9 @@
                         CONNECT message includes both Username and Password fields.
                     </t>
                     <t>
-                        The CONNECT message defaults to 'ace' for authentication and authorization
-                        as the header does not have a field to indicate the authentication method.
-                        The Username field MUST be set to the access token.
+                        The CONNECT in MQTT v3.1.1 does not have a field to indicate the authentication
+                        method. To signal that the Username field contains an ACE token,
+                        this field MUST be prefixed with 'ace' keyword, which is followed by the access token.
                         The Password field MUST be set to the keyed message digest (MAC)
                          or signature associated with the access token
 			            for proof-of-possession.
@@ -964,12 +964,12 @@
 			    Therefore, AS discovery needs to take place out-of-band. CONNECT attempt MUST fail.
 		      </t>
 		      <t>
-                Client-RS PUBLISH authorization failure: In case of a failure,
+                Client-RS PUBLISH authorization failure: In the case of a failure,
                   it is not possible to return an error in MQTT v3.1.1.
 		       Acknowledgement messages only indicate success. In the case of an authorization error,
                 the Broker SHOULD disconnect the Client.
-		       Otherwise, it MUST ignore the PUBLISH message. Also, DISCONNECT messages are only sent
-                from a Client to the Broker. So, server disconnection needs to take place below the application layer.
+		       Otherwise, it MUST ignore the PUBLISH message. Also, as DISCONNECT messages are only sent
+                from a Client to the Broker, the server disconnection needs to take place below the application layer.
 		      </t>
 		      <t> SUBSCRIBE authorization failure:  In the  SUBACK packet, the return code must be 0x80 indicating
                'Failure' for the unauthorized topic(s). Note that, in both MQTT versions, a reason code is
@@ -1010,7 +1010,6 @@
         </section>
 
         <section anchor="Security" title="Security Considerations">
-
 	  <t> This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework
 	  <xref target="I-D.ietf-ace-oauth-authz"></xref>. Therefore, the security considerations outlined
 	  in <xref target="I-D.ietf-ace-oauth-authz"></xref> apply to this work.
@@ -1018,7 +1017,7 @@
 	  <t> In addition, the security considerations outlined in <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>
 	  and <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>
 	   apply.  Mainly, this document provides an authorization solution for MQTT,
-	   the responsibility of which is left to the specific implementation in  MQTT v5.0 standard.
+	   the responsibility of which is left to the specific implementation in the MQTT standards.
 	 In the following, we comment on a few relevant issues based on the current MQTT specifications.
 	  </t>
 
@@ -1167,10 +1166,10 @@
                             target="app-authzinfo"></xref>, but is
                         not protected.
                     </t>
-                    <t>Token transport: Via "authz-info topic", or in
+                    <t>Token transport: Via "authz-info" topic, or in
                       MQTT CONNECT message for both versions of MQTT.
                       AUTH extensions also used for authentication and re-authentication for
-		            MQTT v5.0 as described in <xref target="connect_v5"></xref>.</t>
+		            MQTT v5.0 as described in <xref target="connect_v5"></xref> and in <xref target="reauthentication"></xref>.</t>
                 </list>
             </t>
         </section>
@@ -1179,6 +1178,18 @@
      -->
 
 	<section anchor="document_updates" title="Document Updates">
+    <t>
+        Version 02 to 03:
+        <list style="symbols">
+            <t>Added the option of Broker certificate fingerprint in the 'rs_cnf' sent to the Client.</t>
+            <t>Clarified the use of a random nonce from the TLS Exporter for PoP, added to the IANA requirements that
+            the label should be registered.</t>
+            <t>Added a client nonce, when Challenge/Response Authentication is used between Client and Broker.</t>
+            <t>Clarified the use of "authz-info" topic and the error response if token validation fails.</t>
+            <t>Added clarification on wildcard use in scopes for publish/subscribe permissions</t>
+            <t>Reorganised sections so that token authorisation for publish/subscribe messages are better placed.</t>
+        </list>
+    </t>
     <t>
         Version 01 to 02:
         <list style="symbols">
