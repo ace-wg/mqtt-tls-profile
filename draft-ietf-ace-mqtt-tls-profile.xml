@@ -827,14 +827,15 @@
             set to 'Not authorised'. After sending a DISCONNECT message, the network connection is closed, and
             no more messages can be sent.
 		    However, as a response to the PUBACK and SUBACK, the Client MAY re-authenticate
-            by sending an AUTH packet with a Reason Code of 0x19 (Re-authentication).
+            by sending an AUTH packet with a Reason Code of '0x19 (Re-authentication)'.
         </t>
 		<t>
 		    To re-authenticate, the Client sends an AUTH packet with reason code '0x19 (Re-authentication)'.
             The Client MUST
 		    set the Authentication Method as 'ace' and transport the new token in the Authentication Data.
 		    The Client and the RS go through the same steps for proof of possession validation
-            as described in <xref target="connect_v5"></xref>.
+            as described in <xref target="connect_v5"></xref>. The Client SHOULD use the same method used for the first
+            connection request.
 		    If the re-authentication fails, the server
 		    MUST send a DISCONNECT with the reason code '0x87 (Not Authorized)'.
 		    The Clients can also proactively update their tokens i.e., before
