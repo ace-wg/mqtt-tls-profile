@@ -470,9 +470,10 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2019
    and Pre-Shared Keys (PSK), respectively.  Combined, the Client
    authentication takes the following options:
 
-   o  " an": This option is used only for the topics that do not require
-      authorization, including the "authz-info" topic.  Publishing to
-      the "authz-info" topic is described in Section 2.2.2.
+   o  "TLS:Anon-MQTT:None": This option is used only for the topics that
+      do not require authorization, including the "authz-info" topic.
+      Publishing to the "authz-info" topic is described in
+      Section 2.2.2.
 
    o  "TLS:Anon-MQTT:ace": The token is transported inside the CONNECT
       message, and MUST be validated using one of the methods described
@@ -497,7 +498,6 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2019
    authenticate the Broker, the client MUST validate a public key from a
    X.509 certificate or an RPK from the Broker against the 'rs_cnf'
    parameter in the token response.  The AS MAY include the thumbprint
-   of the RS's X.509 certificate in the 'rs_cnf' (thumbrint as defined
 
 
 
@@ -506,6 +506,7 @@ Sengul, et al.            Expires June 20, 2020                 [Page 9]
 Internet-Draft           MQTT-TLS profile of ACE           December 2019
 
 
+   of the RS's X.509 certificate in the 'rs_cnf' (thumbrint as defined
    in [I-D.ietf-cose-x509]), then the client MUST validate the RS
    certificate against this thumbprint.
 
@@ -553,7 +554,6 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2019
    the actual PUBLISH message was not authorized.  Given that the
    "authz-info" is a public topic, this response is not expected to
    cause a confusion.
-
 
 
 
