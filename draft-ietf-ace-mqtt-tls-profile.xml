@@ -1181,11 +1181,11 @@
     <t>
         Version 02 to 03:
         <list style="symbols">
-            <t>Added the option of Broker certificate fingerprint in the 'rs_cnf' sent to the Client.</t>
+            <t>Added the option of Broker certificate thumbprint in the 'rs_cnf' sent to the Client.</t>
             <t>Clarified the use of a random nonce from the TLS Exporter for PoP, added to the IANA requirements that
             the label should be registered.</t>
             <t>Added a client nonce, when Challenge/Response Authentication is used between Client and Broker.</t>
-            <t>Clarified the use of "authz-info" topic and the error response if token validation fails.</t>
+            <t>Clarified the use of the "authz-info" topic and the error response if token validation fails.</t>
             <t>Added clarification on wildcard use in scopes for publish/subscribe permissions</t>
             <t>Reorganised sections so that token authorisation for publish/subscribe messages are better placed.</t>
         </list>
@@ -1193,6 +1193,8 @@
     <t>
         Version 01 to 02:
         <list style="symbols">
+            <t> Clarified protection of Application Message payload as out of scope, and cited draft-palombini-ace-coap-pubsub-profile
+                for a potential solution </t>
             <t> Expanded Client connection authorization to capture different options for Client and Broker
                 authentication over TLS and MQTT</t>
             <t> Removed Payload (and specifically Client Identifier) from proof-of-possesion
