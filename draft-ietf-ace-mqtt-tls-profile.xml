@@ -441,7 +441,7 @@
                     for Raw Public Keys (RPK) and Pre-Shared Keys (PSK), respectively.
                     Combined, the Client authentication takes the following options:
                     <list style="symbols">
-                        <t>" an": This option is used only for the topics that do not require authorization,
+                        <t>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization,
                             including the "authz-info" topic. Publishing to the "authz-info" topic is described in <xref target="app-authzinfo"></xref>.</t>
                         <t>"TLS:Anon-MQTT:ace": The token is transported inside the CONNECT message, and MUST be
                             validated using one of the methods described in <xref target="app-authzinfo"></xref>. This option also supports
