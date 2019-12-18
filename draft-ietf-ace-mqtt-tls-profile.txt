@@ -1363,7 +1363,7 @@ Appendix B.  Document Updates
 
    Version 02 to 03:
 
-   o  Added the option of Broker certificate fingerprint in the 'rs_cnf'
+   o  Added the option of Broker certificate thumbprint in the 'rs_cnf'
       sent to the Client.
 
    o  Clarified the use of a random nonce from the TLS Exporter for PoP,
@@ -1373,8 +1373,8 @@ Appendix B.  Document Updates
    o  Added a client nonce, when Challenge/Response Authentication is
       used between Client and Broker.
 
-   o  Clarified the use of "authz-info" topic and the error response if
-      token validation fails.
+   o  Clarified the use of the "authz-info" topic and the error response
+      if token validation fails.
 
    o  Added clarification on wildcard use in scopes for publish/
       subscribe permissions
@@ -1384,6 +1384,10 @@ Appendix B.  Document Updates
 
    Version 01 to 02:
 
+   o  Clarified protection of Application Message payload as out of
+      scope, and cited draft-palombini-ace-coap-pubsub-profile for a
+      potential solution
+
    o  Expanded Client connection authorization to capture different
       options for Client and Broker authentication over TLS and MQTT
 
@@ -1391,16 +1395,15 @@ Appendix B.  Document Updates
       of-possesion in favor of using tls-exporter for a TLS-session
       based challenge.
 
-   o  Moved token transport via "authz-info" topic from the Appendix to
-      the main text.
-
-
 
 
 Sengul, et al.            Expires June 20, 2020                [Page 25]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2019
 
+
+   o  Moved token transport via "authz-info" topic from the Appendix to
+      the main text.
 
    o  Clarified Will scope.
 
@@ -1446,9 +1449,6 @@ Authors' Addresses
    UK
 
    Email: csengul@acm.org
-
-
-
 
 
 
