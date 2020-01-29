@@ -155,25 +155,26 @@
             <t>
                 MQTT is a publish-subscribe protocol and
                 after connecting to the MQTT Broker, a Client can publish and subscribe to multiple topics.
-                The MQTT Broker is responsible for distributing messages published by the publishers
-                 to their subscribers. Messages are published under a Topic Name,
+                The MQTT Broker, which acts as the Resource Server (RS), is responsible for distributing messages published by the publishers
+                 to their subscribers. In the rest of the
+                 document the terms "RS" and "Broker" are used interchangeably.
+            </t>
+
+            <t> 
+                 Messages are published under a Topic Name,
                  and subscribers must subscribe to the Topic Names to receive the corresponding messages.
                  The Broker uses the Topic Name in a published message to determine which
                  subscribers to relay the messages.
-            </t>
-            <t>
                 In this document, topics, more specifically, Topic Names, are treated as resources.
                 The Clients are assumed to have identified the publish/subscribe topics of interest out-of-band
                 (topic discovery is not a feature of the MQTT protocol).
-                A resource owner can pre-configure policies at the AS that give Clients publish or subscribe
+                A Resource Owner can pre-configure policies at the Authorisation Server (AS) that give Clients publish or subscribe
                 permissions to different topics.
             </t>
             <t>
-                Clients use an access token, bound to a proof-of-possession (PoP) key to authorize
-                with the MQTT Broker their connection and publish/subscribe permissions to topics. In the context
-                of this ACE profile, the Broker acts as the Resource Server (RS). In the rest of the
-                 document the terms "RS" and "Broker" are used interchangeably.
-                 This document describes how to authorise the following exchanges between the
+                Clients prove their permission to publish/subscribe to topics hosted on an MQTT broker 
+                using an access token, bound to a proof-of-possession (PoP) key. 
+                 This document describes how to authorize the following exchanges between the
                 Clients and the Broker.
                 <list style="symbols">
                     <t>Connection requests from the Clients to the Broker</t>
@@ -181,8 +182,9 @@
                         Clients</t>
                     <t>Subscribe requests from Clients to the Broker</t>
                 </list>
-                This document does not protect the contents of the PUBLISH message from the Broker, and hence,
-                the content of the the PUBLISH message is not signed or encrypted separately for the subscribers.
+                Clients use MQTT PUBLISH message to publish to a topic. 
+                This document does not protect the payload of the PUBLISH message from the Broker, and hence,
+                the payload is not signed or encrypted specificaly for the subscribers.
                 This functionality may be implemented using the proposal outlined in <xref target="I-D.palombini-ace-coap-pubsub-profile">
                 the CoAP Pub-Sub Profile</xref>.
             </t>
@@ -198,7 +200,7 @@
                 and unless otherwise
                 specified, using JSON encoding. The token may be a reference, or JSON Web Token (JWT).
                 For JWT tokens, this document follows <xref target="RFC7800">RFC 7800</xref>
-                for PoP semantics for JWTs. The Client-AS and RS-AS may also be other than HTTPS e.g., CoAP or MQTT.
+                for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP e.g., CoAP or MQTT.
                 Implementations MAY also use
                 'application/ace+cbor' content type, and CBOR encoding, and CBOR Web Token (CWT) and
                  associated PoP semantics to reduce the protocol memory and bandwidth
@@ -223,7 +225,7 @@
                      "Resource Server" (RS) and "Authorization Server" (AS).
                 </t>
                 <t>
-                    The term "Resource" is used to refer to an MQTT Topic Name, which is defined in <xref target="mqtt-defs"></xref>.
+                    The term "resource" is used to refer to an MQTT Topic Name, which is defined in <xref target="mqtt-defs"></xref>.
                     Hence, the "Resource Owner" is any entity that can authoritatively speak for the topic.
                 </t>
                 <t>
@@ -253,6 +255,10 @@
                             The Server in MQTT. It acts as an intermediary between the Clients that publishes Application Messages,
                             and the Clients that made Subscriptions. The Broker acts as the Resource Server for the Clients.
                         </t>
+                        <t hangText="Client">
+                            <vspace blankLines="0"/>
+                            A device or program that uses MQTT. 
+                        </t>
                         <t hangText="Application Message">
                             <vspace blankLines="0"/>
                             The data carried by the MQTT protocol. The data has an associated QoS level and a Topic
@@ -269,7 +275,8 @@
                         </t>
                         <t hangText="Subscription">
                             <vspace blankLines="0"/>
-                            A subscription comprises a Topic Filter and a maximum Quality of Service (QoS).
+                            A Subscription comprises a Topic Filter and a maximum Quality of Service (QoS).A Subscription is 
+                            associated with a single session. 
                         </t>
                         <t hangText="Topic Filter">
                             <vspace blankLines="0"/>
@@ -287,7 +294,7 @@
                     <list hangIndent="8" style="hanging">
                         <t hangText="CONNECT">
                             <vspace blankLines="0"/>
-                            Client request to connect to the Broker. After a network connection is established, this is
+                            Client request to connect to the Broker. This is
                             the first packet sent by a Client.
                         </t>
                         <t hangText="CONNACK">
@@ -322,7 +329,7 @@
                         </t>
                         <t hangText="SUBSCRIBE">
                             <vspace blankLines="0"/>
-                            The Client subscribe request.
+                            Subscribe request sent from a Client.
                         </t>
                         <t hangText="SUBACK">
                             <vspace blankLines="0"/>
@@ -353,7 +360,7 @@
             <t>
                 This section specifies how Client connections are authorized by the MQTT
                 Broker.<xref target="protocol_flow"></xref> shows the basic protocol flow during connection
-                set-up.The token request and response use the /token endpoint at the AS,
+                set-up.The token request and response use the token endpoint at the AS,
                 specified in the Section 5.6 of the <xref
                 target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional,
                 and use the introspection endpoint, specified in the Section 5.7 of the ACE framework.
@@ -401,7 +408,7 @@
         <section title="Client Token Request to the Authorization Server (AS)">
             <t>
                 The first step in the protocol flow (Figure 1 (A)) is the token acquisition by the Client
-                 from the AS.
+                 from the AS. The Client and the AS MUST perform mutual authentication.
                 When requesting an access token from the AS, the Client follows the token request as
                 described in Section 5.6.1
                 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>, howevever, it MUST
@@ -435,7 +442,7 @@
             <section title="Client-Server Authentication over TLS and MQTT" anchor="auth_options">
                 <t>
                     The Client and the Broker MUST perform mutual authentication.
-                    The Client MAY authenticate to the Broker over MQTT or TLS. For MQTT,
+                    The Client MUST authenticate to the Broker either over MQTT or TLS. For MQTT,
                     the options are "None" and "ace".
                     For TLS, the options are "Anon" for anonynous client, and "Known(RPK/PSK)"
                     for Raw Public Keys (RPK) and Pre-Shared Keys (PSK), respectively.
@@ -779,7 +786,7 @@
                 subscribers.
             </t>
             <t>
-                RS MUST stop forwarding messages to the unauthorized subscribers.
+                RS MUST NOT forward messages to the unauthorized subscribers.
                 There is no way to inform the Clients with invalid tokens that an
                 authorization error has occurred other than sending a DISCONNECT message.
                 The RS SHOULD send a DISCONNECT message with the reason code '0x87 (Not authorized)'.
