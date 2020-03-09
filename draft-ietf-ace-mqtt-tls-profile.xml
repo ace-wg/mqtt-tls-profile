@@ -107,7 +107,7 @@
 	            <email>paul.fremantle@port.ac.uk</email>
 	        </address>
 	    </author>
-    <date year="2019"/>
+    <date year="2020"/>
         <!-- If the month and year are both specified and are the current ones, xml2rfc will fill
              in the current day for you. If only the current year is specified, xml2rfc will fill
           in the current day and month for you. If the year is not the current one, it is
@@ -145,8 +145,7 @@
                 In this profile, Clients and Server (Broker) use MQTT to exchange Application Messages.
                 The protocol relies on TLS for communication security between entities. The MQTT protocol interactions
                  are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
-                 It is expected that MQTT deployments will continue to support MQTT v3.1.1 clients
-                 as v3.1.1 is widely-deployed, and therefore,
+                Since it is expected that MQTT deployments will continue to support MQTT v3.1.1 clients,
 		        this document also describes a reduced set of protocol interactions for
                 <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
 		        However, MQTT v5.0 is the RECOMMENDED version as it works more naturally
@@ -154,10 +153,10 @@
             </t>
             <t>
                 MQTT is a publish-subscribe protocol and
-                after connecting to the MQTT Broker, a Client can publish and subscribe to multiple topics.
-                The MQTT Broker, which acts as the Resource Server (RS), is responsible for distributing messages published by the publishers
+                after connecting to the MQTT Server (Broker), a Client can publish and subscribe to multiple topics.
+                The Broker, which acts as the Resource Server (RS), is responsible for distributing messages published by the publishers
                  to their subscribers. In the rest of the
-                 document the terms "RS" and "Broker" are used interchangeably.
+                 document the terms "RS", "MQTT Server" and "Broker" are used interchangeably.
             </t>
 
             <t> 
@@ -172,8 +171,8 @@
                 permissions to different topics.
             </t>
             <t>
-                Clients prove their permission to publish/subscribe to topics hosted on an MQTT broker 
-                using an access token, bound to a proof-of-possession (PoP) key. 
+                Clients prove their permission to publish/subscribe to topics hosted on an MQTT broker
+                using an access token, bound to a proof-of-possession (PoP) key.
                  This document describes how to authorize the following exchanges between the
                 Clients and the Broker.
                 <list style="symbols">
@@ -182,10 +181,10 @@
                         Clients</t>
                     <t>Subscribe requests from Clients to the Broker</t>
                 </list>
-                Clients use MQTT PUBLISH message to publish to a topic. 
+                Clients use MQTT PUBLISH message to publish to a topic.
                 This document does not protect the payload of the PUBLISH message from the Broker, and hence,
                 the payload is not signed or encrypted specificaly for the subscribers.
-                This functionality may be implemented using the proposal outlined in <xref target="I-D.palombini-ace-coap-pubsub-profile">
+                This functionality may be implemented using the proposal outlined in <xref target="I-D.ietf-ace-pubsub-profile">
                 the CoAP Pub-Sub Profile</xref>.
             </t>
             <t>
@@ -257,7 +256,7 @@
                         </t>
                         <t hangText="Client">
                             <vspace blankLines="0"/>
-                            A device or program that uses MQTT. 
+                            A device or program that uses MQTT.
                         </t>
                         <t hangText="Application Message">
                             <vspace blankLines="0"/>
@@ -275,8 +274,7 @@
                         </t>
                         <t hangText="Subscription">
                             <vspace blankLines="0"/>
-                            A Subscription comprises a Topic Filter and a maximum Quality of Service (QoS).A Subscription is 
-                            associated with a single session. 
+                            A Subscription comprises a Topic Filter and a maximum Quality of Service (QoS).A Subscription is associated with a single session.
                         </t>
                         <t hangText="Topic Filter">
                             <vspace blankLines="0"/>
@@ -359,13 +357,10 @@
         <section title="Authorizing Connection Requests" anchor="token_acquisition">
             <t>
                 This section specifies how Client connections are authorized by the MQTT
-                Broker.<xref target="protocol_flow"></xref> shows the basic protocol flow during connection
-                set-up.The token request and response use the token endpoint at the AS,
-                specified in the Section 5.6 of the <xref
-                target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional,
-                and use the introspection endpoint, specified in the Section 5.7 of the ACE framework.
-                The Client and Broker use HTTPS to communicate to AS via these endpoints.
-                The Client and Broker use only MQTT to communicate between them.
+                Broker. <xref target="protocol_flow"></xref> shows the basic protocol flow during connection
+                set-up.The token request and response use the token endpoint at the AS, specified in the Section 5.6 of the <xref
+                target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional, and use the introspection endpoint, specified in the Section 5.7 of the ACE framework.
+                The Client and Broker use HTTPS to communicate to AS via these endpoints. The Client and Broker use only MQTT to communicate between them.
             </t>
             <t>
                 If the Client is resource-constrained, a Client Authorisation Server may carry out
@@ -408,28 +403,22 @@
         <section title="Client Token Request to the Authorization Server (AS)">
             <t>
                 The first step in the protocol flow (Figure 1 (A)) is the token acquisition by the Client
-                 from the AS. The Client and the AS MUST perform mutual authentication.
-                When requesting an access token from the AS, the Client follows the token request as
-                described in Section 5.6.1
-                of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>, howevever, it MUST
-                set the profile parameter to 'mqtt_tls'.
-                The media format is 'application/ace+json'.
+                 from the AS. The Client and the AS MUST perform mutual authentication. When requesting an access token from the AS, the Client follows the token request as
+                described in Section 5.6.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>,
+                howevever, it MUST set the profile parameter to 'mqtt_tls'. The media format is 'application/ace+json'.
                 The AS uses JSON in the payload of its responses to both to the Client and the RS.
             </t>
             <t>
                 If the AS successfully verifies the access token request and authorizes the Client for the
                 indicated audience (i.e., RS) and scopes (i.e., publish/subscribe permissions over topics),
-                the AS issues an access token (Figure 1 (B)).
-                The response includes the parameters described in Section 5.6.2 of <xref
-                target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
+                the AS issues an access token (Figure 1 (B)). The response includes the parameters described
+                in Section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
                 The included token is assumed to be Proof-of-Possession (PoP) token by default.
                 This document follows <xref target="RFC7800">RFC 7800</xref> for PoP semantics for JWTs.
                 The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key.
-                The 'cnf' parameter in the web tokens
-                are to be consumed by the RS and not the Client.
-                The PoP token may include a 'rs_cnf' parameter containing the information
-                about the public key used by the RS to authenticate as described in
-                <xref target="I-D.ietf-ace-oauth-params"></xref>.
+                Note that the 'cnf' parameter in the web tokens are to be consumed by the RS and not the Client.
+                The PoP token may include a 'rs_cnf' parameter containing the information about the public key used
+                by the RS to authenticate as described in <xref target="I-D.ietf-ace-oauth-params"></xref>.
             </t>
             <t> The AS returns error responses for JSON-based interactions
                 following the Section 5.2 of <xref target="RFC6749">RFC 6749</xref>.
@@ -442,10 +431,9 @@
             <section title="Client-Server Authentication over TLS and MQTT" anchor="auth_options">
                 <t>
                     The Client and the Broker MUST perform mutual authentication.
-                    The Client MUST authenticate to the Broker either over MQTT or TLS. For MQTT,
-                    the options are "None" and "ace".
-                    For TLS, the options are "Anon" for anonynous client, and "Known(RPK/PSK)"
-                    for Raw Public Keys (RPK) and Pre-Shared Keys (PSK), respectively.
+                    The Client MUST authenticate to the Broker either over MQTT or TLS.
+                    For MQTT, the options are "None" and "ace".
+                    For TLS, the options are "Anon" for anonynous client, and "Known(RPK/PSK)" for Raw Public Keys (RPK) and Pre-Shared Keys (PSK), respectively.
                     Combined, the Client authentication takes the following options:
                     <list style="symbols">
                         <t>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization,
@@ -455,8 +443,7 @@
                             a tokenless connection request for AS discovery.</t>
                         <t>"TLS:Known(RPK/PSK)-MQTT:none": For the RPK, the token MUST have been published to the "authz-info" topic.
                             For the PSK, the token MAY be, alternatively, provided in the "psk_identity".
-                            The TLS session set-up is as described in
-                            <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.</t>
+                            The TLS session set-up is as described in <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.</t>
                         <t>"TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen. In any case, the token transported in the CONNECT
                             overwrites any permissions passed during the TLS authentication.</t>
                     </list>
@@ -470,21 +457,17 @@
                     public key from a X.509 certificate or an RPK from the Broker against the
                      'rs_cnf' parameter in the token response.
                      The AS MAY include the thumbprint of the RS's X.509 certificate in the 'rs_cnf'
-                     (thumbrint as defined in <xref target="I-D.ietf-cose-x509"></xref>),
+                     (thumbprint as defined in <xref target="I-D.ietf-cose-x509"></xref>),
                      then the client MUST validate the RS certificate
                      against this thumbprint.
                 </t>
             </section>
             <section anchor="app-authzinfo" title="authz-info: The Authorization Information Topic">
-                <t> In the cases when the Client MUST transport the token to the Broker before
-                    the TLS handshake, the Client connects to the Broker and publishes its token to the
-                    "authz-info" topic.
-                    The "authz-info" topic MUST be publish-only (i.e.,
-                    the Clients are not allowed to subscribe to it).
-                    "authz-info" is not protected, and hence, the Client authenticates
-                    with the RS using the "TLS:Anon-MQTT:None" option over a TLS connection.
-                    After publishing the token, the Client disconnects from the Broker and
-                    is expected to reconnect, potentially using client authentication with TLS.
+                <t> In the cases when the Client MUST transport the token to the Broker first,
+                the Client connects to the Broker to publish its token to the "authz-info" topic.
+                    The "authz-info" topic MUST be publish-only (i.e., the Clients are not allowed to subscribe to it).
+                    "authz-info" is not protected, and hence, the Client uses the "TLS:Anon-MQTT:None" option over a TLS connection.
+                    After publishing the token, the Client disconnects from the Broker and is expected to reconnect, potentially using client authentication with TLS.
                 </t>
                 <t>
                     The Broker stores and indexes all tokens received to this topic in its key store
@@ -602,7 +585,8 @@
 	            the Client sets the Clean Start Flag to 1 and,
                 the Session Expiry Interval to 0 in the CONNECT
                 message. However, in this profile, the Broker MUST always
-                start with a clean session regardless of how these parameters are set. The Broker
+                start with a clean session regardless of how these parameters are set. The clean session requirement is
+                for avoiding the Broker to keep unnecessary session state for unauthorised clients. Therefore, the Broker
                 MUST set the Session Present flag to 0 in the CONNACK packet to signal the Client that the Broker
                 started a clean session.
 	        </t>
@@ -677,9 +661,9 @@
                      |------------>| AUTH '0x18 (Continue Authentication)'
                      |             | 8-byte client nonce + signature/MAC
                      |             |
-                     |             |-----+ Token validation (may involve introspection)
-                     |             |     |
-                     |             |<----+
+                     |             |---+ Token validation
+                     |             |   | (may involve introspection)
+                     |             |<--+
                      |             |
                      |<------------+ CONNACK '0x00 (Success)'
                      ]]></artwork>
@@ -757,7 +741,7 @@
             Topic filters are implemented as described in the Section 4.7 of <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0
                      - the OASIS Standard</xref> and includes special wildcard characters.
             The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+',
-            matches one topic level. 
+            matches one topic level.
         </t>
         <t>
             An example scope field may contain multiple such strings, space delimited, e.g., 'publish_topic1 subscribe_topic2/#' publish_+/topic3.
@@ -780,7 +764,7 @@
 		       In the case of an authorization failure, an error MAY be returned to the Client.
                 For this, the QoS level of the PUBLISH message MUST be set to greater than or equal to 1.
                 This guarantees that RS responds with either a PUBACK or PUBREC packet with reason code
-                '0x87 (Not authorized)'. 
+                '0x87 (Not authorized)'.
 		        On receiving a PUBACK with '0x87 (Not authorized)',
                 the Client MAY reauthenticate as described in <xref target="reauthentication"></xref>,
                 and pass a new token following the same PoP methods as described in
@@ -819,6 +803,7 @@
             On receiving the SUBSCRIBE message, the Broker MUST use the type of message (i.e.,
             SUBSCRIBE) and the Topic Filter in the message header to match
             against a scope string of the stored token or introspection result.
+            The Topic Filters MUST be equal or a subset of the scopes associated with the Client's token.
         </t>
         <t>
             As a response to the SUBSCRIBE message, the Broker issues a SUBACK message.
@@ -888,11 +873,11 @@
         <t>
         This section describes a reduced set of protocol interactions for the MQTT v3.1.1 Client.
         MQTT v.5 brokers MAY also implement this method.
-        Brokers that do not support MQTT v3.1.1 clients return a CONNACK packet 
-        with Reason Code '0x84 (Unsupported Protocol Version)' in response to the clients' CONNECT packet. 
+        Brokers that do not support MQTT v3.1.1 clients return a CONNACK packet
+        with Reason Code '0x84 (Unsupported Protocol Version)' in response to the clients' CONNECT packet.
         </t>
 	    <section anchor="token_311" title="Token Transport">
-            <t> As in MQTT v5, The Token MAY either be transported before the TLS session publishing
+            <t> As in MQTT v5, The Token MAY either be transported before by publishing
              to the "authz-info" topic,
             or inside the CONNECT message.
             </t>
@@ -1068,7 +1053,7 @@
 	        <t>In MQTT, the RS is a central trusted party and may forward potentially sensitive information
 	        between Clients. This document does not protect the contents of the PUBLISH message from the Broker, and hence,
                 the content of the the PUBLISH message is not signed or encrypted separately for the subscribers.
-                This functionality may be implemented using the proposal outlined in <xref target="I-D.palombini-ace-coap-pubsub-profile">
+                This functionality may be implemented using the proposal outlined in <xref target="I-D.ietf-ace-pubsub-profile">
                 the CoAP Pub-Sub Profile</xref>.
 	        However, this solution would still not provide privacy for other properties of the message such as Topic Name.
 	        </t>
@@ -1167,7 +1152,7 @@
 		</front>
 		<seriesInfo name="research" value="International Workshop on Secure Internet of Things"></seriesInfo>
 	    </reference>
-          <?rfc include="reference.I-D.palombini-ace-coap-pubsub-profile"?>
+          <?rfc include="reference.I-D.ietf-ace-pubsub-profile"?>
         </references>
 
         <section anchor="app-profile-requirements" title="Checklist for profile requirements">
