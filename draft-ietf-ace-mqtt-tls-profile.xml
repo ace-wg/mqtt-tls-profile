@@ -655,10 +655,10 @@
                      +------------>| CONNECT with Authentication Data
                      |             | contains only token
                      |             |
-                     <-------------+ AUTH '0x18 (Continue Authentication)'
+                     <-------------+ AUTH '0x18 (Cont. Authentication)'
                      |             | 8-byte nonce as RS challenge
                      |             |
-                     |------------>| AUTH '0x18 (Continue Authentication)'
+                     |------------>| AUTH '0x18 (Cont. Authentication)'
                      |             | 8-byte client nonce + signature/MAC
                      |             |
                      |             |---+ Token validation
