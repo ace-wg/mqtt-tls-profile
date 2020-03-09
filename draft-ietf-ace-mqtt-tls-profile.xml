@@ -42,7 +42,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-03" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-04" ipr="trust200902">
     <!-- category values: std, bcp, info, exp, and historic
        ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
           or pre5378Trust200902
@@ -133,7 +133,7 @@
                 This document specifies a profile for the ACE (Authentication and Authorization for Constrained
                 Environments) framework to enable authorization in an MQTT-based publish-subscribe messaging system.
                 Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize
-                MQTT Clients. The protocol relies on TLS for confidentiality and server authentication.
+                MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.
             </t>
         </abstract>
     </front>
@@ -142,11 +142,11 @@
         <section title="Introduction">
             <t>
                 This document specifies a profile for the ACE framework <xref target="I-D.ietf-ace-oauth-authz"></xref>.
-                In this profile, Clients and a Broker use MQTT to exchange Application Messages.
+                In this profile, Clients and Server (Broker) use MQTT to exchange Application Messages.
                 The protocol relies on TLS for communication security between entities. The MQTT protocol interactions
                  are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
-                 It is expected that MQTT deployments will retain
-                backward compatibility for MQTT v3.1.1 clients, and therefore,
+                 It is expected that MQTT deployments will continue to support MQTT v3.1.1 clients
+                 as v3.1.1 is widely-deployed, and therefore,
 		        this document also describes a reduced set of protocol interactions for
                 <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
 		        However, MQTT v5.0 is the RECOMMENDED version as it works more naturally
@@ -482,9 +482,9 @@
                     The "authz-info" topic MUST be publish-only (i.e.,
                     the Clients are not allowed to subscribe to it).
                     "authz-info" is not protected, and hence, the Client authenticates
-                    with the RS using the "TLS:Anon-MQTT:None" option.
+                    with the RS using the "TLS:Anon-MQTT:None" option over a TLS connection.
                     After publishing the token, the Client disconnects from the Broker and
-                    is expected to try reconnecting over TLS.
+                    is expected to reconnect, potentially using client authentication with TLS.
                 </t>
                 <t>
                     The Broker stores and indexes all tokens received to this topic in its key store
@@ -517,7 +517,7 @@
                     the PUBACK reason code is '0x99 (Payload format invalid)'.
                 </t>
                 <t>
-                    It must be noted that when the AS sends the 'Not authorized' response, this corresponds
+                    It must be noted that when the RS sends the 'Not authorized' response, this corresponds
                     to the token being invalid, and not that the actual PUBLISH message was not authorized.
                     Given that the "authz-info" is a public topic, this response is not
                     expected to cause a confusion.
@@ -619,6 +619,8 @@
             <t>
                 The Authentication Method is followed by the Authentication Data,
                 which has a property identifier 22 (0x16) and is binary data.
+                The binary data in MQTT is represented by a two-byte integer length,
+                 which indicates the number of data bytes, followed by that number of bytes.
                 Based on the Authentication Data, this profile allows:
                 <list style="symbols">
                     <t>Proof-of-Possession using a challenge from the TLS session</t>
@@ -628,13 +630,13 @@
             </t>
         <section title="Proof-of-Possession Using a Challenge from the TLS session" anchor="pop_nonce">
 	        <t>
-                For this option, the Authentication Data MUST contain the token
-                and the keyed message digest (MAC) or the Client signature.
-                The secret that is used for the proof-of-possession calculation, i.e., to
-                calculate the keyed message digest (MAC) or the Client signature,
+                For this option, the Authentication Data MUST contain the two-byte integer token length,
+                the token, and the keyed message digest (MAC) or the Client signature.
+                The content to
+                calculate the keyed message digest (MAC) or the Client signature (for the proof-of-possession)
                 is obtained using a TLS exporter (<xref target="RFC5705"></xref>
                 for TLS 1.2 and for TLS 1.3, Section 7.5 of <xref target="RFC8446"></xref>).
-                The secret is exported from TLS using the exporter label 'EXPORTER-ACE-Sign-Challenge',
+                The content is exported from TLS using the exporter label 'EXPORTER-ACE-MQTT-Sign-Challenge',
                 an empty context, and length of 32 bytes.
                 The token is also validated as described in  <xref target="token_validation"></xref>
                 and the server responds with a CONNACK with the appropriate response code.
@@ -652,8 +654,10 @@
                 an 8-byte nonce as a challenge for the Client. The Client responds to this with an AUTH packet
                 with a reason code '0x18 (Continue Authentication)'.
                 Similarly, the Client packet sets the Authentication Method to 'ace'.
-                The Authentication Data in the Client's response contains a client-generated 8-byte nonce, and
-                the signature or MAC computed over the RS nonce concatenated with the client nonce. Next,
+                The Authentication Data in the Client's response is formatted as 
+                client nonce length,  the client nonce, and
+                the signature or MAC computed over the RS nonce concatenated with the client nonce. 
+                Next,
                 the token is validated as described in  <xref target="token_validation"></xref>.
 	        </t>
                 <figure align="center" anchor="pop_challenge_response" title="PoP Challenge/Response Protocol Flow - Success">
@@ -684,10 +688,15 @@
                     <section title="Unauthorised Request: Authorisation Server Discovery" anchor="as_discovery">
 	                    <t>
 	                    Finally, this document allows the CONNECT message to have the Authentication Method
-                        set to 'ace' followed by an empty Authentication Data field.
+                        set to 'ace' omitting the Authentication Data field.
                         This is the AS discovery option and the RS responds with the CONNACK
                         reason code '0x87 (Not Authorized)' and includes a User Property (identified by 38 (0x26)) for
-                        the AS creation hints as defined in the Section 5.1.2
+                        the AS Request Creation Hints.
+                        The User Property is a UTF-8 string pair, composed of a name and a value. The name
+                        of the User Property MUST be set to "ace_as_hint". The value of the user property
+                        is a UTF-8 encoded JSON string containing the mandatory "AS" parameter,
+                         and the optional parameters "audience", "kid", "cnonce", and "scope" as defined
+                         in the Section 5.1.2
                         of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
 	                    </t>
                     </section>
@@ -701,6 +710,8 @@
                 </t>
                 <t>
                     To authenticate the Client, the RS validates the signature or the MAC, depending on how the PoP protocol is implemented.
+                    HS256 and RS256 are mandatory to implement depending on the choice
+                    of symmetric or asymmetric validation.
                     Validation of the signature or MAC MUST fail if the signature algorithm is set to "none",
                     when the key used for the signature algorithm cannot be determined, or
                     the computed and received signature/MAC do not match.
@@ -743,9 +754,10 @@
             The scope field contains the publish and subscribe permissions for the Client.
             Scope strings SHOULD be encoded as a permission, followed by an underscore, followed by a topic filter.
             Two permissions apply to topic filters: 'publish' and 'subscribe'.
-            Topic filters are implemented as described in MQTT specification and includes special wildcard characters.
+            Topic filters are implemented as described in the Section 4.7 of <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0
+                     - the OASIS Standard</xref> and includes special wildcard characters.
             The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+',
-            matches one topic level.
+            matches one topic level. 
         </t>
         <t>
             An example scope field may contain multiple such strings, space delimited, e.g., 'publish_topic1 subscribe_topic2/#' publish_+/topic3.
@@ -766,16 +778,19 @@
                 If the Client is allowed to publish to the topic,
                 the RS must publish the message to all valid subscribers of the topic.
 		       In the case of an authorization failure, an error MAY be returned to the Client.
-                For this the QoS level of the PUBLISH message MUST be set to greater than or equal to 1.
+                For this, the QoS level of the PUBLISH message MUST be set to greater than or equal to 1.
                 This guarantees that RS responds with either a PUBACK or PUBREC packet with reason code
-                '0x87 (Not authorized)'.
-	        </t>
-		    <t>
+                '0x87 (Not authorized)'. 
 		        On receiving a PUBACK with '0x87 (Not authorized)',
                 the Client MAY reauthenticate as described in <xref target="reauthentication"></xref>,
                 and pass a new token following the same PoP methods as described in
                 <xref target="mqtt5_connect_message"></xref>.
 		    </t>
+            <t>
+                For QoS level 0, the RS sends a DISCONNECT with reason code '0x87 (Not authorized)'
+                and closes the network connection.  Note that the server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
+                the server needs to drop the connection).
+            </t>
         </section>
         <section title="PUBLISH Messages from the Broker to the Subscriber Clients">
 		    <t>
@@ -789,9 +804,7 @@
                 RS MUST NOT forward messages to the unauthorized subscribers.
                 There is no way to inform the Clients with invalid tokens that an
                 authorization error has occurred other than sending a DISCONNECT message.
-                The RS SHOULD send a DISCONNECT message with the reason code '0x87 (Not authorized)'.
-                Note that the server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
-                the server needs to drop the connection).
+                The RS SHOULD send a DISCONNECT message with the reason code '0x87 (Not authorized)'.   
             </t>
         </section>
     <section title="Authorizing SUBSCRIBE Messages">
@@ -874,6 +887,9 @@
 	<section anchor="MQTTv311" title="Reduced Protocol Interactions for MQTT v3.1.1">
         <t>
         This section describes a reduced set of protocol interactions for the MQTT v3.1.1 Client.
+        MQTT v.5 brokers MAY also implement this method.
+        Brokers that do not support MQTT v3.1.1 clients return a CONNACK packet 
+        with Reason Code '0x84 (Unsupported Protocol Version)' in response to the clients' CONNECT packet. 
         </t>
 	    <section anchor="token_311" title="Token Transport">
             <t> As in MQTT v5, The Token MAY either be transported before the TLS session publishing
@@ -1085,6 +1101,8 @@
         &RFC8446;
         &RFC5705;
         &RFC8447;
+        &RFC6749;
+        &RFC7800;
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
@@ -1127,18 +1145,15 @@
 
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
-             <?rfc include="reference.I-D.ietf-cose-x509.xml"?>
-             <?rfc include="reference.I-D.palombini-ace-coap-pubsub-profile"?>
+            <?rfc include="reference.I-D.ietf-cose-x509.xml"?>
+            <?rfc include="reference.I-D.ietf-ace-cwt-proof-of-possession.xml"?>
 
         </references>
 
         <references title="Informative References">
             <!-- Here we use entities that we defined at the beginning. -->
             <!-- A reference written by by an organization not a person. -->
-	    <?rfc include="reference.I-D.ietf-ace-cwt-proof-of-possession.xml"?>
             &RFC4949;
-            &RFC6749;
-	    &RFC7800;
 	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
 			<title>
@@ -1152,6 +1167,7 @@
 		</front>
 		<seriesInfo name="research" value="International Workshop on Secure Internet of Things"></seriesInfo>
 	    </reference>
+          <?rfc include="reference.I-D.palombini-ace-coap-pubsub-profile"?>
         </references>
 
         <section anchor="app-profile-requirements" title="Checklist for profile requirements">
@@ -1185,6 +1201,26 @@
      -->
 
 	<section anchor="document_updates" title="Document Updates">
+    <t>
+        Version 03 to 04:
+        <list style="symbols">
+            <t>Linked the terms Broker and MQTT server more at the introduction of the document.</t>
+            <t>Clarified support for MQTTv3.1.1 and removed phrases that might be considered as MQTTv5 is backward compatible with MQTTv3.1.1</t>
+            <t>Corrected the Informative and Normative references.</t>
+            <t>For AS discovery, clarified the CONNECT message omits the Authentication Data field.
+            Specified the User Property MUST be set to "ace_as_hint" for AS Request Creation Hints.</t>
+            <t>Added that MQTT v5 brokers MAY also implement reduced interactions described for MQTTv3.1.1.</t>
+            <t>Added to Section 3.1, in case of an authorisation failure and QoS level 0, 
+            the RS sends a DISCONNECT with reason code '0x87 (Not authorized)'.</t>
+            <t>Added a pointer to section 4.7 of MQTTv5 spec for more information on topic names and filters.</t>
+            <t>Added HS256 and RS256 are mandatory to implement depending on the choice
+                    of symmetric or asymmetric validation.</t>
+            <t>Added MQTT to the TLS exporter label to make it application specific: 'EXPORTER-ACE-MQTT-Sign-Challenge'.</t>
+            <t>Added a format for Authentication Data so that length values prefix the token (or client nonce)
+            when Authentication Data contains more than one piece of information.</t> 
+            <t> Clarified clients still connect over TLS (server-side) for the authz-info flow. </t>
+        </list>
+    </t>
     <t>
         Version 02 to 03:
         <list style="symbols">
