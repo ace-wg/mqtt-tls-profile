@@ -62,13 +62,13 @@
 
         <author fullname="Cigdem Sengul" initials="C.S."
                 surname="Sengul">
-            <organization>Nominet</organization>
+            <organization>Brunel University</organization>
             <address>
                 <postal>
-                    <street>4 Kingdom Street</street>
                     <!-- Reorder these if your country does things differently -->
-                    <city>London</city>
-                    <code>W2 6BD</code>
+                    <street>Dept. of Computer Science</street>
+                    <city>Uxbridge</city>
+                    <code>UB8 3PH</code>
                     <country>UK</country>
                 </postal>
                 <email>csengul@acm.org</email>
