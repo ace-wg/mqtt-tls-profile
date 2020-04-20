@@ -857,7 +857,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
    If the Client is allowed to publish to the topic, the RS must publish
    the message to all valid subscribers of the topic.  In the case of an
    authorization failure, an error MAY be returned to the Client.  For
-   this, the QoS level of the PUBLISH message MUST be set to greater
    than or equal to 1.  This guarantees that RS responds with either a
    PUBACK or PUBREC packet with reason code '0x87 (Not authorized)'.  On
    receiving a PUBACK with '0x87 (Not authorized)', the Client MAY
@@ -1283,8 +1282,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-
-
 Sengul, et al.          Expires October 22, 2020               [Page 23]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
@@ -1438,7 +1435,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
    o  Removed Payload (and specifically Client Identifier) from proof-
       of-possesion in favor of using tls-exporter for a TLS-session
       based challenge.
-
    o  Moved token transport via "authz-info" topic from the Appendix to
       the main text.
 
@@ -1521,10 +1517,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
    UK
 
    Email: paul.fremantle@port.ac.uk
-
-
-
-
 
 
 
