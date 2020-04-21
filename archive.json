@@ -1,0 +1,1531 @@
+{
+  "magic": "B8n2c@e8kvfx",
+  "timestamp": "2020-04-21T01:21:31.947062+00:00",
+  "repo": "ace-wg/mqtt-tls-profile",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "MDU6SXNzdWU0NDc1ODIzNDg=",
+      "title": "Clarify client authentication mechanisms",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/1",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim Schaad comment: \"A discussion of the use of raw public keys rather than certificates for\r\nthe server may be in order.  This can refer to the same RPK issues from the\r\ncurrent DTLS document.  It may also be that this just uses normal\r\ncertificate processing and that should be noted as well, but some discussion\r\nof deciding if the subject name/alt name matches the token returned from the\r\nAS.\"\r\n",
+      "createdAt": "2019-05-23T10:45:55Z",
+      "updatedAt": "2019-10-03T20:19:01Z",
+      "closedAt": "2019-10-03T20:19:01Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is added. \r\n\"After the token acquisition, the Client connects to the RS (Broker)\r\n                         using the CONNECT message of MQTT over TLS. For server authentication,\r\n                         the client MAY either have the ability to receive and validate a certificate\r\n                          or a raw public key from the Broker. The client needs to use\r\n                           this raw public key in the TLS handshake together\r\n                        with an out-of-band validation technique (see <xref target=\"RFC7800\">RFC 7250</xref>\r\n                        for details).\"",
+          "createdAt": "2019-10-03T16:03:59Z",
+          "updatedAt": "2019-10-03T16:03:59Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "MDU6SXNzdWU0NDc1ODI4ODA=",
+      "title": "Clarify client_id in MQTT Connect message",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/2",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim Schaad comment: \"What items are required to be in the connect message?  The response to my last message suggested that a client identifier is required to be present\r\nbut that is not documented.\"",
+      "createdAt": "2019-05-23T10:46:56Z",
+      "updatedAt": "2019-10-02T15:58:05Z",
+      "closedAt": "2019-10-02T15:58:05Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is documented now. ",
+          "createdAt": "2019-10-02T15:58:02Z",
+          "updatedAt": "2019-10-02T15:58:02Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWU0NDc1ODMzODM=",
+      "title": "CONNECT signature/MAC",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/3",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim Schaad Comment: \"It is not completely clear what portions of the CONNECT message are\r\nbeing covered by the signature/MAC value.  As an example, is the password\r\nfield omitted entirely or is it set to a zero-length password?  In addition\r\nto this, from the couple of implementations that I have looked at the entire\r\npacket is not passed out of the base server code for authentication\r\npurposes.  This might need to be taken into account in terms of what is used\r\nfor the body and how it is constructed.  (As a side note, the\r\nimplementations that I have looked at so far also think that the password is\r\na text string rather than a binary value which is going to be a short term\r\nissue as well.)",
+      "createdAt": "2019-05-23T10:48:05Z",
+      "updatedAt": "2019-10-03T20:19:42Z",
+      "closedAt": "2019-10-03T20:19:42Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Add examples of Authentication Data. ",
+          "createdAt": "2019-10-02T15:52:37Z",
+          "updatedAt": "2019-10-02T15:52:37Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDU6SXNzdWU0NDc1ODQwMTk=",
+      "title": "Add discussion on channel binding",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/4",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim Schaad comment: \"I must admit that I am disappointed that there is no challenge-response mechanism in the MQTT specifications.  I don't know that anything can be\r\ndone at this point about it but there are some security issues that need to\r\nbe highlighted because of this in the security considerations section.  Only\r\nthe v3 seems to have this problem. Also doing the channel binding would\r\ndeal with this problem as well.  Might just need some general discussions\r\naround the channel binding text.\"",
+      "createdAt": "2019-05-23T10:49:25Z",
+      "updatedAt": "2019-12-10T15:19:26Z",
+      "closedAt": "2019-12-10T15:19:26Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Channel binding via tls-exporter is now explained. ",
+          "createdAt": "2019-12-10T15:19:26Z",
+          "updatedAt": "2019-12-10T15:19:26Z"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "MDU6SXNzdWU0NDc1ODQyOTg=",
+      "title": "Standard scope field",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/5",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim Schaad comment: \"Is there an intention to provide a \"standard\" format for the scope field\r\nor just to leave it as ad hoc?\"",
+      "createdAt": "2019-05-23T10:49:57Z",
+      "updatedAt": "2019-10-02T13:52:29Z",
+      "closedAt": "2019-10-02T13:52:29Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is a non-issue. The text we have there is fine, said Jim, on the mailing list. ",
+          "createdAt": "2019-10-02T13:52:29Z",
+          "updatedAt": "2019-10-02T13:52:29Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "MDU6SXNzdWU0NDc1ODQ1ODk=",
+      "title": "Cached token timeout",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/6",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim Schaad comment: \"It might be reasonable in section 2.1.3 to note that even if a result is\r\ncached, that cached check should be limited for a specific amount of time to\r\nrecheck if the token is still active.  More of an issue in terms of how long\r\nto cache for introspection.\"",
+      "createdAt": "2019-05-23T10:50:39Z",
+      "updatedAt": "2019-10-02T13:43:20Z",
+      "closedAt": "2019-10-02T13:43:20Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added: The Broker SHOULD use a cache time out to introspect tokens regularly to 2.13\r\nAlso added to the security section. ",
+          "createdAt": "2019-10-02T13:42:24Z",
+          "updatedAt": "2019-10-02T13:42:24Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWU0NDc1ODQ4NTQ=",
+      "title": "Add Connect must have a token",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/7",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim Schaad comment: \"In section 2.1.4 - I would presume that the last paragraph should be\r\nextended to say that the token is stored only for the length of the\r\nconnection.  That is the token always needs to be supplied every time a\r\nconnect message is sent.\"",
+      "createdAt": "2019-05-23T10:51:19Z",
+      "updatedAt": "2019-10-02T12:30:33Z",
+      "closedAt": "2019-10-02T12:30:33Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Indeed, added: it MUST store the token until the end of connection. On Client or RS disconnection, the token is discarded, and the Client MUST provide a token inside the CONNECT message.",
+          "createdAt": "2019-10-02T12:29:14Z",
+          "updatedAt": "2019-10-02T12:29:14Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "MDU6SXNzdWU0NTI1ODcwMjA=",
+      "title": "Define \"application/ace+json\" media type - fix cbor/json mixed discussion",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/8",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim Schaad's comment on the ACE mailing list: need to be an \"application/ace+json\" defined as a media type\r\n\r\nLudwig Seitz's comment on the mailing list: If the use case calls for JSON, I'd argue it should also use RFC7800 instead of draft-ietf-ace-cwt-proof-of-possession.\r\nI'm still unsure that there is a good use case for transporting JOSE keys in CBOR, but if such a case turns up, I would agree that touching the encoding as little as possible is a good idea (=option 1 or 2). \r\n\r\nCigdem Sengul's comment: Do not mix, Encode the JOSE key to a string and pass as a string",
+      "createdAt": "2019-06-05T16:03:51Z",
+      "updatedAt": "2019-12-10T15:18:48Z",
+      "closedAt": "2019-12-10T15:18:48Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Proper text about this is now added in the relevant sections. The document describes json, but allows cbor encoding as an option. ",
+          "createdAt": "2019-12-10T15:18:48Z",
+          "updatedAt": "2019-12-10T15:18:48Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWU0NzI4OTMyODc=",
+      "title": "Clarify implementation requirements for MQTTv5 v3.1.1 - and backward compatibility",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/9",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Daniel Migault: \r\nProbably that my missing background on MQTT, but -at least for my personal knowledge - I believe that some clarification over the support of the v5 and v3.1.1 could be clarified.\u00a0 When support for both versions are mentioned, I am wondering if these documents mandate that any RS implements both v3.1.1 AND v5 or if it states that v3.1.1 is by no way being sunset. In other words, it is envisioned that some system will use v3.1.1 *forever* in which case their associated is expected to support v3.1.1. The same will occur for v5 respectively. Another alternative could be that MQTTv5 adds functionalities to v3.1.1, leading to some sort of backward compatibility that is sufficient in most cases.\u00a0",
+      "createdAt": "2019-07-25T14:18:31Z",
+      "updatedAt": "2019-10-02T11:16:46Z",
+      "closedAt": "2019-10-02T11:16:46Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It is expected that MQTT implementations will retain backward compatibility for MQTT v3.1.1 clients, and therefore, cover in this document. However, it is RECOMMENDED to use MQTT v5.0 as it works more naturally with ACE-style authentication and authorization.\r\n\r\n For brokers supporting MQTT v.3.1.1 Clients for backward compatibility, a more basic operation is described in the document. MQTT v5.0 brokers MAY also only support the basic operation; however, this is NOT RECOMMENDED.\r\n\r\nFor brokers supporting MQTT v.3.1.1 Clients for backward compatibility, a more basic operation is described in the document.MQTT v5.0 brokers MAY also only support the basic operation; however, this is NOT RECOMMENDED.",
+          "createdAt": "2019-10-02T11:16:46Z",
+          "updatedAt": "2019-10-02T11:16:46Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "MDU6SXNzdWU0NzI4OTQyMTk=",
+      "title": "Clarify HTTPS use for CAS-AS and RS-AS communication",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/10",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Daniel Migault: I have the impression that the proposed alternatives are unsecured. I am wondering if that is intentional. I believe that these communications need to be secured appropriately.\r\n\u00a0\r\nMy understanding is that MQTT will work on top of TCP/TLS. If that is correct, I am wondering if it is envisioned that a full HTTP client is embedded into small motes, or a minimal library restricted to support the interaction with the AS.\r\n\r\nCigdem Sengul:\r\nThe resource-constrained client needs to support MQTT and ACE only. \r\nThe client authorisation server (CAS) and resource broker (server)  (RS) need to support HTTPS - they may want to communicate over MQTT or CoAP but these need to be secured as expected from CAS-AS and RS-AS security requirements of ACE core document.\r\n \r\n",
+      "createdAt": "2019-07-25T14:20:09Z",
+      "updatedAt": "2019-10-02T10:14:36Z",
+      "closedAt": "2019-10-02T10:14:36Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Daniel Migault: \r\nMQTTS and CAS should in my opinion be mentioned in the terminology\r\nsection.\u00a0\r\n\r\n\"optionally\" might be clarified further. The introduction mentioned\r\nHTTPS was considered as the supported protocol. but it seems here that\r\nthe support of HTTPS may not be obvious, in which case the support of\r\nMQTTS might be RECOMMENDED/SHOULD or even stronger. The recommendation\r\nmay also be associated to current deployments, especially concerning how\r\nAS are dedicated to a technology or not. I do \u00a0not see strong\r\nrecommendations for the AS to support one specific protocol, so I\r\nbelieve clarification/discussions on MQTTS / HTTPS should be provided in\r\nthe document. \u00a0\r\n\r\n\"\"\"\r\n\u00a0 \u00a0other underlying\r\n\u00a0 \u00a0protocols are not prohibited from being supported in the future, such\r\n\u00a0 \u00a0as HTTP/2, MQTT, BLE and QUIC.\r\n\r\nCigdem Sengul:\r\nIt is RECOMMENDED that HTTPS is used. If AS supports MQTT, MQTTS can be used, both this implies a publish/subscribe communication model for token issuance. For compatibility with other ASes, this may be left as HTTPS. \r\n\r\nSimilarly for token introspection, if MQTTS is used, then it is a publish/subscribe communication model. \r\n\r\nWe do not prohibit their use - will add other protocols.",
+          "createdAt": "2019-07-25T14:22:52Z",
+          "updatedAt": "2019-07-25T14:22:52Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added clarifications for HTTPS use. Added MQTTS to the terminology section.\r\nDid not add CAS, as it is not mentioned in the core document, and actors document is not referenced by the core document. ",
+          "createdAt": "2019-10-02T10:14:36Z",
+          "updatedAt": "2019-10-02T10:14:36Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "MDU6SXNzdWU0NzI4OTUwMjM=",
+      "title": "Consistency in case and terminology",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/11",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Daniel Migault: \r\nSection 1.3 defines the Topic name. It might be more helpful to the\r\nreader if the exact same term is used both in the text of the document\r\nand in the terminology - that is even considering upper/lower letters. \u00a0\r\n\r\nI am wondering if the broker should be defined as well.\u00a0\r\n\r\nSimilarly, there seems that Clients are composed of various sub-clients\r\n( client authorisation server, the client (MQTT), subscriber, publisher).\r\nMaybe these different designations could be defined as well in the\r\nterminology section. Maybe also some designations might not be necessary\r\nto introduce.\u00a0\r\n\r\nCigdem Sengul:\r\nYes, we assumed there may be a CAS that will speak HTTPS to get the tokens from AS. OR if the client itself is capable of doing that, it would not need a CAS. \r\n\r\nOther than that, the MQTT client software may act both as a publisher or subscriber. We only separated them for the clarity of presentation.  Also, there are some command line MQTT clients that just publish or just subscribe. \r\nStill, I would not consider publisher/subscriber pieces as sub-clients.  I think we explain this in the text but will bring it to the Terminology section.\r\n\r\n",
+      "createdAt": "2019-07-25T14:21:39Z",
+      "updatedAt": "2019-10-02T09:40:58Z",
+      "closedAt": "2019-10-02T09:40:58Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Daniel Migault: Figure mentions Will Flag while the text mentions Will flag.\u00a0",
+          "createdAt": "2019-07-25T14:27:00Z",
+          "updatedAt": "2019-07-25T14:27:00Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "- Improved consistency in the use of terminology, and upper/lower case\r\n- Defined Broker\r\n- Removed ref. actors document and clarified the client authorization server etc. ",
+          "createdAt": "2019-10-02T09:40:55Z",
+          "updatedAt": "2019-10-02T09:40:55Z"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "MDU6SXNzdWU0NzI4OTY2MTU=",
+      "title": "Change the MQTT-TLS profile to focus on MQTT v5, and then present v3.1.1 as legacy",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/12",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Daniel Migault:  I believe the description of the improvement has been omitted. It would\r\nhelp the reader to get an overview of the improvement.\u00a0\r\n\r\nCigdem Sengul: Yes, the improvement is now there are specific fields that can be used for authorisation in MQTT v5, and overloading of password/username fields can be avoided. ",
+      "createdAt": "2019-07-25T14:24:36Z",
+      "updatedAt": "2019-08-16T13:14:58Z",
+      "closedAt": "2019-08-16T13:14:58Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Daniel Migault: Given that MQTT provides better integration with ACE, I am wondering\r\nif MQTTv5 should not be considered as the primary description and having\r\nMQTT3.1.1 is related to legacy MQTT. This seems to me simply re-ordering the\r\nsections. However, the message carried would be to move to MQTTv5 when\r\npossible.\u00a0\r\n\r\nI also believe that a recommendation on supporting MQTTv5 should be made\r\nin the document.\u00a0",
+          "createdAt": "2019-07-25T14:28:23Z",
+          "updatedAt": "2019-07-25T14:28:23Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Daniel Migault: As mentioned before, it might be better to mention what to do and\r\nexplain in MQTT why we overload the username/password. \u00a0",
+          "createdAt": "2019-07-25T14:28:45Z",
+          "updatedAt": "2019-07-25T14:28:55Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Changed the order; added support for MQTTv5. ",
+          "createdAt": "2019-08-16T13:14:57Z",
+          "updatedAt": "2019-08-16T13:14:57Z"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "MDU6SXNzdWU0NzI4OTc2MDc=",
+      "title": "Clarify Will message",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/13",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Daniel Migault: \r\nFrom the paragraph, I cannot figure out what a Will message is. Maybe\r\nthat could be explained or a reference to it may be indicated.\u00a0\r\n\r\nCigdem Sengul:\r\nhe Will message is indeed the client\u2019s will when it dies. That\u2019s why it is sent in the case of a disconnection. Will improve its explanation. \r\nI can this also to MQTT terminology section: \r\nWill Message:\r\nAn Application Message which is published by the Server after the Network Connection is closed in cases where the Network Connection is not closed normally. \r\nIf Will Flag is set, then the payload of the Connect message has information about the Will message. \r\nThe Will Message consists of the Will Properties, Will Topic, and Will Payload fields in the CONNECT Payload.\r\n",
+      "createdAt": "2019-07-25T14:26:19Z",
+      "updatedAt": "2019-10-01T14:38:25Z",
+      "closedAt": "2019-10-01T14:38:25Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added a new Will keyword to the Terminology section. Reminded what the Will message is in respective paragraphs. Also added a discussion about Will Delay Interval, which was introduced in MQTT v5. ",
+          "createdAt": "2019-10-01T14:38:25Z",
+          "updatedAt": "2019-10-01T14:38:25Z"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "MDU6SXNzdWU0NzI4OTgzMzM=",
+      "title": "Remove extra references for MQTT v5 and v3.1.1.",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/14",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Daniel Migault: I believe that references to MQTTv3.1.1 and MQTTv5 provided in the\r\nintroduction are sufficient, and there is no need to have teh reference\r\nanytime MQTT is invoked. \u00a0",
+      "createdAt": "2019-07-25T14:27:35Z",
+      "updatedAt": "2019-08-24T20:25:06Z",
+      "closedAt": "2019-08-24T20:25:05Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fixed. Rename MQTT v5 -> MQTT v5.0",
+          "createdAt": "2019-08-24T20:25:05Z",
+          "updatedAt": "2019-08-24T20:25:05Z"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "MDU6SXNzdWU1MDcxMjcyNDc=",
+      "title": "Fix MQTT 3.1 nonce - where does it go",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/15",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is undefined in MQTT3.1 as Jim Schaad commented in his test plan e-mail. ",
+      "createdAt": "2019-10-15T09:39:24Z",
+      "updatedAt": "2020-01-29T13:49:49Z",
+      "closedAt": "2020-01-29T13:49:49Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is now coming from the tls-exporter. ",
+          "createdAt": "2019-12-10T15:17:47Z",
+          "updatedAt": "2019-12-10T15:17:47Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "MDU6SXNzdWU1MDg0NDExOTk=",
+      "title": "Specify HTTPS requirements - TLS parameters",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/16",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Need to answer: \r\n1.  Are there any specifics about using ACE over HTTP that need to be\r\nexplicitly stated some place.  Some of these things might include:\r\n        a) Must be HTTPS even if encrypted requests/responses are provided.\r\n        b) What types of validation are permitted/required: anon-anon,\r\nserver validation, server & client validation. The latter corresponds to\r\ncurrent DTLS statements. \r\n        c) Are we looking for using the normal HTTP/HTTPS ports or should we\r\nbe using different ports? \r\n\r\nAs noted before, you need to have a section on TLS requirements.  This\r\nshould cover what levels/types of authentication are permitted.  Some type\r\nof statement on TLS 1.3 vs prior versions.  Part of what needs to be placed\r\nhere is the fact that while there is client authentication in MQTT, there is\r\nno method of doing server authentication other than the surrounding TLS\r\nprotocol.  Also should cover how the certificate(?) or RPK would be\r\nvalidated.  Use the existing rs_cnf?\r\n",
+      "createdAt": "2019-10-17T12:28:01Z",
+      "updatedAt": "2020-01-29T13:49:31Z",
+      "closedAt": "2020-01-29T13:49:31Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "[JLS] If you look at my last email I went through this.  Anon-anon is going to be a bad idea because the server is never validated, however client anon is fine since you are going to validate the client in the MQTT protocol.\r\n[CS] Agreed, anon-anon is bad. Also agreed, client anon is fine if there are publish/subscribe policies for public clients that do not require client identification. \r\n",
+          "createdAt": "2019-10-18T12:33:30Z",
+          "updatedAt": "2019-10-18T12:33:30Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "All options are listed.",
+          "createdAt": "2019-11-02T23:58:15Z",
+          "updatedAt": "2019-11-02T23:58:15Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This has been added to the draft. ",
+          "createdAt": "2020-01-29T13:49:31Z",
+          "updatedAt": "2020-01-29T13:49:31Z"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "MDU6SXNzdWU1MDg0NDE0MDI=",
+      "title": "authz-info topic in the main text",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/17",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 2.1.2: Somehow I missed on the first reading that you were\r\nsuggesting the use of a topic /authz-info inside of the MQTT server for\r\nposting.   I think that this needs to have a more detailed set of\r\ninstructions.  I assume but don't know that initially this would mean an\r\nanonymous connect, publish, disconnect, validated connect.  This however is\r\nnot clear from the text.  It is also not clear that this should be over a\r\nTLS wrapped session for the publish.",
+      "createdAt": "2019-10-17T12:28:23Z",
+      "updatedAt": "2019-12-10T15:16:56Z",
+      "closedAt": "2019-12-10T15:16:56Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "[JLS] This is still not clear to me.  Is the transport of the token via \u201cauth-info\u201d topic not considered to be part of the session?  If you say that you look at just the last value published, then is there not going to be a race condition between two different clients trying to publish and connect? \r\n\r\n\r\n[CS] Yes, I see that this is under-specified having been left out in the Appendix. \r\nSince \"authz-info\" a special topic, the broker would treat it differently. I agree this is stretching MQTT a bit. \r\nRS would make \"authz-info\" publish-only.\r\nRS would store all valid tokens published to this topic. Since there are no subscribers, there is no RETAIN of messages, or overwrite of the last message. \r\nThen, in the secure connection attempt, the RS would look up if it has any tokens associated with the raw public key, or psk_identity communicated in the TLS handshake as described in the DTLS draft. \r\n",
+          "createdAt": "2019-10-18T12:37:52Z",
+          "updatedAt": "2019-10-18T12:37:52Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "authz-info moved to the main text. ",
+          "createdAt": "2019-11-02T23:57:27Z",
+          "updatedAt": "2019-11-02T23:57:27Z"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "MDU6SXNzdWU1MDg0NDIzNDY=",
+      "title": "Fix reference  I-D.gerdes-ace-dtls-authorize",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/18",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The correct reference is I-D.ietf-ace-dtls-authorize and\r\nnot I-D.gerdes-ace-dtls-authorize.\r\n",
+      "createdAt": "2019-10-17T12:30:03Z",
+      "updatedAt": "2019-10-20T22:07:28Z",
+      "closedAt": "2019-10-20T22:07:28Z",
+      "comments": []
+    },
+    {
+      "number": 19,
+      "id": "MDU6SXNzdWU1MDg0NDM4NzE=",
+      "title": "Client Identifier - clarify its use",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/19",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In Figure 2, I think the use of Client Identifier is somewhat\r\nconfusing.  I think this is supposed to be the token as the Client\r\nIdentifier is a different thing in MQTT.  Either that or you need to do a\r\nbetter job of describing the property block.\r\n\r\nI am worried about the text on the Client Identifier in this section.\r\nIt is not clear to me that having the client generate a random value for\r\nthis field is good just in terms of the possibility of collisions occurring\r\non the server.  The text in the MQTT 5.0 document appears to say that this\r\nis more interesting for the situation of getting back state that was left on\r\nthe server after a disconnect and not so much for a clean session.",
+      "createdAt": "2019-10-17T12:32:47Z",
+      "updatedAt": "2019-12-10T15:16:41Z",
+      "closedAt": "2019-12-10T15:16:41Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Section 2.1.2.1 - I am having a problem computing the MAC over the\r\npayload of the CONNECT message.  The password where the value is placed is\r\nincluded in the payload and I am not clear if it should be computed up to\r\nthat value or if a fixed value should be used for the computation.\r\n\r\n\r\n>>OK. I think it got muddled because I was trying to find a solution for a scenario where the ClientId is used across sessions, and hence, not random. \r\n\r\nTwo cases.\r\n1) Client ID uniquely random across each Client connection attempt to Broker: MAC over Payload - Payload begins with ClientID and MAY include Will Properties if Client indicated that it will have a will. \r\n2) Client ID NOT uniquely random: MAC over Authentication Data. \r\n\r\nIt may be best to choose one method and just say MUST always have a nonce in Authentication Data, and MAC is computed over that?\r\n",
+          "createdAt": "2019-10-17T12:34:31Z",
+          "updatedAt": "2019-10-17T12:34:31Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "12.  I don't know where the nonce in this section is coming from.\r\nDiscussion on where it comes from and where it is passed in the protocol is\r\nneeded.\r\n\r\n >> As explained in 10. Will clarify in text. ",
+          "createdAt": "2019-10-17T12:34:50Z",
+          "updatedAt": "2019-10-17T12:34:50Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "JLS] Lets step back and look at the problem I think you are trying to solve.    \r\n\r\nIf you are trying to make sure that there is not a replay of the signature, then this would require that the server keep track of the list of nonce values that the client has provided.\r\n If you are trying to make sure that the signature is \u201cfresh\u201d then the server would need to be able to provide some type of data as part of the value being signed.  As I think I have said before the latter can be satisfied by getting your nonce value from the TLS session using a tls-exporter.\r\n \r\n\r\nIf neither of these problems is trying to be solved, then there is no need for the nonce at all.\r\n\r\n [CS] Thanks, taking that step back helped. It is the latter problem we are trying to solve. Then tls-exporter would indeed work and simplify the descriptions for MQTT v5 and v3.1.1., as there was a question on where the nonce was placed in v3.1.1.\r\n ",
+          "createdAt": "2019-10-18T12:36:33Z",
+          "updatedAt": "2019-10-18T12:36:33Z"
+        },
+        {
+          "author": "anthonykirby",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I started trying to understand this, but got lost at the tls-exporter bit.  While parsing it, I noticed a couple of typos & ended up rewriting as:\r\n```\r\nThe CONNECT payload has at least a Client Identifier, and if the Will Flag is set to 1,\r\n  may contain Will-related information. The Client Identifier MUST be a UTF-8 Encoded String\r\n  (i.e., is prefixed with a two-byte integer length field that gives the number of\r\nbytes in a UTF-8 encoded string itself). The Client Identifier MUST be 1-23 UTF-8 encoded bytes,\r\nand contain only the characters \"0-9a-zA-Z\".\r\nNote that this is a subset of the MQTTv5 standard, which allows longer Client Identifiers\r\nand characters not included in the list above.\r\n```\r\n",
+          "createdAt": "2019-10-20T22:56:36Z",
+          "updatedAt": "2019-10-20T22:56:36Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This section will have to change completely, and Client Identifier will not be used, rather a nonce from the TLS-Exporter will be used from the TLS session. ",
+          "createdAt": "2019-10-21T13:35:03Z",
+          "updatedAt": "2019-10-21T13:35:03Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Removed mention of the Client Identifier as nonce, still need to fix the nonce coming from the TLS-exporter bit. ",
+          "createdAt": "2019-11-02T17:05:53Z",
+          "updatedAt": "2019-11-02T17:05:53Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added tls-exporter references for getting the nonce from the tls session. ",
+          "createdAt": "2019-11-02T23:56:58Z",
+          "updatedAt": "2019-11-02T23:56:58Z"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "MDU6SXNzdWU1MDg0NDQzMzI=",
+      "title": "Response when Clean Start or Expiry Interval is not set",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/20",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "If the value of Clean Start or Expiry Interval are not set correct is\r\nthe server to fail the connect?\r\n\r\n>> Agreed. This should be specified. \r\nTwo options: 1) Do not accept connection or 2) accept the connection but then never create sessions, and then server  MUST set Session Present to 0 in the CONNACK packet, indicating \r\nno session is present. \r\n\r\nThis basically makes Clean Start flag meaningless. \r\nIf this is better than client MUST be setting those parameters correctly, then we can go this way. \r\nAny thoughts?",
+      "createdAt": "2019-10-17T12:33:39Z",
+      "updatedAt": "2019-11-02T16:59:23Z",
+      "closedAt": "2019-11-02T16:59:23Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "[JLS] I don\u2019t really care one way or the other.  Given that there is the return value in the CONNACK, I think that a simple statement that the flag is set to 0 regardless of the value coming in. \r\n\r\n[CS] Agreed - regardless of how the flag is set, the RS may just not keep any session. Need to think if this breaks what people expect from MQTT\r\n(i.e. if it would be less confusing for some to get a DISCONNECT, rather than have a CONNACK with session 0, regardless of what the client sets).  \r\n",
+          "createdAt": "2019-10-18T12:35:57Z",
+          "updatedAt": "2019-10-18T12:35:57Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fixed 2.1.2: \"In MQTT v5, to achieve a clean session (i.e., the session starts without an existing session), the Client sets the Clean Start Flag to 1 and, the Session Expiry Interval to 0 in the CONNECT message. However, in this profile, the Broker MUST always start with a clean session regardless of how these parameters are set. The Broker MUST set the Session Present flag to 0 in the CONNACK packet as a response.\"\r\n\r\nFixed 2.1.4: The Broker MUST also set Session Present to 0 in the CONNACK packet to signal a clean session to the Client.",
+          "createdAt": "2019-11-02T16:59:23Z",
+          "updatedAt": "2019-11-02T16:59:23Z"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "MDU6SXNzdWU1MDg0NDQ2NTM=",
+      "title": "Add AUTH terminology",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/21",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "9.  Should do a pass through the document and make sure that terms like\r\n\"AUTH (Authentication Exchange) method\" are not used.  I think you meant to\r\nuse 'packet' rather than method in this location.  You need to be clear on\r\nthe difference between methods and packets in the document.\r\n\r\n>>I think I should clarify this piece as well as it is MQTT terminology. I will add these to the terminology in the beginning. \r\n\r\nAUTH (Authentication Exchange): AUTH packet sent from Client to Server or Server to Client as part of an extended authentication exchange. \r\nAuthentication method: String containing the name of the authentication method\r\nAuthentication data: Binary Data containing authentication data.\r\n\r\nThis is how these terms are defined in MQTT. Will check where the terminology is mixed up and will try to assure consistency. Could you flag particular instances where this was particularly confusing?\r\n",
+      "createdAt": "2019-10-17T12:34:11Z",
+      "updatedAt": "2019-11-02T16:43:37Z",
+      "closedAt": "2019-11-02T16:43:36Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added AUTH to terminology; tried to remove inconsistencies in the use of AUTH terms.",
+          "createdAt": "2019-11-02T16:43:36Z",
+          "updatedAt": "2019-11-02T16:43:36Z"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "id": "MDU6SXNzdWU1MDg0NDU1Nzg=",
+      "title": "2.1.2.3 reiterate auth method",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/22",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "re-iterate that the authentication method for 2.1.2.3 is still set to 'ace'.",
+      "createdAt": "2019-10-17T12:35:43Z",
+      "updatedAt": "2019-11-02T15:14:56Z",
+      "closedAt": "2019-11-02T15:14:56Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Done. ",
+          "createdAt": "2019-11-02T15:14:56Z",
+          "updatedAt": "2019-11-02T15:14:56Z"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "id": "MDU6SXNzdWU1MDg0NDU5Nzg=",
+      "title": "Signature method none not accepted",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/23",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": " Section 2.1.3 - Please include a sentence that the signature algorithm\r\nof \"none\" is explicitly not permitted for tokens.\r\n",
+      "createdAt": "2019-10-17T12:36:21Z",
+      "updatedAt": "2019-11-02T15:08:40Z",
+      "closedAt": "2019-11-02T15:08:40Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added: \" Validation of the signature or MAC MUST fail if the signature algorithm is set to \"none\",\r\n                         when the key used for the signature algorithm cannot be determined, or\r\n                         the computed and received signature/MAC do not match.\" \r\n",
+          "createdAt": "2019-11-02T15:08:40Z",
+          "updatedAt": "2019-11-02T15:08:40Z"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "id": "MDU6SXNzdWU1MDg0NDYyMzk=",
+      "title": "Refer to ACE token validation section",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/24",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "16. You might want to point to the updated text in the ACE Framework\r\ndocument for token validation procedures as they were rewritten and contain\r\nmore or less the same content?\r\n\r\n>> Will do and remove the repetitious text. ",
+      "createdAt": "2019-10-17T12:36:49Z",
+      "updatedAt": "2019-11-02T14:56:44Z",
+      "closedAt": "2019-11-02T14:56:44Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Shortened the section, referred to 5.8.1.1.  Verifying an Access Token, in the core document. ",
+          "createdAt": "2019-11-02T14:56:44Z",
+          "updatedAt": "2019-11-02T14:56:44Z"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "id": "MDU6SXNzdWU1MDg0NDY2NDI=",
+      "title": "Will scope and publish on Disconnect",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/25",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "17.  It is not clear to me, how in the scope string is the ability to have a\r\n\"will\" indicated?\r\n\r\n>> If the Will Flag is set to 1, the Will Topic follows the Client ID and Will Properties in the Payload.\r\nThis is where the broker learns the Will Topic. \r\nThen the scope would be publish_<will topic>. \r\nAnd subscribes would need to subscribe_<will topic> to receive this message. \r\nWill clarify in text.\r\n\r\n22. Not sure if this goes here or in the connect documentation.  There needs\r\nto be a check that the will topic is a topic that the client is going to be\r\npermitted to publish on.   Corner case, if the ability to publish a will in\r\nthe event that this permission is lost.  Does this kill the session or the\r\nwill message?  I.e. should the permission for the will message be rechecked\r\nbefore sending it allowing for the time based expiration of the token.\r\n\r\n>> We have been thinking about this. \r\nIf the disconnect is due to a token expiration, and hence, also includes the will topic as well, you have to decide between:\r\n1) publish the will\r\n2) do not publish the will. \r\nAt the moment, it's written like we publish the will - but on second consideration, \r\nit seems safer to say \"Publish the Will on Server Disconnect or unusual disconnect if the token (the will permission) has not expired\". ",
+      "createdAt": "2019-10-17T12:37:34Z",
+      "updatedAt": "2019-11-02T12:54:19Z",
+      "closedAt": "2019-11-02T12:54:19Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "[JLS] I would be fine with either position, after all at the time the \u201cpublish\u201d event occurred the token was valid, this is just deferring relaying it to subscribers. \r\n\r\n[CS] Yes, indeed, when the RS accepted the will in Connect it was valid. \r\n ",
+          "createdAt": "2019-10-18T12:38:24Z",
+          "updatedAt": "2019-10-18T12:38:24Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "OK clarified the scope of the will is \"publish_\" followed by Will Topic. \r\nAgree that on connect accept, the scope was in the token, so the server should publish the will in case of unexpected disconnections.",
+          "createdAt": "2019-11-02T12:54:19Z",
+          "updatedAt": "2019-11-02T12:54:19Z"
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "id": "MDU6SXNzdWU1MDg0NDY5Nzk=",
+      "title": "Fix mistake AUTH message after DISCONNECT",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/26",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "19. Section 2.4  In the second paragraph, it appears you are saying that a\r\nclient could send an AUTH packet after receiving a DISCONNECT message.  I\r\ndon't believe that is true.\r\n\r\n>>That's a mistake indeed. I should remove DISCONNECT from that list. \r\nDISCONNECT is the last message of the session indeed.  ",
+      "createdAt": "2019-10-17T12:38:11Z",
+      "updatedAt": "2019-11-02T12:40:44Z",
+      "closedAt": "2019-11-02T12:40:44Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fixed explaining network connection is closed after DISCONNECT, and no other messages are possible. PUBACK/SUBACK may trigger reauthentication. ",
+          "createdAt": "2019-11-02T12:40:44Z",
+          "updatedAt": "2019-11-02T12:40:44Z"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "id": "MDU6SXNzdWU1MDg0NDcyMjg=",
+      "title": "Token validity check timing",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/27",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "20.  I am not sure what the benefits of doing the check on a PINGREQUEST is\r\ngoing to be.  Like the relay of a PUBLISH message this is just going to\r\nproduce a DISCONNECT and a closed channel.  If this is really allowed, then\r\nyou should potentially also say that the Broker could do a check based on\r\nclock time elapsing.  (I.e. do the check every hour.)\r\n\r\n>> This was suggested by one of the reviewers that provide MQTT services (his e-mail regarding this was sent to the ace list). \r\nIt was suggested as an optimization for detecting token expirations and disconnecting early. \r\n(i.e., if you are already receiving PINGREQUESTs, use these as a trigger to check the token). \r\nI think time-based checks may also help and be added as an option. \r\n",
+      "createdAt": "2019-10-17T12:38:38Z",
+      "updatedAt": "2019-11-02T12:19:59Z",
+      "closedAt": "2019-11-02T12:19:59Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added a comment about checking periodically (every hour) for completeness. ",
+          "createdAt": "2019-11-02T12:19:59Z",
+          "updatedAt": "2019-11-02T12:19:59Z"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "id": "MDU6SXNzdWU1MDg0NDc0NjA=",
+      "title": "2.5 Fix Ambiguity",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/28",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "  Section 2.5 - The last sentence in the first paragraph could be state\r\nmore clearly.  Specifically there would appear to be some ambiguity on who\r\nthe associated tokens are attached to.  \"messages as long as the publisher\r\ntoken for that message remains valid.\" Might be better.\r\n",
+      "createdAt": "2019-10-17T12:39:04Z",
+      "updatedAt": "2019-10-22T21:21:00Z",
+      "closedAt": "2019-10-22T21:21:00Z",
+      "comments": []
+    },
+    {
+      "number": 29,
+      "id": "MDU6SXNzdWU1MDg0NDg3MDY=",
+      "title": "Reorganise 2.1.2",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/29",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": ".  It might make sense to break up section 2.1.2 more and cover the\r\ndifferent methods either in continuous paragraphs or in subsections.\r\n\r\n>> Sure. That would increase readability. It became rather long with the new additions. ",
+      "createdAt": "2019-10-17T12:41:18Z",
+      "updatedAt": "2019-12-10T15:16:13Z",
+      "closedAt": "2019-12-10T15:16:13Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Daniel Migault's comment: \r\n\r\nIt would be good to expand Raw Public Keys (RPK). My reading is that\r\nthis section does not provide a single mechanism for the Client to be\r\nauthenticated by the Broker, but instead two different ways. I would\r\nthus recommend to state it clearly in the introduction of the section..\r\nCurrently, the section mentions:\r\n\"\"\"\r\nThis section describes how the Client transports the token to the\r\n\u00a0 \u00a0Broker (RS) via the CONNECT control message after the TLS handshake.\r\n\"\"\"\r\n\r\nAn then we have a relatively detailed description on how this is\r\nperformed using TLS. It might be better to say something around the\r\nfollowing lines:\r\n\"\"\"\r\nThis section describes how the Client transports the token to the\r\n\u00a0 \u00a0Broker (RS). This can be achieved during the TLS KEX or during the\r\nMQTT session establishment via the CONNECT control message after the TLS handshake.\r\n\"\"\"\r\n\r\nI am not sure that MAY is appropriated here. I suspect that if none are\r\nsupported, this method will not work. As a result, if seems to me that\r\nit woudl be more accurate to say that TLS Client and TLS server MUST\r\nsupport the PSK authentication as well as the raw public key. \r\n\r\nOne issue I have with I-D.gerdes-ace-dtls-authorize that is now\r\ndraft-ietf-ace-dtls-authorize is that it seems to only consider TLS 1.2.\r\nWith TLS 1.3 PSK and RPK are supported. \r\n\r\nMy interpretation is that PSK provides mutual authentication, but in our\r\ncase RPK will only authenticate the client. If that is correct, there\r\nmight be a new to specify how the RS is authenticated by the Client. \r\n",
+          "createdAt": "2019-10-30T15:14:42Z",
+          "updatedAt": "2019-10-30T16:14:20Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Both PSK and RPK are defined for TLS 1.2 as well.  The only reason why draft-ietf-ace-dtls-authorize does not reference TLS 1.3 is because DTLS 1.3 has not yet been completed.  I would not consider that to be a difference.\r\n\r\nI agree the PSK provides mutual authentication.  The question of RPK giving mutual authentication depends on which RPK you are talking about.  This is just like the question of using certificates and if you have mutual authentication there.  There is also not a requirement that you use RPK in both directions.  One could do a certificate for the server and an RPK for the client and that would give you mutual authentication.",
+          "createdAt": "2019-10-30T15:46:15Z",
+          "updatedAt": "2019-10-30T15:46:15Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The section organisation has been changed, and all options for client and server authentication are added. ",
+          "createdAt": "2019-11-02T23:56:17Z",
+          "updatedAt": "2019-11-02T23:56:17Z"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "MDU6SXNzdWU1MDkwNTIwMTI=",
+      "title": "Clarify C-RS is only MQTT",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/30",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[CS] I see. Yes, I will clarify that - client-RS is MQTT, no HTTPS. Previously we followed the actors draft terminology, and assumed Client has a CAS that does the token request for it. \r\nIt is still reasonable to constrain client-RS communication to MQTT. ",
+      "createdAt": "2019-10-18T12:34:10Z",
+      "updatedAt": "2019-11-02T12:00:56Z",
+      "closedAt": "2019-11-02T12:00:56Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This was described in the intro; added to section 2 intro too (where the protocol choices are re-iterated). ",
+          "createdAt": "2019-11-02T12:00:56Z",
+          "updatedAt": "2019-11-02T12:00:56Z"
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "MDU6SXNzdWU1MDkwNTI2MzY=",
+      "title": "Fix Figure 2.",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/31",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[JLS] That is not where I was having a problem.  I was getting confused by the figure itself.  Labeling the figure better might help.  \u201cMQTT V5.0 CONNECT control message with \u2018ace\u2019 authentication method\u201d.  I would rather not have all of the abbreviations in the title, but I can live with it.\r\n\r\n[CS] I see. Will fix the title. Was thinking without the abbreviations, the figure may not be understandable. If there is a more typical placement for them, let me know, and I will fix. \r\n\r\n ",
+      "createdAt": "2019-10-18T12:35:29Z",
+      "updatedAt": "2019-11-02T11:41:13Z",
+      "closedAt": "2019-11-02T11:41:13Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Changed the title; removed obvious abbreviations (kept only CPT). ",
+          "createdAt": "2019-11-02T11:41:13Z",
+          "updatedAt": "2019-11-02T11:41:13Z"
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "id": "MDU6SXNzdWU1NDk2NDQwNzM=",
+      "title": "Section 2.2.2 TLS/or no TLS clarify token transport for authz-info ",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/37",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim's comment on Jan 1, 2020:\r\n2.2.2 - para 1, the last sentence seems to imply that the first connection\r\nto publish to authz-info is not being done over a TLS connection.\u00a0 But the\r\nsentence before that states that a TLS connection MUST be used for this.\r\nPerhaps s/and is expected to try reconnecting over TLS./and reconnects,\r\npotentially using client authentication with TLS./",
+      "createdAt": "2020-01-14T15:32:03Z",
+      "updatedAt": "2020-03-09T13:29:07Z",
+      "closedAt": "2020-03-09T13:29:07Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Clarified: the Client authenticates with the RS using the \"TLS:Anon-MQTT:None\" option over a TLS connection.  After publishing the token, the Client disconnects from the Broker and\r\n                    is expected to reconnect, potentially using client authentication with TLS.",
+          "createdAt": "2020-03-09T13:29:07Z",
+          "updatedAt": "2020-03-09T13:29:07Z"
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "id": "MDU6SXNzdWU1NDk2NDc2NDI=",
+      "title": "Section 2.2.2 authz-info clarify that the PUBLISH message refers to the publishing of the token",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/38",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On January 1, 2020, Jim wrote:\r\n2.2.2 - I am unclear under what circumstances you could end put with a token\r\nwhich does not parse when processing a PUBLISH message.\u00a0 If the token cannot\r\nbe parsed at connection time, that I can understand.\u00a0 However having parsed\r\nthe token then it does not make sense that the token becomes not parsable at\r\nthe time of publishing.\u00a0 Am I missing something?",
+      "createdAt": "2020-01-14T15:37:15Z",
+      "updatedAt": "2020-03-09T12:08:00Z",
+      "closedAt": "2020-03-09T12:07:59Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "There were further e-mails about this that it may actually be OK. ",
+          "createdAt": "2020-03-09T12:07:59Z",
+          "updatedAt": "2020-03-09T12:07:59Z"
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "id": "MDU6SXNzdWU1NDk2NDg2OTc=",
+      "title": "Section 2.2.2 Fix last paragraph as \"RS sends the 'Not authorized' response\"",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/39",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On January 1, 2020, Jim wrote: \r\n2.2.2 - The last paragraph is causing me confusion.\u00a0 Is this supposed to be\r\nreferencing the RS or the AS?\u00a0 If it is the AS, then I don't see how there\r\ncould be any confusion.\u00a0 Please expand this so it is clearer.\r\n\r\nThis is a typo - it should be RS.\u00a0",
+      "createdAt": "2020-01-14T15:38:50Z",
+      "updatedAt": "2020-03-09T12:04:56Z",
+      "closedAt": "2020-03-09T12:04:56Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fixed typo.",
+          "createdAt": "2020-03-09T12:04:56Z",
+          "updatedAt": "2020-03-09T12:04:56Z"
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "id": "MDU6SXNzdWU1NDk2NTQyMDg=",
+      "title": "2.2.4 Clarify AUTH data format",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/40",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On January 1, 2020, Jim wrote: \r\n2.2.4 - I am having a problem with trying to parse the content of the AUTH\r\nproperty.\u00a0 I have no problems with 2.2.4.3 because this is a zero length\r\nsequence of bytes.\u00a0 However for 2.2.4.1 and 2.2.4.2 there is a token\r\n(possibly binary with no length prefix) followed by an optional binary\r\ncryptographic value.\u00a0 For introspection, I would need to figure out the\r\nlength of the token before I could make a guess at the length of the\r\ncryptographic value.\u00a0 However given that there is no divider this does not\r\nseem possible.\u00a0 This may also become a problem for the response from the\r\nclient in the event that there is a change from an 8-byte nonce to a\r\nvariable length one.\r\n\r\nCS, January 14:\r\nNot specified a\u00a0 format, because I\u00a0 thought we discarded the variable-length nonce idea based on the meeting in Singapore, and the two pieces of information can be extracted when using fixed length.\u00a0What would you suggest - introduce a specific format?length_of_token+binary data for token+(the rest is cryptographic value)?",
+      "createdAt": "2020-01-14T15:47:16Z",
+      "updatedAt": "2020-04-20T16:05:49Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "For the 8-byte nonce, this can be ignored if you really believe that nobody is going to complain about the length of the value being authenticated.  Not an huge issue.\r\n\r\nFor the other cases I think you need to introduce a format which is length prefixed for the token so that the field can be parsed.  Even for a text token, trying to count curly braces is going to be painful.",
+          "createdAt": "2020-01-14T17:41:54Z",
+          "updatedAt": "2020-01-14T17:41:54Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": " Added clarification on the binary data in MQTT is represented by a two-byte integer length,\r\n                 which indicates the number of data bytes, followed by that number of bytes.\r\nso the authentication data is length prefixed; so total_length + the data; \r\nI separated the data further like this for 2.2.4.1\r\nFor this option, the Authentication Data MUST contain the two-byte integer token length,\r\n                the token, and the keyed message digest (MAC) or the Client signature.\r\nFor 2.2.4.2:\r\nThe Authentication Data in the Client's response is formatted as \r\n                client nonce length,  the client nonce, and\r\n                the signature or MAC computed over the RS nonce concatenated with the client nonce.\r\n",
+          "createdAt": "2020-03-09T11:54:52Z",
+          "updatedAt": "2020-03-26T23:31:24Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "You section numbers are wrong, but the content is correct.   I still need to implement but I think this solves my problems.",
+          "createdAt": "2020-03-24T01:56:24Z",
+          "updatedAt": "2020-03-24T01:56:24Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Corrected section numbers in my comment - the correct text was added to the correct sections in the profile document.",
+          "createdAt": "2020-03-26T23:32:08Z",
+          "updatedAt": "2020-03-26T23:32:08Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Looks to be in the source file.  Are you getting the CI to run when you check things in?",
+          "createdAt": "2020-04-20T00:09:31Z",
+          "updatedAt": "2020-04-20T00:09:31Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I typically follow the steps in https://github.com/martinthomson/i-d-template/blob/master/doc/REPO.md manually. \r\nIf there are discrepancies, I must have had an issue with make gh-pages, which I have not noticed. \r\nWill aim to fix today.  ",
+          "createdAt": "2020-04-20T08:47:39Z",
+          "updatedAt": "2020-04-20T08:47:39Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "OK - I remembered why I did not use Travis or Circle (both complain about permissions for different reasons). I deployed pages again manually through gh-pages. Things should be up-to-date now. ",
+          "createdAt": "2020-04-20T16:05:49Z",
+          "updatedAt": "2020-04-20T16:05:49Z"
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "id": "MDU6SXNzdWU1NDk2NTUyNzM=",
+      "title": "2.2.4.1 - Correct wording for TLS exporter value",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/41",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On January 1, 2020, Jim wrote: \r\n2.2.4.1 - In my view it is not the secret, but the content that is being\r\nobtained from the TLS exporter.\u00a0 That is one is signing (or MACing) the\r\nexporter value not using that value to compute a MAC on something else.\r\nWhile it is true that only the two parties know that value, exposure to a\r\nthird party does not lead to a compromise.",
+      "createdAt": "2020-01-14T15:49:03Z",
+      "updatedAt": "2020-03-26T23:50:34Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Daniel commented: \r\n<mglt>Just to make sure I follow, the secret is signed or MACed without being\r\nsent. The secret is not used to derive the key used to the signature or MAC.\r\nInstead this key is in the access token.\u00a0 If I am correct, the use of MAC or\r\nsignature is defined by the PoP symmetric or asymmetric. Correct ? I believe\r\nthe text could be clearer. \u00a0</mglt>",
+          "createdAt": "2020-01-29T12:00:15Z",
+          "updatedAt": "2020-01-29T12:00:15Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Changed the word secret to content. It does say the content is signed or MACed, and sent in the Authentication Data.  Rejigged the wording that it is more clear. \r\nAdded into token validation HS256 and RS256 are mandatory to implement.",
+          "createdAt": "2020-03-09T11:43:33Z",
+          "updatedAt": "2020-03-09T11:43:33Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "RS256 is an interesting choice, by and large the IETF is going with Ed25519 for signature algorithms at this point although a large number are still stuck with ECDSA w/ P-256. ",
+          "createdAt": "2020-03-24T01:57:46Z",
+          "updatedAt": "2020-03-24T01:57:46Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I lapsed there. Ed25519 obviously better.",
+          "createdAt": "2020-03-26T23:28:03Z",
+          "updatedAt": "2020-03-26T23:50:34Z"
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "id": "MDU6SXNzdWU1NDk2NTkyMjA=",
+      "title": "2.2.4.3 Change empty authentication data field to \"omit\" authentication data field",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/42",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On January 1 2020, Jim wrote:\r\n2.2.4.3 - I am not sure if the text is supposed to require an empty\r\nauthentication data field or to allow for the authentication data field to\r\nbe absent as well.\r\n\r\nCigdem: \r\nI checked whether it would be a protocol error to have only Authentication Method in MQTT, and it is not.I think then it is best to omit authentication data field.\u00a0Will correct the text that the document allows the CONNECT message to have an Authentication Method set to 'ace' and omit the Authentication Data field.\u00a0",
+      "createdAt": "2020-01-14T15:55:19Z",
+      "updatedAt": "2020-03-09T11:10:59Z",
+      "closedAt": "2020-03-09T11:10:58Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Changed the text to \"Finally, this document allows the CONNECT message to have the Authentication Method set to 'ace' omitting the Authentication Data field\".",
+          "createdAt": "2020-03-09T11:10:58Z",
+          "updatedAt": "2020-03-09T11:10:58Z"
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "id": "MDU6SXNzdWU1NDk2NjA5NjU=",
+      "title": "Section 3: Add reference to MQTT v5 spec, section 4.7",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/43",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On January 1, 2020, Jim wrote: \r\nIt might be worth while to put a pointer to section 4.7 of the MQTT V5\r\nspec here so that there is an indication of what the different wild card\r\ncharacters do.\u00a0 I had to pop over there to make sure that I could figure it\r\nout.",
+      "createdAt": "2020-01-14T15:57:58Z",
+      "updatedAt": "2020-03-09T11:09:18Z",
+      "closedAt": "2020-03-09T11:09:18Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added a pointer to the Section 4.7 of <xref target=\"MQTT-OASIS-Standard-v5\">MQTT v5.0\r\n                     - the OASIS Standard</xref>.",
+          "createdAt": "2020-03-09T11:09:18Z",
+          "updatedAt": "2020-03-09T11:09:18Z"
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "id": "MDU6SXNzdWU1NDk2Njg2NzM=",
+      "title": "3.1 For QoS = 0, the client disconnected",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/44",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On January 1, 2020, Jim wrote: \r\n3.1 - Should you state that for a QoS of 0, the client should close the\r\nconnection w/ an '0x87' in the event of an authorization failure?\u00a0 I think\r\nthat this is supposed to happen but you have left it open.\r\n\r\nYes. QoS of 0, the client is disconnected.\u00a0 Will add.\u00a0",
+      "createdAt": "2020-01-14T16:10:46Z",
+      "updatedAt": "2020-03-09T11:12:21Z",
+      "closedAt": "2020-03-09T11:12:21Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added: For QoS level 0, the RS sends a DISCONNECT with reason code '0x87 (Not authorized)'\r\n                and closes the network connection.",
+          "createdAt": "2020-03-09T11:02:47Z",
+          "updatedAt": "2020-03-09T11:02:47Z"
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "id": "MDU6SXNzdWU1NDk2NjkzMTU=",
+      "title": "Section 6. Explicitly say MQTT v5 supports MQTT v3.1.1 method as well",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/45",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Januar 1, 2020, Jim wrote: \r\nIt is not clear to me if the authentication method described in this\r\nsection is permitted with MQTT v5 or not.\u00a0 It does not say, but it appears\r\nto be a true statement.\u00a0 This should probably be explicit.",
+      "createdAt": "2020-01-14T16:11:51Z",
+      "updatedAt": "2020-04-12T20:54:57Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added to that section: MQTT v.5 brokers MAY implement this method.\r\n\r\nI expect this is a way  MQTTv5 servers may use to support MQTT v3.1 clients?? But not sure the extent that is possible with the rest of the MQTT protocol.",
+          "createdAt": "2020-03-09T10:52:57Z",
+          "updatedAt": "2020-03-09T10:52:57Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Based on my reading of things you are in the situation where you support v.5 or you support v3.1 or you do a dual stack in order to support both.  The code in the server I am playing with to support both at the same time ends up in a situation where some stuff just gets \"lost\" during the message encoding process if you are down grading to v3.1.  \r\n\r\nA v3.1 client that just says - lets just ask for v.5 is going to get problems when messages come in that it is unable to correctly decode.",
+          "createdAt": "2020-03-24T02:29:04Z",
+          "updatedAt": "2020-03-24T02:29:04Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I was thinking brokers that want to support v3.1.1 clients would implement dual-stack support. \r\n\r\nThe case v3.1.1. client says its v.5 in CONNECT, this should not be allowed. But if it happens, if the client sets username and password fields, they should get the same behaviour in terms of authentication.  The only issues for not being able to decode would be authentication error messages; but then, maybe it is better if we add that if the username/password fields are set; the broker should default to disconnecting the client if an authorisation error happens.  \r\n\r\nIf they do not set username and password fields, then the server would look for AUTH data, and would not find it - because MQTT v5 connect packet is different than MQTT v3.1.1. data this would create parsing issues... I expect the broker would reject this packet... but this would be a real problem.\r\n\r\nCould you say more on what stuff is lost during the message encoding, when client is version 3.1.1? \r\n",
+          "createdAt": "2020-03-26T23:10:59Z",
+          "updatedAt": "2020-03-26T23:10:59Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "So here are two examples:\r\n\r\n1. https://github.com/chkr1011/MQTTnet/pull/885 has changed the system so if the server sets a user property on the message, it gets dropped by the v3.1 encoder rather than having the encoder throw an exception about the property.  \r\n2.  The same code base also maps from the set of v5 extended error messages back to the v3 error messages in some cases.",
+          "createdAt": "2020-03-30T17:51:02Z",
+          "updatedAt": "2020-03-30T17:51:02Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We are still assuming clients v3.1.1 asked for v5, right? Then, yes, both would be a problem if MQTT v.3.1.1 client asked for v5 but cannot parse the fields.\r\n\r\nWhen clients say they do v5 we assume \r\n1. For AS discovery, they can parse the user properties field. \r\n2. Mapping down may be a problem depending on how it's done - e.g, how PubacK with not authorised error code mapped down - v3.1. does not have reason codes for PUBACKs. If this ends up like a \"silent drop\", i.e., the client receives a Puback - sees it as confirmation that its message is received, but then broker does not relay its message due to authorisation problem. The client cannot learn that. That's why we disconnect v3.1 clients, and it's important to know that they are v3.1.\r\n\r\nShould the profile explicitly say, it expects implementations do\r\n1) v5-only server serving v5-only clients.  (this does not stop v5-server to implement the reduced protocol interactions for v5 clients - this feature setting flags in CONNECT differently and does not interfere with other settings.)\r\n2) v3.1-only server serving v3.1-only clients\r\n3)  v5/v3.1 dual server serving v5 or v3.1.1 clients. It is expected that v3.1.1 clients only expect reduced set. ",
+          "createdAt": "2020-04-09T21:37:21Z",
+          "updatedAt": "2020-04-09T21:37:21Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "So the only question left is:  I have a v3.1 client and it works just fine.  I link with a new library and that library knows how to deal with v5 and just internally swallows things the client does not ask for.  Does the client need to upgrade the authentication method.  I think that the answer is probably no so yes a v5 server supports the v3.1 authentication method.",
+          "createdAt": "2020-04-10T01:33:51Z",
+          "updatedAt": "2020-04-10T01:33:51Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "So with this library, the originally 3.1 client connects to the server as v5? So, yes, using the same authentication method to pass the token (with username and password) would work. \r\nWhen the token expires, I assume also this library is able to parse the authentication errors returned by PUBACK etc., which makes the client, most probably, disconnect. It cannot try to re-authenticate as that assumes a v5, and being able to use AUTH. ",
+          "createdAt": "2020-04-12T20:54:57Z",
+          "updatedAt": "2020-04-12T20:54:57Z"
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "id": "MDU6SXNzdWU1NDk2NzQ3NDI=",
+      "title": "Section 2.4.3 - explain AS creation hints as CONNACK user property. ",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/46",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On January 1, Jim wrote: \r\n2.2.4.3 - What is the name of the user property that is being returned here?\r\n\r\n[CS] This is under-defined. It should say, the name pairs follow the same optional name, value parameters for AS request creation hints as defined in the core document. There could be multiple user properties in a CONNACK, one needs to make sure the size of the message does not grow beyond the Maximum Packet Size specified by the client.\u00a0",
+      "createdAt": "2020-01-14T16:20:38Z",
+      "updatedAt": "2020-04-20T16:08:54Z",
+      "closedAt": "2020-04-20T16:08:54Z",
+      "comments": [
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I was assuming that there was only one property, but that it was a JSON string that encoded the properties.  Make sure that what ever you do the user property names are some how scoped to the profile.   I don't know what, if anything, the MQTT people were thinking about keeping these names unique or non-conflicting.",
+          "createdAt": "2020-01-14T17:37:05Z",
+          "updatedAt": "2020-01-14T17:37:05Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "+1\r\n\r\nDo not know why it's allowed to have the same name appear more than once either. \r\n\r\n ",
+          "createdAt": "2020-01-15T12:14:39Z",
+          "updatedAt": "2020-01-15T12:14:39Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Decided not to add multiple name-value pairs; added the following text to the draft:\r\nThe User Property is a UTF-8 string pair, composed of a name and a value. The name of the User Property MUST be set to \"ace_as_hint\". The value of the user property is a UTF-8 encoded JSON string containing the mandatory \"AS\" parameter,  and the optional parameters \"audience\", \"kid\", \"cnonce\", and \"scope\" as defined  in the Section 5.1.2 of <xref target=\"I-D.ietf-ace-oauth-authz\">the ACE framework</xref>.",
+          "createdAt": "2020-03-09T10:44:19Z",
+          "updatedAt": "2020-03-09T10:44:19Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think this looks good.",
+          "createdAt": "2020-03-24T02:30:41Z",
+          "updatedAt": "2020-03-24T02:30:41Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "OK, will close then. ",
+          "createdAt": "2020-03-26T22:52:29Z",
+          "updatedAt": "2020-03-26T22:52:29Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "You did not state the property name in the Editors copy of the document.",
+          "createdAt": "2020-04-20T00:06:25Z",
+          "updatedAt": "2020-04-20T00:06:25Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It is in the submitted v4: \"The name of the User Property MUST be set to \"ace_as_hint\".\"\r\nI do not close issues if they are not agreed and fixed in the submitted version. Also, the source file is not ahead of the submitted version at the moment.\r\nThe issue is in the Editors copy - will fix.",
+          "createdAt": "2020-04-20T08:50:32Z",
+          "updatedAt": "2020-04-20T08:50:32Z"
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "id": "MDU6SXNzdWU1ODg3OTgxNjc=",
+      "title": "Correct IANA considerations",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/47",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The registered value should be renamed to EXPORTER-ACE-MQTT-Sign-Challenge for Exporter registry.",
+      "createdAt": "2020-03-26T23:58:34Z",
+      "updatedAt": "2020-03-26T23:58:34Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 48,
+      "id": "MDU6SXNzdWU2MDI1Nzc3NzA=",
+      "title": "Paragraph 4 section 1 - There is some missing text here",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/48",
+      "state": "CLOSED",
+      "author": "jimsch",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This document describes how to authorise the following exchanges between the Clients and the Broker. the CoAP Pub-Sub Profile [I-D.palombini-ace-coap-pubsub-profile]. ",
+      "createdAt": "2020-04-18T23:48:38Z",
+      "updatedAt": "2020-04-20T16:07:04Z",
+      "closedAt": "2020-04-20T16:07:04Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Again correct in the submitted version 4: \"This functionality may be\r\n   implemented using the proposal outlined in the CoAP Pub-Sub Profile\r\n   [I-D.ietf-ace-pubsub-profile]. \"",
+          "createdAt": "2020-04-20T08:52:33Z",
+          "updatedAt": "2020-04-20T08:52:33Z"
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "id": "MDU6SXNzdWU2MDI2MTIwMzY=",
+      "title": "Figure 2 has an error",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/49",
+      "state": "CLOSED",
+      "author": "jimsch",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I think that the string \"empty or\" should be removed from this diagram.  If you say that the method is ace and don't supply any data then the server cannot know who it is authenticating using the ace method.\r\n\r\n~~~ \r\n      |          Auth. Method (0x15) | 'ace'                 |\r\n       |          Auth. Data (0x16)   | empty or token or     |\r\n       |                                token + PoP data      |\r\n~~~",
+      "createdAt": "2020-04-19T03:46:51Z",
+      "updatedAt": "2020-04-19T20:47:16Z",
+      "closedAt": "2020-04-19T20:47:16Z",
+      "comments": [
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "found it",
+          "createdAt": "2020-04-19T20:47:16Z",
+          "updatedAt": "2020-04-19T20:47:16Z"
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "id": "MDU6SXNzdWU2MDI4ODgwODg=",
+      "title": "Need to have a length in section 2.2.4.2",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/50",
+      "state": "OPEN",
+      "author": "jimsch",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I need to have the length of the token for both the challenge response and the token+proof version.  I don't think it is possible to tell the difference between the length being there and it not being there.",
+      "createdAt": "2020-04-20T02:07:14Z",
+      "updatedAt": "2020-04-20T08:57:47Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "True, the length of token should be included in the request so that the RS can invoke the right method. If it cannot find anything beyond the token, then it starts the challenge-response flow. \r\nWill fix.",
+          "createdAt": "2020-04-20T08:57:47Z",
+          "updatedAt": "2020-04-20T08:57:47Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 32,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzMwMTYxOTAx",
+      "title": "fixed ID reference to ietf-ace-dtls-authorize",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/pull/32",
+      "state": "MERGED",
+      "author": "anthonykirby",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "fixed ID reference to ietf-ace-dtls-authorize\r\ndoing this first so it'll build from makefile \r\n(fixes #18)",
+      "createdAt": "2019-10-20T21:48:51Z",
+      "updatedAt": "2019-10-30T16:12:07Z",
+      "closedAt": "2019-10-20T22:07:28Z",
+      "mergedAt": "2019-10-20T22:07:28Z",
+      "mergedBy": "ciseng",
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 33,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzMwMTYyOTcy",
+      "title": "fix/gitignore",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/pull/33",
+      "state": "CLOSED",
+      "author": "anthonykirby",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-10-20T22:02:17Z",
+      "updatedAt": "2019-10-20T22:03:43Z",
+      "closedAt": "2019-10-20T22:03:30Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 34,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzMwMTYzNzE5",
+      "title": "fix gitignore so it ignores the things that need ignoring",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/pull/34",
+      "state": "MERGED",
+      "author": "anthonykirby",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-10-20T22:11:01Z",
+      "updatedAt": "2019-10-30T16:12:00Z",
+      "closedAt": "2019-10-20T22:21:21Z",
+      "mergedAt": "2019-10-20T22:21:21Z",
+      "mergedBy": "ciseng",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzA0MjgyOTc0",
+          "commit": {
+            "abbreviatedOid": "c259681"
+          },
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2019-10-20T22:21:01Z",
+          "updatedAt": "2019-10-20T22:21:01Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzMwMTY0MDgw",
+      "title": "fix xml2rfc formatting whinges",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/pull/35",
+      "state": "MERGED",
+      "author": "anthonykirby",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-10-20T22:15:10Z",
+      "updatedAt": "2019-10-30T16:12:21Z",
+      "closedAt": "2019-10-20T22:20:16Z",
+      "mergedAt": "2019-10-20T22:20:16Z",
+      "mergedBy": "ciseng",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzA0MjgyOTIy",
+          "commit": {
+            "abbreviatedOid": "a32f096"
+          },
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2019-10-20T22:20:09Z",
+          "updatedAt": "2019-10-20T22:20:09Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzMwNjc1Mjc5",
+      "title": "clarify behaviour of RETAINed messaged when tokens expire",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/pull/36",
+      "state": "MERGED",
+      "author": "anthonykirby",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I believe this \"fixes #28\" if you're happy with it\r\n- now we're (assumed) targetting MQTT v5.0 we should refer to Clean Start\r\n- acknowledge that RETAINed messages could be made irrelevant by further publishes\r\n",
+      "createdAt": "2019-10-21T20:32:27Z",
+      "updatedAt": "2019-10-22T21:21:06Z",
+      "closedAt": "2019-10-22T21:21:00Z",
+      "mergedAt": "2019-10-22T21:20:59Z",
+      "mergedBy": "ciseng",
+      "comments": [
+        {
+          "author": "anthonykirby",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Better working might to \"the retailed message until the token for that message has expired,\"\r\n> \r\n> That avoids the question if all of the tokens have expired or just the one with the message.\r\n\r\nyes, that's much better, thanks!  (see #7e46a8d)",
+          "createdAt": "2019-10-21T21:33:06Z",
+          "updatedAt": "2019-10-21T21:33:46Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzA0ODQ0Mzkx",
+          "commit": {
+            "abbreviatedOid": "0ccefaf"
+          },
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Better working might to \"the retailed message until the token for that message has expired,\"\r\n\r\nThat avoids the question if all of the tokens have expired or just the one with the message.",
+          "createdAt": "2019-10-21T20:54:12Z",
+          "updatedAt": "2019-10-21T20:54:12Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzA1NTE1ODY0",
+          "commit": {
+            "abbreviatedOid": "7e46a8d"
+          },
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2019-10-22T21:20:51Z",
+          "updatedAt": "2019-10-22T21:20:51Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
+}
