@@ -5,10 +5,10 @@
 ACE Working Group                                              C. Sengul
 Internet-Draft                                         Brunel University
 Intended status: Standards Track                                A. Kirby
-Expires: October 22, 2020                                       Oxbotica
+Expires: October 23, 2020                                       Oxbotica
                                                             P. Fremantle
                                                 University of Portsmouth
-                                                          April 20, 2020
+                                                          April 21, 2020
 
 
                         MQTT-TLS profile of ACE
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 22, 2020.
+   This Internet-Draft will expire on October 23, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 1]
+Sengul, et al.          Expires October 23, 2020                [Page 1]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 2]
+Sengul, et al.          Expires October 23, 2020                [Page 2]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -165,7 +165,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 3]
+Sengul, et al.          Expires October 23, 2020                [Page 3]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -221,7 +221,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 4]
+Sengul, et al.          Expires October 23, 2020                [Page 4]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -277,7 +277,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 5]
+Sengul, et al.          Expires October 23, 2020                [Page 5]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -333,7 +333,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 6]
+Sengul, et al.          Expires October 23, 2020                [Page 6]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -389,7 +389,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 7]
+Sengul, et al.          Expires October 23, 2020                [Page 7]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -445,7 +445,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 8]
+Sengul, et al.          Expires October 23, 2020                [Page 8]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -501,7 +501,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020                [Page 9]
+Sengul, et al.          Expires October 23, 2020                [Page 9]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -557,7 +557,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 10]
+Sengul, et al.          Expires October 23, 2020               [Page 10]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -613,7 +613,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 11]
+Sengul, et al.          Expires October 23, 2020               [Page 11]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -669,7 +669,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 12]
+Sengul, et al.          Expires October 23, 2020               [Page 12]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -725,7 +725,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 13]
+Sengul, et al.          Expires October 23, 2020               [Page 13]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -781,7 +781,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 14]
+Sengul, et al.          Expires October 23, 2020               [Page 14]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -837,7 +837,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 15]
+Sengul, et al.          Expires October 23, 2020               [Page 15]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -857,6 +857,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
    If the Client is allowed to publish to the topic, the RS must publish
    the message to all valid subscribers of the topic.  In the case of an
    authorization failure, an error MAY be returned to the Client.  For
+   this, the QoS level of the PUBLISH message MUST be set to greater
    than or equal to 1.  This guarantees that RS responds with either a
    PUBACK or PUBREC packet with reason code '0x87 (Not authorized)'.  On
    receiving a PUBACK with '0x87 (Not authorized)', the Client MAY
@@ -892,7 +893,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 16]
+Sengul, et al.          Expires October 23, 2020               [Page 16]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -948,7 +949,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 17]
+Sengul, et al.          Expires October 23, 2020               [Page 17]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1004,7 +1005,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 18]
+Sengul, et al.          Expires October 23, 2020               [Page 18]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1060,7 +1061,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 19]
+Sengul, et al.          Expires October 23, 2020               [Page 19]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1116,7 +1117,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 20]
+Sengul, et al.          Expires October 23, 2020               [Page 20]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1172,7 +1173,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 21]
+Sengul, et al.          Expires October 23, 2020               [Page 21]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1228,7 +1229,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 22]
+Sengul, et al.          Expires October 23, 2020               [Page 22]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1282,7 +1283,9 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 23]
+
+
+Sengul, et al.          Expires October 23, 2020               [Page 23]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1338,7 +1341,7 @@ Appendix A.  Checklist for profile requirements
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 24]
+Sengul, et al.          Expires October 23, 2020               [Page 24]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1394,7 +1397,7 @@ Appendix B.  Document Updates
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 25]
+Sengul, et al.          Expires October 23, 2020               [Page 25]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1435,6 +1438,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
    o  Removed Payload (and specifically Client Identifier) from proof-
       of-possesion in favor of using tls-exporter for a TLS-session
       based challenge.
+
    o  Moved token transport via "authz-info" topic from the Appendix to
       the main text.
 
@@ -1449,7 +1453,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 26]
+Sengul, et al.          Expires October 23, 2020               [Page 26]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1505,7 +1509,7 @@ Authors' Addresses
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 27]
+Sengul, et al.          Expires October 23, 2020               [Page 27]
 
 Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
@@ -1557,4 +1561,8 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2020
 
 
 
-Sengul, et al.          Expires October 22, 2020               [Page 28]
+
+
+
+
+Sengul, et al.          Expires October 23, 2020               [Page 28]
