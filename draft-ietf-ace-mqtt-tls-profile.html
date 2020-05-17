@@ -411,12 +411,12 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.42.0 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.44.0 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Sengul, C., Kirby, A., and P. Fremantle" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-mqtt-tls-profile-04" />
-  <meta name="dct.issued" scheme="ISO8601" content="2020-21" />
+  <meta name="dct.issued" scheme="ISO8601" content="2020-17" />
   <meta name="dct.abstract" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an MQTT-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
   <meta name="description" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an MQTT-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
 
@@ -440,7 +440,7 @@
 <td class="right">A. Kirby</td>
 </tr>
 <tr>
-<td class="left">Expires: October 23, 2020</td>
+<td class="left">Expires: November 18, 2020</td>
 <td class="right">Oxbotica</td>
 </tr>
 <tr>
@@ -453,7 +453,7 @@
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">April 21, 2020</td>
+<td class="right">May 17, 2020</td>
 </tr>
 
     	
@@ -469,7 +469,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on October 23, 2020.</p>
+<p>This Internet-Draft will expire on November 18, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2020 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -753,7 +753,8 @@
          </pre>
 <p class="figure">Figure 3: CONNECT flags for AUTH</p>
 <p id="rfc.section.2.2.3.p.4">The Will Flag indicates that a Will message needs to be sent if network connection is not closed normally. The situations in which the Will message is published include disconnections due to I/O or network failures, and the server closing the network connection due to a protocol error.  The Client may set the Will Flag as desired (marked as 'X' in <a href="#mqttv5_connect_flags" class="xref">Figure 3</a>).  If the Will Flag is set to 1 and the Broker accepts the connection request, the Broker must store the Will message, and  publish it when the network connection is closed according to Will QoS and Will retain parameters, and MQTT Will management rules.  To avoid publishing Will Messages in the case of temporary network disconnections, the Client may specify a Will Delay Interval in the Will Properties.  <a href="#disconnections" class="xref">Section 5</a> explains how the Broker deals with the retained messages in further detail.  </p>
-<p id="rfc.section.2.2.3.p.5">In MQTT v5, to achieve a clean session (i.e., the session does not continue an existing session), the Client sets the Clean Start Flag to 1 and, the Session Expiry Interval to 0 in the CONNECT message. However, in this profile, the Broker MUST always start with a clean session regardless of how these parameters are set. The clean session requirement is for avoiding the Broker to keep unnecessary session state for unauthorised clients. Therefore, the Broker MUST set the Session Present flag to 0 in the CONNACK packet to signal the Client that the Broker started a clean session.  </p>
+<p id="rfc.section.2.2.3.p.5">In MQTT v5, the Client signals a clean session (i.e., the session does not continue an existing session), by setting the Clean Start Flag to 1 and, the Session Expiry Interval to 0 in the CONNECT message. In this profile, the Broker SHOULD always start with a clean session regardless of how these parameters are set. Starting a clean session helps the Broker avoid keeping unnecessary session state for unauthorised clients. If the Broker starts a clean session, the Broker MUST set the Session Present flag to 0 in the CONNACK packet to signal this to the Client.  </p>
+<p id="rfc.section.2.2.3.p.6">If necessary, the Broker MAY support session continuation, and hence, maintain and use client state from the existing session. The client state MAY include token and its introspection result (for reference tokens) in addition to the MQTT session state.  When reconnecting to the Broker, the Client MUST still provide a token, as well as setting the Clean Start to 0 and supplying a Session Expiry interval in the CONNECT message.  The Broker MUST perform proof-of-possession validation on the provided token.  If the token matches the stored state, the Broker MAY skip introspecting a token by reference, and use the stored introspection result.  Continuing, both the Client and Broker MUST resend any unacknowledged PUBLISH packets (where QoS &gt; 0) and PUBREL packets. The Broker MUST still verify the Client is authorized to receive or send these packets. When a Client connects with a long Session Expiry Interval, the Broker may need to  maintain Client's MQTT session state after it disconnects for an extended period.  Brokers SHOULD implement administrative policies to limit misuse.  </p>
 <h1 id="rfc.section.2.2.4">
 <a href="#rfc.section.2.2.4">2.2.4.</a> <a href="#AUTH-method" id="AUTH-method">Authentication Using AUTH Property</a>
 </h1>
@@ -932,7 +933,7 @@
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-dtls-authorize">[I-D.ietf-ace-dtls-authorize]</b></td>
 <td class="top">
-<a>Gerdes, S.</a>, <a>Bergmann, O.</a>, <a>Bormann, C.</a>, <a>Selander, G.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-dtls-authorize-09">Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-dtls-authorize-09, December 2019.</td>
+<a>Gerdes, S.</a>, <a>Bergmann, O.</a>, <a>Bormann, C.</a>, <a>Selander, G.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-dtls-authorize-10">Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-dtls-authorize-10, May 2020.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-oauth-authz">[I-D.ietf-ace-oauth-authz]</b></td>
@@ -942,7 +943,7 @@
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-oauth-params">[I-D.ietf-ace-oauth-params]</b></td>
 <td class="top">
-<a>Seitz, L.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-params-12">Additional OAuth Parameters for Authorization in Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-oauth-params-12, February 2020.</td>
+<a>Seitz, L.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-params-13">Additional OAuth Parameters for Authorization in Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-oauth-params-13, April 2020.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-cose-x509">[I-D.ietf-cose-x509]</b></td>
