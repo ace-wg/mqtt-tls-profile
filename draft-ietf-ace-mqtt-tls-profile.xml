@@ -723,8 +723,9 @@
                         interface of the AS), the Broker MUST send a CONNACK message to the Client.
                         The reason code of the
                         CONNACK is '0x00 (Success)' if the token validation is successful.
-                        The Broker MUST also set Session Present to 0
-                         in the CONNACK packet to signal a clean session to the Client.
+                        If the Broker starts a new session, it MUST also set Session Present to 0
+                         in the CONNACK packet to signal a clean session to the Client. Otherwise, 
+                         it MUST set Session Present to 1.
 	                    In case of an invalid PoP token, the CONNACK reason code
                         is '0x87 (Not Authorized)'.
                     </t>
@@ -944,9 +945,16 @@
          ]]></artwork>
          </figure>
                     <t>
-                        The Clean Session Flag is ignored, and the Broker always
-                        sets up a clean session. On connection success, the Broker
-                MUST set the Session Present flag to 0 in the CONNACK packet.
+                        The Broker SHOULD NOT accept session continuation. 
+                        To this end, the Broker ignores how the Clean Session Flag is set, 
+                        and on connection success, the Broker
+                MUST set the Session Present flag to 0 in the CONNACK packet to indicate a clean session to 
+                the Client. If the Broker wishes to support session continuation, it MUST still perform
+                proof-of-possession validation on the provided Client token. 
+                MQTT v3.1.1 does not use a Session Expiry Interval, and the Client expects that the Broker maintains
+                the session state after it disconnects. 
+                However, stored Session state can be discarded as a result of an administrator policies, and Brokers SHOULD
+                implement the necessary policies to limit misuse.
                     </t>
                     <t>The Client may set the Will Flag
                          as desired (marked as 'X' in <xref
@@ -1061,6 +1069,12 @@
 	  then this may be vulnerable to a DDoS attack, where many Clients use the "authz-info" public topic
        to transport fictitious tokens,
 	  which RS may need to store indefinitely.</t>
+
+      <t>For MQTT v5, when a Client connects with a long Session Expiry Interval, the RS may need to  maintain 
+      Client's MQTT session state after it disconnects for an extended period. For MQTT v3.1.1, 
+      the session state may need to be stored indefinitely, as it does not have a Session Expiry Interval feature. 
+      The RS SHOULD implement administrative policies to limit misuse of the session continuation by the Client.
+      </t>
         </section>
 
         <section anchor="Privacy" title="Privacy Considerations">
