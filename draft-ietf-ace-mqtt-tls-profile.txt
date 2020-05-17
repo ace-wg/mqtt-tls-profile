@@ -100,10 +100,10 @@ Table of Contents
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  22
      10.2.  Informative References . . . . . . . . . . . . . . . . .  24
-   Appendix A.  Checklist for profile requirements . . . . . . . . .  24
+   Appendix A.  Checklist for profile requirements . . . . . . . . .  25
    Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  25
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  27
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  27
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  28
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
 
 
@@ -807,10 +807,11 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    Based on the validation result (obtained either via local inspection
    or using the /introspection interface of the AS), the Broker MUST
    send a CONNACK message to the Client.  The reason code of the CONNACK
-   is '0x00 (Success)' if the token validation is successful.  The
-   Broker MUST also set Session Present to 0 in the CONNACK packet to
-   signal a clean session to the Client.  In case of an invalid PoP
-   token, the CONNACK reason code is '0x87 (Not Authorized)'.
+   is '0x00 (Success)' if the token validation is successful.  If the
+   Broker starts a new session, it MUST also set Session Present to 0 in
+   the CONNACK packet to signal a clean session to the Client.
+   Otherwise, it MUST set Session Present to 1.  In case of an invalid
+   PoP token, the CONNACK reason code is '0x87 (Not Authorized)'.
 
    If the Broker accepts the connection, it MUST store the token until
    the end of the connection.  On Client or Broker disconnection, the
@@ -833,7 +834,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    permissions for the Client.  Scope strings SHOULD be encoded as a
    permission, followed by an underscore, followed by a topic filter.
    Two permissions apply to topic filters: 'publish' and 'subscribe'.
-   Topic filters are implemented as described in the Section 4.7 of MQTT
 
 
 
@@ -842,6 +842,7 @@ Sengul, et al.          Expires November 18, 2020              [Page 15]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
+   Topic filters are implemented as described in the Section 4.7 of MQTT
    v5.0 - the OASIS Standard [MQTT-OASIS-Standard-v5] and includes
    special wildcard characters.  The multi-level wildcard, '#', matches
    any number of levels within a topic, and the single-level wildcard,
@@ -888,8 +889,7 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    subscription to the particular topic).  The Broker sends a PUBLISH
    message with the Topic name to all the valid subscribers.
 
-   RS MUST NOT forward messages to the unauthorized subscribers.  There
-   is no way to inform the Clients with invalid tokens that an
+
 
 
 
@@ -898,6 +898,8 @@ Sengul, et al.          Expires November 18, 2020              [Page 16]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
+   RS MUST NOT forward messages to the unauthorized subscribers.  There
+   is no way to inform the Clients with invalid tokens that an
    authorization error has occurred other than sending a DISCONNECT
    message.  The RS SHOULD send a DISCONNECT message with the reason
    code '0x87 (Not authorized)'.
@@ -944,8 +946,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    To re-authenticate, the Client sends an AUTH packet with reason code
    '0x19 (Re-authentication)'.  The Client MUST set the Authentication
-   Method as 'ace' and transport the new token in the Authentication
-   Data.  The Client and the RS go through the same steps for proof of
 
 
 
@@ -954,6 +954,8 @@ Sengul, et al.          Expires November 18, 2020              [Page 17]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
+   Method as 'ace' and transport the new token in the Authentication
+   Data.  The Client and the RS go through the same steps for proof of
    possession validation as described in Section 2.2.  The Client SHOULD
    use the same method used for the first connection request.  If the
    re-authentication fails, the server MUST send a DISCONNECT with the
@@ -999,8 +1001,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    it is not possible for the Broker to communicate the result of the
    token validation as PUBACK reason codes or server-side DISCONNECT
    messages are not supported.  In any case, an invalid token would fail
-   the subsequent TLS handshake, which can prompt the Client to obtain a
-   valid token.
 
 
 
@@ -1009,6 +1009,9 @@ Sengul, et al.          Expires November 18, 2020              [Page 18]
 
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
+
+   the subsequent TLS handshake, which can prompt the Client to obtain a
+   valid token.
 
    To transport the token to the Broker inside the CONNECT message, the
    Client uses the username and password fields of the CONNECT message.
@@ -1044,9 +1047,24 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
               Figure 6: MQTT CONNECT flags.  (Rsvd=Reserved)
 
-   The Clean Session Flag is ignored, and the Broker always sets up a
-   clean session.  On connection success, the Broker MUST set the
-   Session Present flag to 0 in the CONNACK packet.
+   The Broker SHOULD NOT accept session continuation.  To this end, the
+   Broker ignores how the Clean Session Flag is set, and on connection
+   success, the Broker MUST set the Session Present flag to 0 in the
+   CONNACK packet to indicate a clean session to the Client.  If the
+   Broker wishes to support session continuation, it MUST still perform
+   proof-of-possession validation on the provided Client token.  MQTT
+   v3.1.1 does not use a Session Expiry Interval, and the Client expects
+   that the Broker maintains the session state after it disconnects.
+   However, stored Session state can be discarded as a result of an
+   administrator policies, and Brokers SHOULD implement the necessary
+   policies to limit misuse.
+
+
+
+Sengul, et al.          Expires November 18, 2020              [Page 19]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
 
    The Client may set the Will Flag as desired (marked as 'X' in
    Figure 6).  Username and Password flags MUST be set to 1 to ensure
@@ -1058,14 +1076,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    ACE token, this field MUST be prefixed with 'ace' keyword, which is
    followed by the access token.  The Password field MUST be set to the
    keyed message digest (MAC) or signature associated with the access
-
-
-
-Sengul, et al.          Expires November 18, 2020              [Page 19]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
-
    token for proof-of-possession.  The Client MUST apply the PoP key on
    the challenge derived from the TLS session as described in
    Section 2.2.4.1.
@@ -1104,16 +1114,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
       topic(s).  Note that, in both MQTT versions, a reason code is
       returned for each Topic Filter.
 
-   o  RS-Client PUBLISH authorization failure: When RS is forwarding
-      PUBLISH messages to the subscribed Clients, it may discover that
-      some of the subscribers are no more authorized due to expired
-      tokens.  These token expirations SHOULD lead to disconnecting the
-      Client rather than silently dropping messages.
-
-
-
-
-
 
 
 
@@ -1121,6 +1121,12 @@ Sengul, et al.          Expires November 18, 2020              [Page 20]
 
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
+
+   o  RS-Client PUBLISH authorization failure: When RS is forwarding
+      PUBLISH messages to the subscribed Clients, it may discover that
+      some of the subscribers are no more authorized due to expired
+      tokens.  These token expirations SHOULD lead to disconnecting the
+      Client rather than silently dropping messages.
 
 7.  IANA Considerations
 
@@ -1164,12 +1170,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    To authorize a Client's publish and subscribe requests in an ongoing
    session, the RS caches the access token after accepting the
    connection from the Client.  However, if some permissions are revoked
-   in the meantime, the RS may still grant publish/subscribe to revoked
-   topics.  If the RS caches the token introspection responses, then the
-   RS should use a reasonable cache timeout to introspect tokens
-   regularly.  When permissions change dynamically, it is expected that
-   AS also follows a reasonable expiration strategy for the access
-   tokens.
 
 
 
@@ -1177,6 +1177,13 @@ Sengul, et al.          Expires November 18, 2020              [Page 21]
 
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
+
+   in the meantime, the RS may still grant publish/subscribe to revoked
+   topics.  If the RS caches the token introspection responses, then the
+   RS should use a reasonable cache timeout to introspect tokens
+   regularly.  When permissions change dynamically, it is expected that
+   AS also follows a reasonable expiration strategy for the access
+   tokens.
 
    The RS may monitor Client behaviour to detect potential security
    problems, especially those affecting availability.  These include
@@ -1187,6 +1194,14 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    vulnerable to a DDoS attack, where many Clients use the "authz-info"
    public topic to transport fictitious tokens, which RS may need to
    store indefinitely.
+
+   For MQTT v5, when a Client connects with a long Session Expiry
+   Interval, the RS may need to maintain Client's MQTT session state
+   after it disconnects for an extended period.  For MQTT v3.1.1, the
+   session state may need to be stored indefinitely, as it does not have
+   a Session Expiry Interval feature.  The RS SHOULD implement
+   administrative policies to limit misuse of the session continuation
+   by the Client.
 
 9.  Privacy Considerations
 
@@ -1207,6 +1222,18 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 10.1.  Normative References
 
+
+
+
+
+
+
+
+Sengul, et al.          Expires November 18, 2020              [Page 22]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    [I-D.ietf-ace-dtls-authorize]
               Gerdes, S., Bergmann, O., Bormann, C., Selander, G., and
               L. Seitz, "Datagram Transport Layer Security (DTLS)
@@ -1225,14 +1252,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               Seitz, L., "Additional OAuth Parameters for Authorization
               in Constrained Environments (ACE)", draft-ietf-ace-oauth-
               params-13 (work in progress), April 2020.
-
-
-
-
-Sengul, et al.          Expires November 18, 2020              [Page 22]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    [I-D.ietf-cose-x509]
               Schaad, J., "CBOR Object Signing and Encryption (COSE):
@@ -1264,6 +1283,13 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               Layer Security (TLS)", RFC 5705, DOI 10.17487/RFC5705,
               March 2010, <https://www.rfc-editor.org/info/rfc5705>.
 
+
+
+Sengul, et al.          Expires November 18, 2020              [Page 23]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/info/rfc6749>.
@@ -1282,13 +1308,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-Sengul, et al.          Expires November 18, 2020              [Page 23]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
@@ -1318,6 +1337,15 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               ietf-ace-pubsub-profile-00 (work in progress), January
               2020.
 
+
+
+
+
+Sengul, et al.          Expires November 18, 2020              [Page 24]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
               <https://www.rfc-editor.org/info/rfc4949>.
@@ -1336,15 +1364,6 @@ Appendix A.  Checklist for profile requirements
 
    o  Content format: For the HTTPS interactions with AS, "application/
       ace+json".
-
-
-
-
-
-Sengul, et al.          Expires November 18, 2020              [Page 24]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    o  PoP protocols: Either symmetric or asymmetric keys can be
       supported.
@@ -1376,6 +1395,13 @@ Appendix B.  Document Updates
 
    o  Corrected the Informative and Normative references.
 
+
+
+Sengul, et al.          Expires November 18, 2020              [Page 25]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    o  For AS discovery, clarified the CONNECT message omits the
       Authentication Data field.  Specified the User Property MUST be
       set to "ace_as_hint" for AS Request Creation Hints.
@@ -1392,15 +1418,6 @@ Appendix B.  Document Updates
 
    o  Added HS256 and RS256 are mandatory to implement depending on the
       choice of symmetric or asymmetric validation.
-
-
-
-
-
-Sengul, et al.          Expires November 18, 2020              [Page 25]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    o  Added MQTT to the TLS exporter label to make it application
       specific: 'EXPORTER-ACE-MQTT-Sign-Challenge'.
@@ -1433,6 +1450,14 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    o  Reorganised sections so that token authorisation for publish/
       subscribe messages are better placed.
 
+
+
+
+Sengul, et al.          Expires November 18, 2020              [Page 26]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    Version 01 to 02:
 
    o  Clarified protection of Application Message payload as out of
@@ -1450,13 +1475,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
       the main text.
 
    o  Clarified Will scope.
-
-
-
-Sengul, et al.          Expires November 18, 2020              [Page 26]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    o  Added MQTT AUTH to terminology.
 
@@ -1485,6 +1503,17 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    o  Added new figures to explain AUTH packets exchang, updated CONNECT
       message figure.
 
+
+
+
+
+
+
+Sengul, et al.          Expires November 18, 2020              [Page 27]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
 Acknowledgements
 
    The authors would like to thank Ludwig Seitz for his review and his
@@ -1500,18 +1529,6 @@ Authors' Addresses
    UK
 
    Email: csengul@acm.org
-
-
-
-
-
-
-
-
-
-Sengul, et al.          Expires November 18, 2020              [Page 27]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
    Anthony Kirby
@@ -1530,23 +1547,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    UK
 
    Email: paul.fremantle@port.ac.uk
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
