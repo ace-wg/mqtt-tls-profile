@@ -582,14 +582,29 @@
                 <xref target="disconnections"></xref> explains how the Broker deals with the retained messages in further detail.
             </t>
              <t>
-                In MQTT v5, to achieve a clean session (i.e., the session does not continue an existing session),
-	            the Client sets the Clean Start Flag to 1 and,
+                In MQTT v5, the Client signals a clean session (i.e., the session does not continue an existing session),
+	            by setting the Clean Start Flag to 1 and,
                 the Session Expiry Interval to 0 in the CONNECT
-                message. However, in this profile, the Broker MUST always
-                start with a clean session regardless of how these parameters are set. The clean session requirement is
-                for avoiding the Broker to keep unnecessary session state for unauthorised clients. Therefore, the Broker
-                MUST set the Session Present flag to 0 in the CONNACK packet to signal the Client that the Broker
-                started a clean session.
+                message. In this profile, the Broker SHOULD always
+                start with a clean session regardless of how these parameters are set. Starting a clean session helps
+                the Broker avoid keeping unnecessary session state for unauthorised clients. If the Broker starts
+                a clean session, the Broker MUST set the Session Present flag to 0 in the CONNACK packet to signal
+                this to the Client. 
+            </t>
+            <t>
+                If necessary, the Broker MAY support session continuation, and hence, maintain and use 
+                client state from the existing session. The client state MAY include token and its
+                introspection result (for reference tokens) in addition to the MQTT session state. 
+                When reconnecting to the Broker, the Client MUST still provide a token, as well as
+                setting the Clean Start to 0 and supplying a Session Expiry interval in the CONNECT message. 
+                The Broker MUST perform proof-of-possession validation on the provided token. 
+                If the token matches the stored state, 
+                the Broker MAY skip introspecting a token by reference, and use the stored introspection result. 
+                Continuing, both the Client and Broker MUST resend any unacknowledged PUBLISH packets (where QoS > 0) 
+                and PUBREL packets. The Broker MUST still verify the Client is authorized to receive or send 
+                these packets. When a Client connects with a long Session Expiry Interval, the
+                Broker may need to  maintain Client's MQTT session state after it disconnects for an extended period. 
+                Brokers SHOULD implement administrative policies to limit misuse.
 	        </t>
 	    </section>
         <section anchor="AUTH-method" title="Authentication Using AUTH Property">
