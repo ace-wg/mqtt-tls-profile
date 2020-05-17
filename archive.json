@@ -1,6 +1,6 @@
 {
-  "magic": "B8n2c@e8kvfx",
-  "timestamp": "2020-04-21T01:21:31.947062+00:00",
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2020-05-17T14:37:32.778153+00:00",
   "repo": "ace-wg/mqtt-tls-profile",
   "labels": [
     {
@@ -969,15 +969,15 @@
       "id": "MDU6SXNzdWU1NDk2NTQyMDg=",
       "title": "2.2.4 Clarify AUTH data format",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/40",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "On January 1, 2020, Jim wrote: \r\n2.2.4 - I am having a problem with trying to parse the content of the AUTH\r\nproperty.\u00a0 I have no problems with 2.2.4.3 because this is a zero length\r\nsequence of bytes.\u00a0 However for 2.2.4.1 and 2.2.4.2 there is a token\r\n(possibly binary with no length prefix) followed by an optional binary\r\ncryptographic value.\u00a0 For introspection, I would need to figure out the\r\nlength of the token before I could make a guess at the length of the\r\ncryptographic value.\u00a0 However given that there is no divider this does not\r\nseem possible.\u00a0 This may also become a problem for the response from the\r\nclient in the event that there is a change from an 8-byte nonce to a\r\nvariable length one.\r\n\r\nCS, January 14:\r\nNot specified a\u00a0 format, because I\u00a0 thought we discarded the variable-length nonce idea based on the meeting in Singapore, and the two pieces of information can be extracted when using fixed length.\u00a0What would you suggest - introduce a specific format?length_of_token+binary data for token+(the rest is cryptographic value)?",
       "createdAt": "2020-01-14T15:47:16Z",
-      "updatedAt": "2020-04-20T16:05:49Z",
-      "closedAt": null,
+      "updatedAt": "2020-04-21T01:22:40Z",
+      "closedAt": "2020-04-21T01:22:40Z",
       "comments": [
         {
           "author": "jimsch",
@@ -1027,6 +1027,13 @@
           "body": "OK - I remembered why I did not use Travis or Circle (both complain about permissions for different reasons). I deployed pages again manually through gh-pages. Things should be up-to-date now. ",
           "createdAt": "2020-04-20T16:05:49Z",
           "updatedAt": "2020-04-20T16:05:49Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ok - Circle-CI is setup and running",
+          "createdAt": "2020-04-21T01:22:40Z",
+          "updatedAt": "2020-04-21T01:22:40Z"
         }
       ]
     },
@@ -1159,7 +1166,7 @@
       "labels": [],
       "body": "Januar 1, 2020, Jim wrote: \r\nIt is not clear to me if the authentication method described in this\r\nsection is permitted with MQTT v5 or not.\u00a0 It does not say, but it appears\r\nto be a true statement.\u00a0 This should probably be explicit.",
       "createdAt": "2020-01-14T16:11:51Z",
-      "updatedAt": "2020-04-12T20:54:57Z",
+      "updatedAt": "2020-04-21T20:49:55Z",
       "closedAt": null,
       "comments": [
         {
@@ -1210,6 +1217,13 @@
           "body": "So with this library, the originally 3.1 client connects to the server as v5? So, yes, using the same authentication method to pass the token (with username and password) would work. \r\nWhen the token expires, I assume also this library is able to parse the authentication errors returned by PUBACK etc., which makes the client, most probably, disconnect. It cannot try to re-authenticate as that assumes a v5, and being able to use AUTH. ",
           "createdAt": "2020-04-12T20:54:57Z",
           "updatedAt": "2020-04-12T20:54:57Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "In the interim,\r\nBroker MAY support dual stack for V3.1.1 clients. \r\nand v5 clients should not use the v3.1.1 method.\r\n\r\nThis would simplify the interoperability discussion. \r\n",
+          "createdAt": "2020-04-21T20:49:55Z",
+          "updatedAt": "2020-04-21T20:49:55Z"
         }
       ]
     },
@@ -1324,15 +1338,15 @@
       "id": "MDU6SXNzdWU2MDI2MTIwMzY=",
       "title": "Figure 2 has an error",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/49",
-      "state": "CLOSED",
+      "state": "OPEN",
       "author": "jimsch",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I think that the string \"empty or\" should be removed from this diagram.  If you say that the method is ace and don't supply any data then the server cannot know who it is authenticating using the ace method.\r\n\r\n~~~ \r\n      |          Auth. Method (0x15) | 'ace'                 |\r\n       |          Auth. Data (0x16)   | empty or token or     |\r\n       |                                token + PoP data      |\r\n~~~",
       "createdAt": "2020-04-19T03:46:51Z",
-      "updatedAt": "2020-04-19T20:47:16Z",
-      "closedAt": "2020-04-19T20:47:16Z",
+      "updatedAt": "2020-04-21T13:42:47Z",
+      "closedAt": null,
       "comments": [
         {
           "author": "jimsch",
@@ -1340,6 +1354,13 @@
           "body": "found it",
           "createdAt": "2020-04-19T20:47:16Z",
           "updatedAt": "2020-04-19T20:47:16Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We should say AUTH. Data not present in the figure to align with text.",
+          "createdAt": "2020-04-21T13:42:47Z",
+          "updatedAt": "2020-04-21T13:42:47Z"
         }
       ]
     },
@@ -1366,6 +1387,60 @@
           "updatedAt": "2020-04-20T08:57:47Z"
         }
       ]
+    },
+    {
+      "number": 51,
+      "id": "MDU6SXNzdWU2MDQxODIyNjA=",
+      "title": "Reauthentication messages need to be defined",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/51",
+      "state": "OPEN",
+      "author": "jimsch",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I am not positive that I know the correct sequence for doing a re-authentication.  The message I sent recently just sent a token in the first message, but in my code comments it is talking about both a token and a nonce.  Should be documented.",
+      "createdAt": "2020-04-21T18:10:08Z",
+      "updatedAt": "2020-04-21T23:46:49Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes, needs to be clarified. As discussed in the interim, re-authentication should only use the challenge-response method as TLS-EXPORTER returns the same value for the same label; and would want to be re-used. ",
+          "createdAt": "2020-04-21T18:27:10Z",
+          "updatedAt": "2020-04-21T18:27:10Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Also, the question is should the broker accept AUTH message with reason code re-authentication, if the CONNECT message did not contain a token.\r\n\r\nMQTT allows clients to send AUTH and DISCONNECT after CONNECT (From MQTT v5 Spec: If a Client sets an Authentication Method in the CONNECT, the Client MUST NOT send any packets other than AUTH or DISCONNECT packets until it has received a CONNACK packet [MQTT-3.1.2-30].). \r\n\r\nThe server is allowed to only process AUTH messages before sending a CONNACK. (From MQTT v5 spec: If the Server rejects the CONNECT, it MUST NOT process any data sent by the Client after the CONNECT packet except AUTH packets). \r\n\r\nBut. it does not say it MUST process AUTH packets.\r\n\r\nI am in favour of saying: The Client SHOULD not send AUTH messages (e.g., with reason code reauthentication) after CONNECT and before CONNACK.  As it is, at least to me, uncertain that the server will always process an AUTH before responding to CONNECT.\r\n\r\nSo, the first token SHOULD be transported using one of the methods described in 2.2.2 or 2.2.3. \r\n\r\nIf the client does that, since re-authentication flow triggers the token validation flow, the server MAY still be able to accept the connection. The token validation flow for re-authentication MUST be the challenge/response flow. ",
+          "createdAt": "2020-04-21T20:47:37Z",
+          "updatedAt": "2020-04-21T20:47:37Z"
+        },
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The only requirement for re-authentication is that a) some authentication has been done according to the spec and b) the authentication method cannot change.  The client can send a new AUTH message to do re-authentication any point in time after the CONNACK has been received.  If we define method \"ace\" with no authentication data as forcing a CONNACK w/ failure then what I originally suggested cannot happen because of the CONNACK failure.  However, if a client gets a new/updated token it wants to be able to re-authenticate and continue operating so that needs to be covered.",
+          "createdAt": "2020-04-21T23:46:48Z",
+          "updatedAt": "2020-04-21T23:46:48Z"
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "id": "MDU6SXNzdWU2MDQyNzc2ODE=",
+      "title": "Clean session requirement - change MUST to SHOULD",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/52",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In the interim, we discussed MUST is too strict when efficiency is considered. Therefore, we will drop this to SHOULD, and other SHOULDs around how the server keeps state, and for how long, and how it deals with any pending messages etc. \r\n",
+      "createdAt": "2020-04-21T20:51:50Z",
+      "updatedAt": "2020-04-21T20:51:50Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -1386,7 +1461,16 @@
       "mergedAt": "2019-10-20T22:07:28Z",
       "mergedBy": "ciseng",
       "comments": [],
-      "reviews": []
+      "reviews": [],
+      "baseRepository": "ace-wg/mqtt-tls-profile",
+      "baseRefName": "master",
+      "baseRefOid": "23b8813f35d869a0e76da12f863b97027066aa34",
+      "headRepository": "ace-wg/mqtt-tls-profile",
+      "headRefName": "fix/ietf-ace-dtls-authorize",
+      "headRefOid": "d157b89d3150d54a82fdfe698d9435b129567655",
+      "mergeCommit": {
+        "oid": "e5e630fb0c37f44a487e122900c5d037c59e06a4"
+      }
     },
     {
       "number": 33,
@@ -1405,7 +1489,14 @@
       "mergedAt": null,
       "mergedBy": null,
       "comments": [],
-      "reviews": []
+      "reviews": [],
+      "baseRepository": "ace-wg/mqtt-tls-profile",
+      "baseRefName": "master",
+      "baseRefOid": "23b8813f35d869a0e76da12f863b97027066aa34",
+      "headRepository": "ace-wg/mqtt-tls-profile",
+      "headRefName": "fix/gitignore",
+      "headRefOid": "c7a979560c4acc5aa1efe9d7cd2c2b5a454c96dc",
+      "mergeCommit": null
     },
     {
       "number": 34,
@@ -1438,7 +1529,16 @@
           "updatedAt": "2019-10-20T22:21:01Z",
           "comments": []
         }
-      ]
+      ],
+      "baseRepository": "ace-wg/mqtt-tls-profile",
+      "baseRefName": "master",
+      "baseRefOid": "e5e630fb0c37f44a487e122900c5d037c59e06a4",
+      "headRepository": "ace-wg/mqtt-tls-profile",
+      "headRefName": "fix/gitignore",
+      "headRefOid": "c2596819fe4de31db574a550fbf2aea71511f583",
+      "mergeCommit": {
+        "oid": "250d8186be5e2c6b59f6a43de684aa5c8a74ff9c"
+      }
     },
     {
       "number": 35,
@@ -1471,7 +1571,16 @@
           "updatedAt": "2019-10-20T22:20:09Z",
           "comments": []
         }
-      ]
+      ],
+      "baseRepository": "ace-wg/mqtt-tls-profile",
+      "baseRefName": "master",
+      "baseRefOid": "e5e630fb0c37f44a487e122900c5d037c59e06a4",
+      "headRepository": "ace-wg/mqtt-tls-profile",
+      "headRefName": "fix/xml2rfc-formatting-whinges",
+      "headRefOid": "a32f0966f181ca8389256eb3bfbe0bb04863caff",
+      "mergeCommit": {
+        "oid": "a3c3105e4fd535e5d94051127077ea01fe5b7375"
+      }
     },
     {
       "number": 36,
@@ -1525,7 +1634,16 @@
           "updatedAt": "2019-10-22T21:20:51Z",
           "comments": []
         }
-      ]
+      ],
+      "baseRepository": "ace-wg/mqtt-tls-profile",
+      "baseRefName": "master",
+      "baseRefOid": "250d8186be5e2c6b59f6a43de684aa5c8a74ff9c",
+      "headRepository": "ace-wg/mqtt-tls-profile",
+      "headRefName": "ak/clarify-retain-expiry",
+      "headRefOid": "7e46a8dfe719b411bcf37e3556bd9ef815d5cb9c",
+      "mergeCommit": {
+        "oid": "42218470adad333acd04283d149529123b3da768"
+      }
     }
   ]
 }
