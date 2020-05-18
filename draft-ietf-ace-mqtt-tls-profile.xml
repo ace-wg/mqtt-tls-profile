@@ -1037,7 +1037,7 @@
         <!-- Possibly a 'Acknowledgements'/ 'Contributors' section ... -->
         <section anchor="IANA" title="IANA Considerations">
          <t>
-            This document registers 'EXPORTER-ACE-Sign-Challenge from <xref target="pop_nonce"></xref>
+            This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge' from <xref target="pop_nonce"></xref>
             in the TLS Exporter Label Registry
             <xref target="RFC8447">TLS-REGISTRIES</xref>.
          </t>
