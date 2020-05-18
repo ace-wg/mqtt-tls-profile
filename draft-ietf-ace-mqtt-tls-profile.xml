@@ -541,7 +541,7 @@
        +------------------------------------------------------+
        |                 Property length                      |
        |          Auth. Method (0x15) | 'ace'                 |
-       |          Auth. Data (0x16)   | empty or token or     |
+       |          Auth. Data (0x16)   | token or              |
        |                                token + PoP data      |
        +------------------------------------------------------+
        |                     Payload                          |
@@ -685,21 +685,6 @@
                      ]]></artwork>
                     </figure>
                     </section>
-                    <section title="Unauthorised Request: Authorisation Server Discovery" anchor="as_discovery">
-	                    <t>
-	                    Finally, this document allows the CONNECT message to have the Authentication Method
-                        set to 'ace' omitting the Authentication Data field.
-                        This is the AS discovery option and the RS responds with the CONNACK
-                        reason code '0x87 (Not Authorized)' and includes a User Property (identified by 38 (0x26)) for
-                        the AS Request Creation Hints.
-                        The User Property is a UTF-8 string pair, composed of a name and a value. The name
-                        of the User Property MUST be set to "ace_as_hint". The value of the user property
-                        is a UTF-8 encoded JSON string containing the mandatory "AS" parameter,
-                         and the optional parameters "audience", "kid", "cnonce", and "scope" as defined
-                         in the Section 5.1.2
-                        of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
-	                    </t>
-                    </section>
                 </section>
             <section title="Token Validation" anchor="token_validation">
                 <t>
@@ -718,33 +703,55 @@
 		        </t>
             </section>
             <section title="The Broker's Response to Client Connection Request">
+                 Based on the validation result (obtained either via local inspection or using the /introspection
+                interface of the AS), the Broker MUST send a CONNACK message to the Client.
+                  <section title="Unauthorised Request: Authorisation Server Discovery" anchor="as_discovery">
+	                <t>
+	                    If the Client does not provide a valid token or omits the Authentication Data field, 
+                        the Broker triggers AS discovery.
+                        The Broker MUST NOT process any data sent by the Client after the CONNECT packet 
+                        including AUTH packets (Note that this is different in MQTT v5, 
+                        the Broker is allowed to process 
+                        AUTH packets even if the Broker rejects the CONNECT).
+                    </t>
+                    <t>
+                    The Broker responds with the CONNACK
+                        reason code '0x87 (Not Authorized)' and includes a User Property (identified by 38 (0x26)) for
+                        the AS Request Creation Hints.
+                        The User Property is a UTF-8 string pair, composed of a name and a value. The name
+                        of the User Property MUST be set to "ace_as_hint". The value of the user property
+                        is a UTF-8 encoded JSON string containing the mandatory "AS" parameter,
+                         and the optional parameters "audience", "kid", "cnonce", and "scope" as defined
+                         in the Section 5.1.2
+                        of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
+	                </t>
+                 </section>
+                 <section title="Authorisation Success" anchor="auth_success">
                    <t>
-                        Based on the validation result (obtained either via local inspection or using the /introspection
-                        interface of the AS), the Broker MUST send a CONNACK message to the Client.
-                        The reason code of the
-                        CONNACK is '0x00 (Success)' if the token validation is successful.
-                        If the Broker starts a new session, it MUST also set Session Present to 0
-                         in the CONNACK packet to signal a clean session to the Client. Otherwise, 
-                         it MUST set Session Present to 1.
-	                    In case of an invalid PoP token, the CONNACK reason code
-                        is '0x87 (Not Authorized)'.
+                    On success, the reason code of the CONNACK is '0x00 (Success)'.
+                    If the Broker starts a new session, it MUST also set Session Present to 0
+                    in the CONNACK packet to signal a clean session to the Client. Otherwise,
+                    it MUST set Session Present to 1.
+	                In case of an invalid PoP token, the CONNACK reason code
+                    is '0x87 (Not Authorized)'.
                     </t>
                     <t>
-                        If the Broker accepts the connection, it MUST store the token until the end of
-                        the connection.
-                        On Client or Broker disconnection, the Client is expected to provide a token again
-                        inside the next CONNECT message.
+                    If the Broker accepts the connection, it MUST store the token until the end of
+                    the connection. On Client or Broker disconnection, 
+                    the Client is expected to provide a token again
+                    inside the next CONNECT message.
                     </t>
                     <t>
-                        If the token is not self-contained and the Broker uses token
-                        introspection, it MAY cache the validation result to authorize
-                        the subsequent PUBLISH and SUBSCRIBE messages.
-                        PUBLISH and SUBSCRIBE messages, which are sent after a connection
-                        set-up, do not contain access tokens. If the introspection result
-                        is not cached, then the RS needs to introspect the saved token for
-                        each request. The Broker SHOULD also use a cache time out to introspect
-                        tokens regularly.
+                    If the token is not self-contained and the Broker uses token
+                    introspection, it MAY cache the validation result to authorize
+                    the subsequent PUBLISH and SUBSCRIBE messages.
+                    PUBLISH and SUBSCRIBE messages, which are sent after a connection
+                    set-up, do not contain access tokens. If the introspection result
+                    is not cached, then the RS needs to introspect the saved token for
+                    each request. The Broker SHOULD also use a cache time out to introspect
+                    tokens regularly.
                     </t>
+                </section>
             </section>
         </section>
     </section>
@@ -850,6 +857,11 @@
             no more messages can be sent.
 		    However, as a response to the PUBACK and SUBACK, the Client MAY re-authenticate
             by sending an AUTH packet with a Reason Code of '0x19 (Re-authentication)'.
+            The Client MUST have used challenge-response PoP as defined 
+            in Section <xref target="pop_challenge"></xref> and MUST 
+            use the same method for re-authentication.
+            The Broker accepts re-authentication requests if the Client has already submitted
+            a token (may be expired) and validated via challenge-response. Otherwise, the Broker MUST deny the request. 
         </t>
 		<t>
 		    To re-authenticate, the Client sends an AUTH packet with reason code '0x19 (Re-authentication)'.
