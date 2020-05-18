@@ -703,8 +703,10 @@
 		        </t>
             </section>
             <section title="The Broker's Response to Client Connection Request">
+                <t>
                  Based on the validation result (obtained either via local inspection or using the /introspection
                 interface of the AS), the Broker MUST send a CONNACK message to the Client.
+                </t>
                   <section title="Unauthorised Request: Authorisation Server Discovery" anchor="as_discovery">
 	                <t>
 	                    If the Client does not provide a valid token or omits the Authentication Data field, 
