@@ -554,7 +554,7 @@
                 <xref target="mqtt_connect_flags"></xref> shows how the MQTT connect
                 flags MUST be set to use AUTH packets for authentication and authorisation.
                 To use AUTH, the username and password flags MUST be set to 0.
-                The RS MAY support token transport using username and password to provide 
+                An MQTT v5 RS MAY support token transport using username and password to provide 
                 a security option for MQTT v3.1.1 clients, as 
                 described in  <xref target="MQTTv311"></xref>.
             </t>
@@ -903,7 +903,7 @@
 	<section anchor="MQTTv311" title="Reduced Protocol Interactions for MQTT v3.1.1">
         <t>
         This section describes a reduced set of protocol interactions for the MQTT v3.1.1 Client.
-        MQTT v5 brokers MAY implement these interactions for the MQTT v3.1.1 clients; MQTT v5 clients are NOT RECOMMENDED
+        An MQTT v5 Broker MAY implement these interactions for the MQTT v3.1.1 clients; MQTT v5 clients are NOT RECOMMENDED
         to use the flows described in this section. 
         Brokers that do not support MQTT v3.1.1 clients return a CONNACK packet
         with Reason Code '0x84 (Unsupported Protocol Version)' in response to the clients' CONNECT packet.
