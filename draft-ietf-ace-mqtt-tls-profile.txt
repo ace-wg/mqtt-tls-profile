@@ -1142,7 +1142,7 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 7.  IANA Considerations
 
-   This document registers 'EXPORTER-ACE-Sign-Challenge from
+   This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge' from
    Section 2.2.4.1 in the TLS Exporter Label Registry TLS-REGISTRIES
    [RFC8447].
 
