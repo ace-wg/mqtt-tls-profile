@@ -618,9 +618,9 @@ Sengul, et al.          Expires November 19, 2020              [Page 11]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
-   be set to 0.  The RS MAY support token transport using username and
-   password to provide a security option for MQTT v3.1.1 clients, as
-   described in Section 6.
+   be set to 0.  An MQTT v5 RS MAY support token transport using
+   username and password to provide a security option for MQTT v3.1.1
+   clients, as described in Section 6.
 
    +-----------------------------------------------------------+
    |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
@@ -1000,8 +1000,8 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 6.  Reduced Protocol Interactions for MQTT v3.1.1
 
    This section describes a reduced set of protocol interactions for the
-   MQTT v3.1.1 Client.  MQTT v5 brokers MAY implement these interactions
-   for the MQTT v3.1.1 clients; MQTT v5 clients are NOT RECOMMENDED to
+   MQTT v3.1.1 Client.  An MQTT v5 Broker MAY implement these
+   interactions for the MQTT v3.1.1 clients; MQTT v5 clients are NOT
 
 
 
@@ -1010,10 +1010,10 @@ Sengul, et al.          Expires November 19, 2020              [Page 18]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
-   use the flows described in this section.  Brokers that do not support
-   MQTT v3.1.1 clients return a CONNACK packet with Reason Code '0x84
-   (Unsupported Protocol Version)' in response to the clients' CONNECT
-   packet.
+   RECOMMENDED to use the flows described in this section.  Brokers that
+   do not support MQTT v3.1.1 clients return a CONNACK packet with
+   Reason Code '0x84 (Unsupported Protocol Version)' in response to the
+   clients' CONNECT packet.
 
 6.1.  Token Transport
 
