@@ -646,8 +646,8 @@
 	        <t>
 	            For this option, the RS follows a Broker-generated challenge/response protocol.
                 The success case is illustrated in <xref target="pop_challenge_response"></xref>.
-                If the Authentication Data only includes the token,
-                the RS MUST respond with an AUTH packet,
+                If the Authentication Data contains only the two-byte integer token length and
+                the token, the RS MUST respond with an AUTH packet,
                 with the Authenticate Reason Code set to '0x18 (Continue Authentication)'.
                 This packet includes the Authentication Method, which MUST be set to 'ace'
                 and Authentication Data. The Authentication Data MUST NOT be empty and contains
