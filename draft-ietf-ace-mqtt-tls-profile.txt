@@ -96,13 +96,13 @@ Table of Contents
      6.1.  Token Transport . . . . . . . . . . . . . . . . . . . . .  19
      6.2.  Handling Authorization Errors . . . . . . . . . . . . . .  20
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
-   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  22
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  22
+   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  23
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  24
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  25
    Appendix A.  Checklist for profile requirements . . . . . . . . .  25
-   Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  25
+   Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  26
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  28
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
@@ -619,9 +619,8 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
    be set to 0.  The RS MAY support token transport using username and
-   password and the CONNECT message for that option is described in
-   Section 6 for MQTT v3.1.1, which is the only option available to MQTT
-   v3.1.1.
+   password to provide a security option for MQTT v3.1.1 clients, as
+   described in Section 6.
 
    +-----------------------------------------------------------+
    |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
@@ -666,6 +665,7 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    validation on the provided token.  If the token matches the stored
    state, the Broker MAY skip introspecting a token by reference, and
    use the stored introspection result.  Continuing, both the Client and
+   Broker MUST resend any unacknowledged PUBLISH packets (where QoS > 0)
 
 
 
@@ -674,7 +674,6 @@ Sengul, et al.          Expires November 19, 2020              [Page 12]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
-   Broker MUST resend any unacknowledged PUBLISH packets (where QoS > 0)
    and PUBREL packets.  The Broker MUST still verify the Client is
    authorized to receive or send these packets.  When a Client connects
    with a long Session Expiry Interval, the Broker may need to maintain
@@ -722,6 +721,7 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    protocol.  The success case is illustrated in Figure 4.  If the
    Authentication Data contains only the two-byte integer token length
    and the token, the RS MUST respond with an AUTH packet, with the
+   Authenticate Reason Code set to '0x18 (Continue Authentication)'.
 
 
 
@@ -730,7 +730,6 @@ Sengul, et al.          Expires November 19, 2020              [Page 13]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
-   Authenticate Reason Code set to '0x18 (Continue Authentication)'.
    This packet includes the Authentication Method, which MUST be set to
    'ace' and Authentication Data.  The Authentication Data MUST NOT be
    empty and contains an 8-byte nonce as a challenge for the Client.
@@ -778,6 +777,7 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    RS256 are mandatory to implement depending on the choice of symmetric
    or asymmetric validation.  Validation of the signature or MAC MUST
    fail if the signature algorithm is set to "none", when the key used
+
 
 
 
@@ -1000,8 +1000,8 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 6.  Reduced Protocol Interactions for MQTT v3.1.1
 
    This section describes a reduced set of protocol interactions for the
-   MQTT v3.1.1 Client.  MQTT v.5 brokers MAY also implement this method.
-   Brokers that do not support MQTT v3.1.1 clients return a CONNACK
+   MQTT v3.1.1 Client.  MQTT v5 brokers MAY implement these interactions
+   for the MQTT v3.1.1 clients; MQTT v5 clients are NOT RECOMMENDED to
 
 
 
@@ -1010,8 +1010,10 @@ Sengul, et al.          Expires November 19, 2020              [Page 18]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
-   packet with Reason Code '0x84 (Unsupported Protocol Version)' in
-   response to the clients' CONNECT packet.
+   use the flows described in this section.  Brokers that do not support
+   MQTT v3.1.1 clients return a CONNACK packet with Reason Code '0x84
+   (Unsupported Protocol Version)' in response to the clients' CONNECT
+   packet.
 
 6.1.  Token Transport
 
@@ -1050,6 +1052,20 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    Figure 6 shows how the MQTT connect flags MUST be set to initiate a
    connection with the Broker.
 
+
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 19]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    +-----------------------------------------------------------+
    |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
    | flag    |flag |           |        |         |     |      |
@@ -1058,13 +1074,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    +-----------------------------------------------------------+
 
               Figure 6: MQTT CONNECT flags.  (Rsvd=Reserved)
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 19]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    The Broker SHOULD NOT accept session continuation.  To this end, the
    Broker ignores how the Clean Session Flag is set, and on connection
@@ -1105,6 +1114,14 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    In the following, we list how errors are handled without such
    protocol support.
 
+
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 20]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    o  CONNECT without a token: It is not possible to support AS
       discovery via sending a tokenless CONNECT message to the Broker.
       This is because a CONNACK packet in MQTT v3.1.1 does not include a
@@ -1114,14 +1131,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    o  Client-RS PUBLISH authorization failure: In the case of a failure,
       it is not possible to return an error in MQTT v3.1.1.
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 20]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
-
       Acknowledgement messages only indicate success.  In the case of an
       authorization error, the Broker SHOULD disconnect the Client.
       Otherwise, it MUST ignore the PUBLISH message.  Also, as
@@ -1162,6 +1171,13 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    CBOR Value:
 
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 21]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    Reference: [RFC-XXXX]
 
 8.  Security Considerations
@@ -1170,13 +1186,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    Authorization for Constrained Environments (ACE) framework
    [I-D.ietf-ace-oauth-authz].  Therefore, the security considerations
    outlined in [I-D.ietf-ace-oauth-authz] apply to this work.
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 21]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    In addition, the security considerations outlined in MQTT v5.0 - the
    OASIS Standard [MQTT-OASIS-Standard-v5] and MQTT v3.1.1 - the OASIS
@@ -1214,6 +1223,17 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    administrative policies to limit misuse of the session continuation
    by the Client.
 
+
+
+
+
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 22]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
 9.  Privacy Considerations
 
    The privacy considerations outlined in [I-D.ietf-ace-oauth-authz]
@@ -1226,14 +1246,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    encrypted separately for the subscribers.  This functionality may be
    implemented using the proposal outlined in the CoAP Pub-Sub Profile
    [I-D.ietf-ace-pubsub-profile].  However, this solution would still
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 22]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
-
    not provide privacy for other properties of the message such as Topic
    Name.
 
@@ -1271,6 +1283,13 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               Version 3.1.1 Plus Errata 01", 2015, <http://docs.oasis-
               open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html>.
 
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 23]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    [MQTT-OASIS-Standard-v5]
               Banks, A., Ed., Briggs, E., Ed., Borgendale, K., Ed., and
               R. Gupta, Ed., "OASIS Standard MQTT Version 5.0", 2017,
@@ -1281,14 +1300,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 23]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
@@ -1325,6 +1336,16 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               and DTLS", RFC 8447, DOI 10.17487/RFC8447, August 2018,
               <https://www.rfc-editor.org/info/rfc8447>.
 
+
+
+
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 24]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    [RFC8747]  Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
               Tschofenig, "Proof-of-Possession Key Semantics for CBOR
               Web Tokens (CWTs)", RFC 8747, DOI 10.17487/RFC8747, March
@@ -1338,13 +1359,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               of Things", research International Workshop on Secure
               Internet of Things, September 2014,
               <http://dx.doi.org/10.1109/SIoT.2014.8>.
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 24]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    [I-D.ietf-ace-pubsub-profile]
               Palombini, F., "Pub-Sub Profile for Authentication and
@@ -1381,6 +1395,13 @@ Appendix A.  Checklist for profile requirements
    o  Token request: Client or its Client AS uses HTTPS /token interface
       of AS.
 
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 25]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    o  /authz-info endpoint: It MAY be supported using the method
       described in Section 2.2.2, but is not protected.
 
@@ -1392,15 +1413,6 @@ Appendix A.  Checklist for profile requirements
 Appendix B.  Document Updates
 
    Version 03 to 04:
-
-
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 25]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    o  Linked the terms Broker and MQTT server more at the introduction
       of the document.
@@ -1439,6 +1451,13 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    Version 02 to 03:
 
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 26]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    o  Added the option of Broker certificate thumbprint in the 'rs_cnf'
       sent to the Client.
 
@@ -1448,15 +1467,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    o  Added a client nonce, when Challenge/Response Authentication is
       used between Client and Broker.
-
-
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 26]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    o  Clarified the use of the "authz-info" topic and the error response
       if token validation fails.
@@ -1496,6 +1506,14 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    o  Clarified Will message.
 
+
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 27]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    o  Improved consistency in the use of terminology, and upper/lower
       case.
 
@@ -1506,13 +1524,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
       authorization server.
 
    o  Clarified the Connect message payload and Client Identifier.
-
-
-
-Sengul, et al.          Expires November 19, 2020              [Page 27]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    o  Presented different methods for passing the token, and PoP.
 
@@ -1545,6 +1556,20 @@ Authors' Addresses
    Email: anthony@anthony.org
 
 
+
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 28]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2020
+
+
    Paul Fremantle
    University of Portsmouth
    School of Computing, Buckingham House
@@ -1565,4 +1590,35 @@ Authors' Addresses
 
 
 
-Sengul, et al.          Expires November 19, 2020              [Page 28]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires November 19, 2020              [Page 29]

@@ -743,7 +743,7 @@
        +------------------------------------------------------+
         </pre>
 <p class="figure">Figure 2: MQTT v5 CONNECT control message with ACE authentication. (CPT=Control Packet Type)</p>
-<p id="rfc.section.2.2.3.p.3">The CONNECT message flags are Username, Password, Will retain, Will QoS, Will Flag, Clean Start, and Reserved.  <a href="#mqtt_connect_flags" class="xref">Figure 6</a> shows how the MQTT connect flags MUST be set to use AUTH packets for authentication and authorisation.  To use AUTH, the username and password flags MUST be set to 0.  The RS MAY support token transport using username and password and the CONNECT message for that option is described in  <a href="#MQTTv311" class="xref">Section 6</a> for MQTT v3.1.1, which is the only option available to MQTT v3.1.1.  </p>
+<p id="rfc.section.2.2.3.p.3">The CONNECT message flags are Username, Password, Will retain, Will QoS, Will Flag, Clean Start, and Reserved.  <a href="#mqtt_connect_flags" class="xref">Figure 6</a> shows how the MQTT connect flags MUST be set to use AUTH packets for authentication and authorisation.  To use AUTH, the username and password flags MUST be set to 0.  The RS MAY support token transport using username and password to provide a security option for MQTT v3.1.1 clients, as described in  <a href="#MQTTv311" class="xref">Section 6</a>.  </p>
 <div id="rfc.figure.3"></div>
 <div id="mqttv5_connect_flags"></div>
 <pre>
@@ -855,7 +855,7 @@
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#MQTTv311" id="MQTTv311">Reduced Protocol Interactions for MQTT v3.1.1</a>
 </h1>
-<p id="rfc.section.6.p.1">This section describes a reduced set of protocol interactions for the MQTT v3.1.1 Client.  MQTT v.5 brokers MAY also implement this method.  Brokers that do not support MQTT v3.1.1 clients return a CONNACK packet with Reason Code '0x84 (Unsupported Protocol Version)' in response to the clients' CONNECT packet.  </p>
+<p id="rfc.section.6.p.1">This section describes a reduced set of protocol interactions for the MQTT v3.1.1 Client.  MQTT v5 brokers MAY implement these interactions for the MQTT v3.1.1 clients; MQTT v5 clients are NOT RECOMMENDED to use the flows described in this section.  Brokers that do not support MQTT v3.1.1 clients return a CONNACK packet with Reason Code '0x84 (Unsupported Protocol Version)' in response to the clients' CONNECT packet.  </p>
 <h1 id="rfc.section.6.1">
 <a href="#rfc.section.6.1">6.1.</a> <a href="#token_311" id="token_311">Token Transport</a>
 </h1>
