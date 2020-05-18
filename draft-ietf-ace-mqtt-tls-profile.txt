@@ -720,8 +720,8 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    For this option, the RS follows a Broker-generated challenge/response
    protocol.  The success case is illustrated in Figure 4.  If the
-   Authentication Data only includes the token, the RS MUST respond with
-   an AUTH packet, with the Authenticate Reason Code set to '0x18
+   Authentication Data contains only the two-byte integer token length
+   and the token, the RS MUST respond with an AUTH packet, with the
 
 
 
@@ -730,16 +730,17 @@ Sengul, et al.          Expires November 19, 2020              [Page 13]
 Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
-   (Continue Authentication)'.  This packet includes the Authentication
-   Method, which MUST be set to 'ace' and Authentication Data.  The
-   Authentication Data MUST NOT be empty and contains an 8-byte nonce as
-   a challenge for the Client.  The Client responds to this with an AUTH
-   packet with a reason code '0x18 (Continue Authentication)'.
-   Similarly, the Client packet sets the Authentication Method to 'ace'.
-   The Authentication Data in the Client's response is formatted as
-   client nonce length, the client nonce, and the signature or MAC
-   computed over the RS nonce concatenated with the client nonce.  Next,
-   the token is validated as described in Section 2.2.5.
+   Authenticate Reason Code set to '0x18 (Continue Authentication)'.
+   This packet includes the Authentication Method, which MUST be set to
+   'ace' and Authentication Data.  The Authentication Data MUST NOT be
+   empty and contains an 8-byte nonce as a challenge for the Client.
+   The Client responds to this with an AUTH packet with a reason code
+   '0x18 (Continue Authentication)'.  Similarly, the Client packet sets
+   the Authentication Method to 'ace'.  The Authentication Data in the
+   Client's response is formatted as client nonce length, the client
+   nonce, and the signature or MAC computed over the RS nonce
+   concatenated with the client nonce.  Next, the token is validated as
+   described in Section 2.2.5.
 
                                 Resource
                     Client      Server
@@ -777,7 +778,6 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    RS256 are mandatory to implement depending on the choice of symmetric
    or asymmetric validation.  Validation of the signature or MAC MUST
    fail if the signature algorithm is set to "none", when the key used
-
 
 
 
