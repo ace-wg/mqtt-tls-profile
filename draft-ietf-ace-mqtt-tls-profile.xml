@@ -1243,7 +1243,7 @@
             <t>Added to Section 3.1, in case of an authorisation failure and QoS level 0, 
             the RS sends a DISCONNECT with reason code '0x87 (Not authorized)'.</t>
             <t>Added a pointer to section 4.7 of MQTTv5 spec for more information on topic names and filters.</t>
-            <t>Added HS256 and RS256 are mandatory to implement depending on the choice
+            <t>Added HS256 and Ed25519 are mandatory to implement depending on the choice
                     of symmetric or asymmetric validation.</t>
             <t>Added MQTT to the TLS exporter label to make it application specific: 'EXPORTER-ACE-MQTT-Sign-Challenge'.</t>
             <t>Added a format for Authentication Data so that length values prefix the token (or client nonce)
