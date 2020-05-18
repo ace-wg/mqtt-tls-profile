@@ -1436,8 +1436,8 @@ Appendix B.  Document Updates
    o  Added a pointer to section 4.7 of MQTTv5 spec for more information
       on topic names and filters.
 
-   o  Added HS256 and RS256 are mandatory to implement depending on the
-      choice of symmetric or asymmetric validation.
+   o  Added HS256 and Ed25519 are mandatory to implement depending on
+      the choice of symmetric or asymmetric validation.
 
    o  Added MQTT to the TLS exporter label to make it application
       specific: 'EXPORTER-ACE-MQTT-Sign-Challenge'.

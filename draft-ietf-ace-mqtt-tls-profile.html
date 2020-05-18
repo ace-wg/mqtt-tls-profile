@@ -1072,7 +1072,7 @@
 <li>Added that MQTT v5 brokers MAY also implement reduced interactions described for MQTTv3.1.1.</li>
 <li>Added to Section 3.1, in case of an authorisation failure and QoS level 0, the RS sends a DISCONNECT with reason code '0x87 (Not authorized)'.</li>
 <li>Added a pointer to section 4.7 of MQTTv5 spec for more information on topic names and filters.</li>
-<li>Added HS256 and RS256 are mandatory to implement depending on the choice of symmetric or asymmetric validation.</li>
+<li>Added HS256 and Ed25519 are mandatory to implement depending on the choice of symmetric or asymmetric validation.</li>
 <li>Added MQTT to the TLS exporter label to make it application specific: 'EXPORTER-ACE-MQTT-Sign-Challenge'.</li>
 <li>Added a format for Authentication Data so that length values prefix the token (or client nonce) when Authentication Data contains more than one piece of information.</li>
 <li>Clarified clients still connect over TLS (server-side) for the authz-info flow. </li>
