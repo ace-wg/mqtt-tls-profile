@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-05-18T15:32:04.348040+00:00",
+  "timestamp": "2020-05-27T20:29:43.524520+00:00",
   "repo": "ace-wg/mqtt-tls-profile",
   "labels": [
     {
@@ -1049,7 +1049,7 @@
       "labels": [],
       "body": "On January 1, 2020, Jim wrote: \r\n2.2.4.1 - In my view it is not the secret, but the content that is being\r\nobtained from the TLS exporter.\u00a0 That is one is signing (or MACing) the\r\nexporter value not using that value to compute a MAC on something else.\r\nWhile it is true that only the two parties know that value, exposure to a\r\nthird party does not lead to a compromise.",
       "createdAt": "2020-01-14T15:49:03Z",
-      "updatedAt": "2020-03-26T23:50:34Z",
+      "updatedAt": "2020-05-18T21:46:50Z",
       "closedAt": null,
       "comments": [
         {
@@ -1079,6 +1079,13 @@
           "body": "I lapsed there. Ed25519 obviously better.",
           "createdAt": "2020-03-26T23:28:03Z",
           "updatedAt": "2020-03-26T23:50:34Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Changed to Ed25519.",
+          "createdAt": "2020-05-18T21:46:50Z",
+          "updatedAt": "2020-05-18T21:46:50Z"
         }
       ]
     },
@@ -1166,7 +1173,7 @@
       "labels": [],
       "body": "Januar 1, 2020, Jim wrote: \r\nIt is not clear to me if the authentication method described in this\r\nsection is permitted with MQTT v5 or not.\u00a0 It does not say, but it appears\r\nto be a true statement.\u00a0 This should probably be explicit.",
       "createdAt": "2020-01-14T16:11:51Z",
-      "updatedAt": "2020-04-21T20:49:55Z",
+      "updatedAt": "2020-05-18T21:31:57Z",
       "closedAt": null,
       "comments": [
         {
@@ -1224,6 +1231,13 @@
           "body": "In the interim,\r\nBroker MAY support dual stack for V3.1.1 clients. \r\nand v5 clients should not use the v3.1.1 method.\r\n\r\nThis would simplify the interoperability discussion. \r\n",
           "createdAt": "2020-04-21T20:49:55Z",
           "updatedAt": "2020-04-21T20:49:55Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added to Section 2.2.3:\r\n\"An MQTT v5 RS MAY support token transport using username and password to provide a security option for MQTT v3.1.1 clients, as described in  Section 6.\"\r\n\r\nAdded to Section 6:\r\n\"This section describes a reduced set of protocol interactions for the MQTT v3.1.1 Client.\r\n An MQTT v5 Broker MAY implement these interactions for the MQTT v3.1.1 clients; MQTT v5 clients are NOT RECOMMENDED to use the flows described in this section. \"",
+          "createdAt": "2020-05-18T21:31:57Z",
+          "updatedAt": "2020-05-18T21:31:57Z"
         }
       ]
     },
@@ -1298,16 +1312,24 @@
       "id": "MDU6SXNzdWU1ODg3OTgxNjc=",
       "title": "Correct IANA considerations",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/47",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The registered value should be renamed to EXPORTER-ACE-MQTT-Sign-Challenge for Exporter registry.",
       "createdAt": "2020-03-26T23:58:34Z",
-      "updatedAt": "2020-03-26T23:58:34Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2020-05-18T21:17:29Z",
+      "closedAt": "2020-05-18T21:17:29Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Corrected. ",
+          "createdAt": "2020-05-18T21:17:26Z",
+          "updatedAt": "2020-05-18T21:17:26Z"
+        }
+      ]
     },
     {
       "number": 48,
@@ -1345,7 +1367,7 @@
       "labels": [],
       "body": "I think that the string \"empty or\" should be removed from this diagram.  If you say that the method is ace and don't supply any data then the server cannot know who it is authenticating using the ace method.\r\n\r\n~~~ \r\n      |          Auth. Method (0x15) | 'ace'                 |\r\n       |          Auth. Data (0x16)   | empty or token or     |\r\n       |                                token + PoP data      |\r\n~~~",
       "createdAt": "2020-04-19T03:46:51Z",
-      "updatedAt": "2020-04-21T13:42:47Z",
+      "updatedAt": "2020-05-18T21:15:02Z",
       "closedAt": null,
       "comments": [
         {
@@ -1361,6 +1383,13 @@
           "body": "We should say AUTH. Data not present in the figure to align with text.",
           "createdAt": "2020-04-21T13:42:47Z",
           "updatedAt": "2020-04-21T13:42:47Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Removed \"empty\" from the figure. ",
+          "createdAt": "2020-05-18T21:15:02Z",
+          "updatedAt": "2020-05-18T21:15:02Z"
         }
       ]
     },
@@ -1376,7 +1405,7 @@
       "labels": [],
       "body": "I need to have the length of the token for both the challenge response and the token+proof version.  I don't think it is possible to tell the difference between the length being there and it not being there.",
       "createdAt": "2020-04-20T02:07:14Z",
-      "updatedAt": "2020-04-20T08:57:47Z",
+      "updatedAt": "2020-05-18T21:14:26Z",
       "closedAt": null,
       "comments": [
         {
@@ -1385,6 +1414,13 @@
           "body": "True, the length of token should be included in the request so that the RS can invoke the right method. If it cannot find anything beyond the token, then it starts the challenge-response flow. \r\nWill fix.",
           "createdAt": "2020-04-20T08:57:47Z",
           "updatedAt": "2020-04-20T08:57:47Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The commit above adds token length to the Authentication Data for the challenge/response flow. ",
+          "createdAt": "2020-05-18T21:14:26Z",
+          "updatedAt": "2020-05-18T21:14:26Z"
         }
       ]
     },
