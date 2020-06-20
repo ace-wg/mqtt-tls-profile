@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-05-27T20:29:43.524520+00:00",
+  "timestamp": "2020-06-20T14:38:04.738268+00:00",
   "repo": "ace-wg/mqtt-tls-profile",
   "labels": [
     {
@@ -1504,6 +1504,166 @@
           "body": "looks good",
           "createdAt": "2020-05-17T15:56:41Z",
           "updatedAt": "2020-05-17T15:56:41Z"
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "id": "MDU6SXNzdWU2NDIzNzQ5NTc=",
+      "title": "Style issues/Typos",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/53",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim's comment:\r\n\r\n1) Style Issue. \"Abbreviations should be expanded in document title and upon\r\nfirst use in the document.  Full expansion of the text should be followed by\r\nthe abbreviation in parentheses.\"  Some items such as TLS are considered to\r\nbe known by everybody and thus do not need to be expanded.\r\nhttps://www.rfc-editor.org/materials/abbrev.expansion.txt contains both\r\n\"known\" and \"unknown\" abbreviations.  (Yes this means you are going to have\r\na really long title.)  (I might argue that  OASIS should be listed as well\r\nknown.)\r\n\r\n2) Section 1 - para 1 - Sentence two has a plurality mismatch between client\r\nand server.  I think in this case server (and broker) should be pluralized.\r\n\r\n3)  Section 1.3 - Broker - s/publishes/publish/  The set of pluralized items\r\nseems to be too large by one.\r\n\r\n4) Section 2.1 - para 3 s/the public key used by the RS/the public key to be\r\nused by the RS/",
+      "createdAt": "2020-06-20T13:22:09Z",
+      "updatedAt": "2020-06-20T14:18:34Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Actions:\r\n1) Title changed to \"Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication and Authorization for Constrained Environments (ACE) Framework\"; Fixed for QoS and CoAP; Did not fix for DTLS/TLS/OASIS - Did not catch others.\r\n2) Fixed as \"Clients and Servers (Brokers)\" - though I think I originally meant multiple clients talking to the Broker.\r\n3) Fixed.\r\n4) Fixed.",
+          "createdAt": "2020-06-20T13:29:35Z",
+          "updatedAt": "2020-06-20T13:36:40Z"
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "id": "MDU6SXNzdWU2NDIzODUzMTg=",
+      "title": "Registrations thumbprints in the confirmation claim",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/54",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim's review:\r\nSection 2.1 - I think (but am not sure) that we may need to do some\r\nregistrations around the use of thumbprints in a confirmation claim.\u00a0 If I\r\nforget, please remind me to track this down.",
+      "createdAt": "2020-06-20T14:19:41Z",
+      "updatedAt": "2020-06-20T14:19:41Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 55,
+      "id": "MDU6SXNzdWU2NDIzODYyNTI=",
+      "title": "Definitions: Session",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/55",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim's review\r\n* Section 1.3 - I think we ought to define Session given that we no longer\r\nrequire that Clean Session be used.",
+      "createdAt": "2020-06-20T14:25:35Z",
+      "updatedAt": "2020-06-20T14:27:36Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added MQTT definition:\r\nA stateful interaction between a Client and a Broker. Some Sessions last only as long as the network connection, others can span multiple network connections.",
+          "createdAt": "2020-06-20T14:27:36Z",
+          "updatedAt": "2020-06-20T14:27:36Z"
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "id": "MDU6SXNzdWU2NDIzODY1ODk=",
+      "title": "Section 2.2.2 - para #1 - s/using client authentication/using server authentication/",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/56",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim's review:\r\n* Section 2.2.2 - para #1 - s/using client authentication/using server\r\nauthentication/\u00a0 If we are doing MQTT as the default then the server not the\r\nclient is authenticated here.\u00a0 You may not want to have lost the potentially\r\nhere.",
+      "createdAt": "2020-06-20T14:28:01Z",
+      "updatedAt": "2020-06-20T14:28:17Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "What I meant here was this: Given that the client pushed the token using authz-info,we expect it to use authenticate itself over TLS next time it connects (otherwise it would have carried the token in the MQTT connect). I will fix it as using client authentication over TLS (i.e,\u00a0TLS:Known(RPK/PSK)-MQTT:none) but wanted to check first if I missed your meaning.\r\n",
+          "createdAt": "2020-06-20T14:28:17Z",
+          "updatedAt": "2020-06-20T14:28:17Z"
+        }
+      ]
+    },
+    {
+      "number": 57,
+      "id": "MDU6SXNzdWU2NDIzODY3NDM=",
+      "title": "Section 2.2.3 - the client state MUST include the token ",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/57",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim's review:\r\nSection 2.2.3 - I think that the client state MUST include the token and\r\neither the same token is supplied or a token with the same key is supplied\r\nin order to match with an existing state.",
+      "createdAt": "2020-06-20T14:29:03Z",
+      "updatedAt": "2020-06-20T14:29:27Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I used a MAY because:1) MQTT originally identifies resuming client with only client id.\u00a02) The client MUST\u00a0still provide a token when reconnecting and continuing a session, and the broker MUST perform a validation.\u00a0\r\nIf the broker additionally keeps the former token then it can do further matches to check if the new token is matching the old token, further confirming that it's the same client.\u00a0\r\n\r\nThe client may have gotten a new token, as it may know its token has expired, or it just expanded its right between sessions.\u00a0The CONNECT message does not specify how clients can push a historical and a new token.\u00a0\r\nIt may be seen as an issue that the broker authorises the current session (not the continuation of the session) and uses the MQTT way to access the session state by only the Client ID.\u00a0A problem may be that client A uses client_id1, disconnects and then client B connects with client_id1, both using session continuation.\u00a0\u00a0Then, the risk is client A's subscribed topics may be delivered to client B because client B's token has the same set of permissions.\u00a0This is acceptable as client B's token already covers those topics (it may have QoS issues for client A).\u00a0",
+          "createdAt": "2020-06-20T14:29:27Z",
+          "updatedAt": "2020-06-20T14:29:27Z"
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "id": "MDU6SXNzdWU2NDIzODY5NzM=",
+      "title": "Section 6.2 - server behaviour clarified",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/58",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 6.2 - I think it makes sense to put in a note that between the\r\nfact that the server will disconnect on almost any error and is not required\r\nto keep session state between connections, clients need to make a greater\r\neffort to ensure that tokens remain valid and they do not attempt to publish\r\nto topics that they do not have permissions for.",
+      "createdAt": "2020-06-20T14:30:31Z",
+      "updatedAt": "2020-06-20T14:30:37Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added",
+          "createdAt": "2020-06-20T14:30:37Z",
+          "updatedAt": "2020-06-20T14:30:37Z"
+        }
+      ]
+    },
+    {
+      "number": 59,
+      "id": "MDU6SXNzdWU2NDIzODcwNTY=",
+      "title": "Section 8 - The storage of tokens ",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/59",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 8 - The storage of tokens long term can be restricted to only\r\ncurrent valid ones if an immediate validation of the token is done.\u00a0 This\r\nmeans that the RS spends time doing the validation, but does not need to\r\nconsume memory.",
+      "createdAt": "2020-06-20T14:31:11Z",
+      "updatedAt": "2020-06-20T14:31:21Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Just want to confirm; when you say storage of tokens restricted to current valid ones.\u00a0\u00a0-> do you mean RS stores the valid tokens and does not store introspection/validation result, and hence validate each time.\r\n",
+          "createdAt": "2020-06-20T14:31:21Z",
+          "updatedAt": "2020-06-20T14:31:21Z"
         }
       ]
     }
