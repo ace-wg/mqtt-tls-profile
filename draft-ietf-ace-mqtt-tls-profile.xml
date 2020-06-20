@@ -55,7 +55,7 @@
         <!-- The abbreviated title is used in the page header - it is only necessary if the
              full title is longer than 39 characters -->
 
-        <title abbrev="MQTT-TLS profile of ACE">MQTT-TLS profile of ACE</title>
+        <title abbrev="Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication and Authorization for Constrained Environments (ACE) Framework">MQTT-TLS profile of ACE</title>
 
         <!-- add 'role="editor"' below for the editors if appropriate -->
 
@@ -132,7 +132,7 @@
         <abstract>
             <t>
                 This document specifies a profile for the ACE (Authentication and Authorization for Constrained
-                Environments) framework to enable authorization in an MQTT-based publish-subscribe messaging system.
+                Environments) framework to enable authorization in an Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.
                 Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize
                 MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.
             </t>
@@ -143,7 +143,7 @@
         <section title="Introduction">
             <t>
                 This document specifies a profile for the ACE framework <xref target="I-D.ietf-ace-oauth-authz"></xref>.
-                In this profile, Clients and Server (Broker) use MQTT to exchange Application Messages.
+                In this profile, Clients and Servers (Brokers) use MQTT to exchange Application Messages.
                 The protocol relies on TLS for communication security between entities. The MQTT protocol interactions
                  are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
                 Since it is expected that MQTT deployments will continue to support MQTT v3.1.1 clients,
@@ -199,7 +199,8 @@
                 and unless otherwise
                 specified, using JSON encoding. The token may be a reference or JSON Web Token (JWT).
                 For JWTs, this document follows <xref target="RFC7800">RFC 7800</xref>
-                for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP, e.g. CoAP or MQTT.
+                for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP, e.g. Constrained Application 
+                Protocol (CoAP) or MQTT.
                 Implementations MAY also use
                 'application/ace+cbor' content type, and CBOR encoding, and CBOR Web Token (CWT) and
                  associated PoP semantics to reduce the protocol memory and bandwidth
@@ -250,16 +251,22 @@
                         </t>
                         <t hangText="Broker">
                             <vspace blankLines="0"/>
-                            The Server in MQTT. It acts as an intermediary between the Clients that publishes Application Messages,
+                            The Server in MQTT. It acts as an intermediary between the Clients that publish Application Messages,
                             and the Clients that made Subscriptions. The Broker acts as the Resource Server for the Clients.
                         </t>
                         <t hangText="Client">
                             <vspace blankLines="0"/>
                             A device or program that uses MQTT.
                         </t>
+                        <t hangText = "Session">
+                            <vspace blankLines="0"/>
+                            A stateful interaction between a Client and a Broker. 
+                            Some Sessions last only as long as the network connection, 
+                            others can span multiple network connections.
+                        </t>
                         <t hangText="Application Message">
                             <vspace blankLines="0"/>
-                            The data carried by the MQTT protocol. The data has an associated QoS level and a Topic
+                            The data carried by the MQTT protocol. The data has an associated Quality-of-Service (QoS) level and a Topic
                             Name.
                         </t>
                         <t hangText="QoS level">
@@ -273,7 +280,7 @@
                         </t>
                         <t hangText="Subscription">
                             <vspace blankLines="0"/>
-                            A Subscription comprises a Topic Filter and a maximum Quality of Service (QoS). A Subscription is associated with a single session.
+                            A Subscription comprises a Topic Filter and a maximum QoS. A Subscription is associated with a single session.
                         </t>
                         <t hangText="Topic Filter">
                             <vspace blankLines="0"/>
@@ -296,9 +303,9 @@
                         </t>
                         <t hangText="CONNACK">
                             <vspace blankLines="0"/>
-                            The Broker connection acknowledgment. The first packet sent from the Broker to a Client is a
-                            CONNACK packet. CONNACK packets
-                            contain return codes indicating either a success or an error state to a Client.
+                            The Broker connection acknowledgment. CONNACK packets
+                            contain return codes indicating either a success or an error state to 
+                            in response to a Client's CONNECT packet.
                         </t>
                         <t hangText="AUTH">
                             <vspace blankLines="0"/>
@@ -417,7 +424,7 @@
                 The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key.
                 Note that the 'cnf' parameter in the web tokens are to be consumed by the RS and not the Client.
                 For the asymmetric case, the PoP token may include the 'rs_cnf' parameter containing the information 
-                about the public key used
+                about the public key to be used
                 by the RS to authenticate as described in <xref target="I-D.ietf-ace-oauth-params"></xref>.
             </t>
             <t> The AS returns error responses for JSON-based interactions
@@ -998,8 +1005,12 @@
 		  <section anchor="errors_311" title="Handling Authorization Errors">
 		    <t>
                 Handling errors are more primitive in MQTT v3.1.1 due to not having appropriate error fields,
-                error codes, and server-side DISCONNECTs. In the following, we
-		        list how errors are handled without such protocol support.
+                error codes, and server-side DISCONNECTs. 
+                Therefore, the broker will disconnect on almost any error and may not keep
+                session state, necessitating clients to make a greater
+                effort to ensure that tokens remain valid and not attempt to publish
+                to topics that they do not have permissions for.
+                The following lists how the broker responds to specific errors.
 		    </t>
 		    <t>
 		    <list style="symbols">
