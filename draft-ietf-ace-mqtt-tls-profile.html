@@ -412,14 +412,14 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.44.0 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.45.3 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Sengul, C., Kirby, A., and P. Fremantle" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-mqtt-tls-profile-05" />
-  <meta name="dct.issued" scheme="ISO8601" content="2020-27" />
-  <meta name="dct.abstract" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an MQTT-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
-  <meta name="description" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an MQTT-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
+  <meta name="dct.issued" scheme="ISO8601" content="2020-20" />
+  <meta name="dct.abstract" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
+  <meta name="description" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
 
 </head>
 
@@ -441,7 +441,7 @@
 <td class="right">A. Kirby</td>
 </tr>
 <tr>
-<td class="left">Expires: November 28, 2020</td>
+<td class="left">Expires: December 22, 2020</td>
 <td class="right">Oxbotica</td>
 </tr>
 <tr>
@@ -454,7 +454,7 @@
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 27, 2020</td>
+<td class="right">June 20, 2020</td>
 </tr>
 
     	
@@ -465,12 +465,12 @@
   <span class="filename">draft-ietf-ace-mqtt-tls-profile-05</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an MQTT-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.  </p>
+<p>This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.  </p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 28, 2020.</p>
+<p>This Internet-Draft will expire on December 22, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2020 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -558,7 +558,7 @@
 
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> Introduction</h1>
-<p id="rfc.section.1.p.1">This document specifies a profile for the ACE framework <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  In this profile, Clients and Server (Broker) use MQTT to exchange Application Messages.  The protocol relies on TLS for communication security between entities. The MQTT protocol interactions are described based on the <a href="#MQTT-OASIS-Standard-v5" class="xref">MQTT v5.0 - the OASIS Standard</a>.  Since it is expected that MQTT deployments will continue to support MQTT v3.1.1 clients, this document also describes a reduced set of protocol interactions for <a href="#MQTT-OASIS-Standard" class="xref">MQTT v3.1.1 - the OASIS Standard</a>.  However, MQTT v5.0 is the RECOMMENDED version as it works more naturally with ACE-style authentication and authorization.  </p>
+<p id="rfc.section.1.p.1">This document specifies a profile for the ACE framework <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  In this profile, Clients and Servers (Brokers) use MQTT to exchange Application Messages.  The protocol relies on TLS for communication security between entities. The MQTT protocol interactions are described based on the <a href="#MQTT-OASIS-Standard-v5" class="xref">MQTT v5.0 - the OASIS Standard</a>.  Since it is expected that MQTT deployments will continue to support MQTT v3.1.1 clients, this document also describes a reduced set of protocol interactions for <a href="#MQTT-OASIS-Standard" class="xref">MQTT v3.1.1 - the OASIS Standard</a>.  However, MQTT v5.0 is the RECOMMENDED version as it works more naturally with ACE-style authentication and authorization.  </p>
 <p id="rfc.section.1.p.2">MQTT is a publish-subscribe protocol and after connecting to the MQTT Server (Broker), a Client can publish and subscribe to multiple topics.  The Broker, which acts as the Resource Server (RS), is responsible for distributing messages published by the publishers to their subscribers. In the rest of the document the terms "RS", "MQTT Server" and "Broker" are used interchangeably.  </p>
 <p id="rfc.section.1.p.3">Messages are published under a Topic Name, and subscribers must subscribe to the Topic Names to receive the corresponding messages.  The Broker uses the Topic Name in a published message to determine which subscribers to relay the messages.  In this document, topics, more specifically, Topic Names, are treated as resources.  The Clients are assumed to have identified the publish/subscribe topics of interest out-of-band (topic discovery is not a feature of the MQTT protocol).  A Resource Owner can pre-configure policies at the Authorisation Server (AS) that give Clients publish or subscribe permissions to different topics.  </p>
 <p id="rfc.section.1.p.4">Clients prove their permission to publish/subscribe to topics hosted on an MQTT broker using an access token, bound to a proof-of-possession (PoP) key.  This document describes how to authorize the following exchanges between the Clients and the Broker.  <a href="#I-D.ietf-ace-pubsub-profile" class="xref">CoAP Pub-Sub Profile</a>.  </p>
@@ -570,7 +570,7 @@
 </ul>
 
 <p> Clients use MQTT PUBLISH message to publish to a topic.  This document does not protect the payload of the PUBLISH message from the Broker. Hence, the payload is not signed or encrypted specifically for the subscribers. This functionality may be implemented using the proposal outlined in the </p>
-<p id="rfc.section.1.p.5">To provide communication confidentiality and RS authentication, TLS is used, and TLS 1.3 is RECOMMENDED. This document makes the same assumptions as Section 4 of the <a href="#I-D.ietf-ace-oauth-authz" class="xref">ACE framework</a> regarding Client and RS registration with the AS and setting up keying material.  While the Client-Broker exchanges are only over MQTT, the required Client-AS and RS-AS interactions are described for HTTPS-based communication, using 'application/ace+json' content type, and unless otherwise specified, using JSON encoding. The token may be a reference or JSON Web Token (JWT).  For JWTs, this document follows <a href="#RFC7800" class="xref">RFC 7800</a> for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP, e.g. CoAP or MQTT.  Implementations MAY also use 'application/ace+cbor' content type, and CBOR encoding, and CBOR Web Token (CWT) and associated PoP semantics to reduce the protocol memory and bandwidth requirements.  For more information, see <a href="#RFC8747" class="xref">Proof-of-Possession Key Semantics for CBOR Web Tokens (CWTs)</a>.  </p>
+<p id="rfc.section.1.p.5">To provide communication confidentiality and RS authentication, TLS is used, and TLS 1.3 is RECOMMENDED. This document makes the same assumptions as Section 4 of the <a href="#I-D.ietf-ace-oauth-authz" class="xref">ACE framework</a> regarding Client and RS registration with the AS and setting up keying material.  While the Client-Broker exchanges are only over MQTT, the required Client-AS and RS-AS interactions are described for HTTPS-based communication, using 'application/ace+json' content type, and unless otherwise specified, using JSON encoding. The token may be a reference or JSON Web Token (JWT).  For JWTs, this document follows <a href="#RFC7800" class="xref">RFC 7800</a> for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP, e.g. Constrained Application Protocol (CoAP) or MQTT.  Implementations MAY also use 'application/ace+cbor' content type, and CBOR encoding, and CBOR Web Token (CWT) and associated PoP semantics to reduce the protocol memory and bandwidth requirements.  For more information, see <a href="#RFC8747" class="xref">Proof-of-Possession Key Semantics for CBOR Web Tokens (CWTs)</a>.  </p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> Requirements Language</h1>
 <p id="rfc.section.1.1.p.1">The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a>, when, and only when, they appear in all capitals, as shown here.  </p>
@@ -591,13 +591,16 @@
 <br> Secured transport profile of MQTT.  MQTTS runs over TLS.  </dd>
 <dt>Broker</dt>
 <dd style="margin-left: 8">
-<br> The Server in MQTT. It acts as an intermediary between the Clients that publishes Application Messages, and the Clients that made Subscriptions. The Broker acts as the Resource Server for the Clients.  </dd>
+<br> The Server in MQTT. It acts as an intermediary between the Clients that publish Application Messages, and the Clients that made Subscriptions. The Broker acts as the Resource Server for the Clients.  </dd>
 <dt>Client</dt>
 <dd style="margin-left: 8">
 <br> A device or program that uses MQTT.  </dd>
+<dt>Session</dt>
+<dd style="margin-left: 8">
+<br> A stateful interaction between a Client and a Broker.  Some Sessions last only as long as the network connection, others can span multiple network connections.  </dd>
 <dt>Application Message</dt>
 <dd style="margin-left: 8">
-<br> The data carried by the MQTT protocol. The data has an associated QoS level and a Topic Name.  </dd>
+<br> The data carried by the MQTT protocol. The data has an associated Quality-of-Service (QoS) level and a Topic Name.  </dd>
 <dt>QoS level</dt>
 <dd style="margin-left: 8">
 <br> The level of assurance for the delivery of an Application Message. The QoS level can be 0-2, where "0" indicates "At most once delivery", "1" "At least once delivery", and "2" "Exactly once delivery".  </dd>
@@ -606,7 +609,7 @@
 <br> The label attached to an Application Message, which is matched to a Subscription.  </dd>
 <dt>Subscription</dt>
 <dd style="margin-left: 8">
-<br> A Subscription comprises a Topic Filter and a maximum Quality of Service (QoS). A Subscription is associated with a single session.  </dd>
+<br> A Subscription comprises a Topic Filter and a maximum QoS. A Subscription is associated with a single session.  </dd>
 <dt>Topic Filter</dt>
 <dd style="margin-left: 8">
 <br> An expression that indicates interest in one or more Topic Names. Topic Filters may include wildcards.  </dd>
@@ -621,7 +624,7 @@
 <br> Client request to connect to the Broker. This is the first packet sent by a Client.  </dd>
 <dt>CONNACK</dt>
 <dd style="margin-left: 8">
-<br> The Broker connection acknowledgment. The first packet sent from the Broker to a Client is a CONNACK packet. CONNACK packets contain return codes indicating either a success or an error state to a Client.  </dd>
+<br> The Broker connection acknowledgment. CONNACK packets contain return codes indicating either a success or an error state to in response to a Client's CONNECT packet.  </dd>
 <dt>AUTH</dt>
 <dd style="margin-left: 8">
 <br> Authentication Exchange. An AUTH packet is sent from the Client to the Broker or from the Broker to the Client as part of an extended authentication exchange.  AUTH Properties include Authentication Method and Authentication Data.  The Authentication Method is set in the CONNECT packet, and consequent AUTH packets follow the same Authentication Method.  The contents of the Authentication Data are defined by the Authentication Method.  </dd>
@@ -690,7 +693,7 @@
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> Client Token Request to the Authorization Server (AS)</h1>
 <p id="rfc.section.2.1.p.1">The first step in the protocol flow (Figure 1 (A)) is the token acquisition by the Client from the AS. The Client and the AS MUST perform mutual authentication.  The Client requests an access token from the AS as described in Section 5.6.1 of the <a href="#I-D.ietf-ace-oauth-authz" class="xref">ACE framework</a>, however, it MUST set the profile parameter to 'mqtt_tls'. The media format is 'application/ace+json'.  The AS uses JSON in the payload of its responses to both to the Client and the RS.  </p>
-<p id="rfc.section.2.1.p.2">If the AS successfully verifies the access token request and authorizes the Client for the indicated audience (i.e. RS) and scopes (i.e. publish/subscribe permissions over topics), the AS issues an access token (Figure 1 (B)). The response includes the parameters described in Section 5.6.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">the ACE framework</a>.  The returned token is assumed to be Proof-of-Possession (PoP) token by default.  This document follows <a href="#RFC7800" class="xref">RFC 7800</a> for PoP semantics for JWTs.  The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key.  Note that the 'cnf' parameter in the web tokens are to be consumed by the RS and not the Client.  For the asymmetric case, the PoP token may include the 'rs_cnf' parameter containing the information about the public key used by the RS to authenticate as described in <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.  </p>
+<p id="rfc.section.2.1.p.2">If the AS successfully verifies the access token request and authorizes the Client for the indicated audience (i.e. RS) and scopes (i.e. publish/subscribe permissions over topics), the AS issues an access token (Figure 1 (B)). The response includes the parameters described in Section 5.6.2 of <a href="#I-D.ietf-ace-oauth-authz" class="xref">the ACE framework</a>.  The returned token is assumed to be Proof-of-Possession (PoP) token by default.  This document follows <a href="#RFC7800" class="xref">RFC 7800</a> for PoP semantics for JWTs.  The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key.  Note that the 'cnf' parameter in the web tokens are to be consumed by the RS and not the Client.  For the asymmetric case, the PoP token may include the 'rs_cnf' parameter containing the information about the public key to be used by the RS to authenticate as described in <a href="#I-D.ietf-ace-oauth-params" class="xref">[I-D.ietf-ace-oauth-params]</a>.  </p>
 <p id="rfc.section.2.1.p.3">The AS returns error responses for JSON-based interactions following Section 5.2 of <a href="#RFC6749" class="xref">RFC 6749</a>.  When CBOR is used, the interactions must implement Section 5.6.3 of the <a href="#I-D.ietf-ace-oauth-authz" class="xref">ACE framework</a>.  </p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#connect_v5" id="connect_v5">Client Connection Request to the Broker (C)</a>
@@ -900,7 +903,7 @@
 <h1 id="rfc.section.6.2">
 <a href="#rfc.section.6.2">6.2.</a> <a href="#errors_311" id="errors_311">Handling Authorization Errors</a>
 </h1>
-<p id="rfc.section.6.2.p.1">Handling errors are more primitive in MQTT v3.1.1 due to not having appropriate error fields, error codes, and server-side DISCONNECTs. In the following, we list how errors are handled without such protocol support.  </p>
+<p id="rfc.section.6.2.p.1">Handling errors are more primitive in MQTT v3.1.1 due to not having appropriate error fields, error codes, and server-side DISCONNECTs.  Therefore, the broker will disconnect on almost any error and may not keep session state, necessitating clients to make a greater effort to ensure that tokens remain valid and not attempt to publish to topics that they do not have permissions for.  The following lists how the broker responds to specific errors.  </p>
 <p></p>
 
 <ul>
@@ -942,7 +945,7 @@
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-dtls-authorize">[I-D.ietf-ace-dtls-authorize]</b></td>
 <td class="top">
-<a>Gerdes, S.</a>, <a>Bergmann, O.</a>, <a>Bormann, C.</a>, <a>Selander, G.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-dtls-authorize-10">Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-dtls-authorize-10, May 2020.</td>
+<a>Gerdes, S.</a>, <a>Bergmann, O.</a>, <a>Bormann, C.</a>, <a>Selander, G.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-dtls-authorize-11">Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-dtls-authorize-11, June 2020.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-oauth-authz">[I-D.ietf-ace-oauth-authz]</b></td>

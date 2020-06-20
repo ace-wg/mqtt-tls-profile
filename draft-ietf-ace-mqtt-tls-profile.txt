@@ -5,10 +5,10 @@
 ACE Working Group                                              C. Sengul
 Internet-Draft                                         Brunel University
 Intended status: Standards Track                                A. Kirby
-Expires: November 28, 2020                                      Oxbotica
+Expires: December 22, 2020                                      Oxbotica
                                                             P. Fremantle
                                                 University of Portsmouth
-                                                            May 27, 2020
+                                                           June 20, 2020
 
 
                         MQTT-TLS profile of ACE
@@ -18,10 +18,11 @@ Abstract
 
    This document specifies a profile for the ACE (Authentication and
    Authorization for Constrained Environments) framework to enable
-   authorization in an MQTT-based publish-subscribe messaging system.
-   Proof-of-possession keys, bound to OAuth2.0 access tokens, are used
-   to authenticate and authorize MQTT Clients.  The protocol relies on
-   TLS for confidentiality and MQTT server (broker) authentication.
+   authorization in an Message Queuing Telemetry Transport (MQTT)-based
+   publish-subscribe messaging system.  Proof-of-possession keys, bound
+   to OAuth2.0 access tokens, are used to authenticate and authorize
+   MQTT Clients.  The protocol relies on TLS for confidentiality and
+   MQTT server (broker) authentication.
 
 Status of This Memo
 
@@ -38,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 28, 2020.
+   This Internet-Draft will expire on December 22, 2020.
 
 Copyright Notice
 
@@ -49,15 +50,15 @@ Copyright Notice
    Provisions Relating to IETF Documents
    (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
 
 
 
-Sengul, et al.          Expires November 28, 2020               [Page 1]
+Sengul, et al.          Expires December 22, 2020               [Page 1]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
+   carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
@@ -108,17 +109,16 @@ Table of Contents
 
 
 
-
-Sengul, et al.          Expires November 28, 2020               [Page 2]
+Sengul, et al.          Expires December 22, 2020               [Page 2]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 1.  Introduction
 
    This document specifies a profile for the ACE framework
-   [I-D.ietf-ace-oauth-authz].  In this profile, Clients and Server
-   (Broker) use MQTT to exchange Application Messages.  The protocol
+   [I-D.ietf-ace-oauth-authz].  In this profile, Clients and Servers
+   (Brokers) use MQTT to exchange Application Messages.  The protocol
    relies on TLS for communication security between entities.  The MQTT
    protocol interactions are described based on the MQTT v5.0 - the
    OASIS Standard [MQTT-OASIS-Standard-v5].  Since it is expected that
@@ -165,9 +165,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020               [Page 3]
+Sengul, et al.          Expires December 22, 2020               [Page 3]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    proposal outlined in the CoAP Pub-Sub Profile
@@ -184,11 +184,12 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    using JSON encoding.  The token may be a reference or JSON Web Token
    (JWT).  For JWTs, this document follows RFC 7800 [RFC7800] for PoP
    semantics for JWTs.  The Client-AS and RS-AS MAY also use protocols
-   other than HTTP, e.g.  CoAP or MQTT.  Implementations MAY also use
-   'application/ace+cbor' content type, and CBOR encoding, and CBOR Web
-   Token (CWT) and associated PoP semantics to reduce the protocol
-   memory and bandwidth requirements.  For more information, see Proof-
-   of-Possession Key Semantics for CBOR Web Tokens (CWTs) [RFC8747].
+   other than HTTP, e.g.  Constrained Application Protocol (CoAP) or
+   MQTT.  Implementations MAY also use 'application/ace+cbor' content
+   type, and CBOR encoding, and CBOR Web Token (CWT) and associated PoP
+   semantics to reduce the protocol memory and bandwidth requirements.
+   For more information, see Proof-of-Possession Key Semantics for CBOR
+   Web Tokens (CWTs) [RFC8747].
 
 1.1.  Requirements Language
 
@@ -217,15 +218,15 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    The document describes message exchanges as MQTT protocol
    interactions.  The Clients are MQTT Clients, which connect to the
    Broker to publish and subscribe to Application Messages, labelled
-   with their topics.  For additional information, please refer to the
 
 
 
-Sengul, et al.          Expires November 28, 2020               [Page 4]
+Sengul, et al.          Expires December 22, 2020               [Page 4]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
+   with their topics.  For additional information, please refer to the
    MQTT v5.0 - the OASIS Standard [MQTT-OASIS-Standard-v5] or the MQTT
    v3.1.1 - the OASIS Standard [MQTT-OASIS-Standard].
 
@@ -234,16 +235,21 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    Broker
            The Server in MQTT.  It acts as an intermediary between the
-           Clients that publishes Application Messages, and the Clients
+           Clients that publish Application Messages, and the Clients
            that made Subscriptions.  The Broker acts as the Resource
            Server for the Clients.
 
    Client
            A device or program that uses MQTT.
 
+   Session
+           A stateful interaction between a Client and a Broker.  Some
+           Sessions last only as long as the network connection, others
+           can span multiple network connections.
+
    Application Message
            The data carried by the MQTT protocol.  The data has an
-           associated QoS level and a Topic Name.
+           associated Quality-of-Service (QoS) level and a Topic Name.
 
    QoS level
            The level of assurance for the delivery of an Application
@@ -256,9 +262,8 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
            matched to a Subscription.
 
    Subscription
-           A Subscription comprises a Topic Filter and a maximum Quality
-           of Service (QoS).  A Subscription is associated with a single
-           session.
+           A Subscription comprises a Topic Filter and a maximum QoS.  A
+           Subscription is associated with a single session.
 
    Topic Filter
            An expression that indicates interest in one or more Topic
@@ -270,23 +275,21 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    instance, the PUBREL and PUBCOMP packets used in the 4-step handshake
    required for QoS level 2.
 
+
+
+Sengul, et al.          Expires December 22, 2020               [Page 5]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+
+
    CONNECT
            Client request to connect to the Broker.  This is the first
            packet sent by a Client.
 
-
-
-
-Sengul, et al.          Expires November 28, 2020               [Page 5]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
-
    CONNACK
-           The Broker connection acknowledgment.  The first packet sent
-           from the Broker to a Client is a CONNACK packet.  CONNACK
-           packets contain return codes indicating either a success or
-           an error state to a Client.
+           The Broker connection acknowledgment.  CONNACK packets
+           contain return codes indicating either a success or an error
+           state to in response to a Client's CONNECT packet.
 
    AUTH
            Authentication Exchange.  An AUTH packet is sent from the
@@ -327,17 +330,17 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
            PINGREQ.  It indicates the Broker is alive.
 
    Will
+
+
+
+Sengul, et al.          Expires December 22, 2020               [Page 6]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+
+
            If the network connection is not closed normally, the Broker
            sends a last Will message for the Client, if the Client
            provided one in its CONNECT message.  If the Will Flag is
-
-
-
-Sengul, et al.          Expires November 28, 2020               [Page 6]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
-
            set, then the payload of the CONNECT message includes
            information about the Will.  The information consists of the
            Will Properties, Will Topic, and Will Payload fields.
@@ -386,12 +389,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-
-
-
-Sengul, et al.          Expires November 28, 2020               [Page 7]
+Sengul, et al.          Expires December 22, 2020               [Page 7]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
                              +---------------------+
@@ -445,15 +445,15 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020               [Page 8]
+Sengul, et al.          Expires December 22, 2020               [Page 8]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    Note that the 'cnf' parameter in the web tokens are to be consumed by
    the RS and not the Client.  For the asymmetric case, the PoP token
    may include the 'rs_cnf' parameter containing the information about
-   the public key used by the RS to authenticate as described in
+   the public key to be used by the RS to authenticate as described in
    [I-D.ietf-ace-oauth-params].
 
    The AS returns error responses for JSON-based interactions following
@@ -501,9 +501,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020               [Page 9]
+Sengul, et al.          Expires December 22, 2020               [Page 9]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    X.509 certificate or an RPK from the Broker against the 'rs_cnf'
@@ -557,9 +557,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 10]
+Sengul, et al.          Expires December 22, 2020              [Page 10]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    "authz-info" is a public topic, this response is not expected to
@@ -613,9 +613,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 11]
+Sengul, et al.          Expires December 22, 2020              [Page 11]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    An MQTT v5.0 RS MAY also support token transport using Username and
@@ -669,9 +669,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 12]
+Sengul, et al.          Expires December 22, 2020              [Page 12]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    > 0) and PUBREL packets.  The Broker MUST still verify the Client is
@@ -725,9 +725,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 13]
+Sengul, et al.          Expires December 22, 2020              [Page 13]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    'ace' and Authentication Data.  The Authentication Data MUST NOT be
@@ -781,9 +781,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 14]
+Sengul, et al.          Expires December 22, 2020              [Page 14]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    key used for the signature algorithm cannot be determined, or the
@@ -837,9 +837,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 15]
+Sengul, et al.          Expires December 22, 2020              [Page 15]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 3.  Authorizing PUBLISH and SUBSCRIBE Messages
@@ -893,9 +893,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 16]
+Sengul, et al.          Expires December 22, 2020              [Page 16]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 3.2.  PUBLISH Messages from the Broker to the Subscriber Clients
@@ -949,9 +949,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 17]
+Sengul, et al.          Expires December 22, 2020              [Page 17]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    'Not authorised'.  After sending a DISCONNECT message, the network
@@ -1005,9 +1005,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 18]
+Sengul, et al.          Expires December 22, 2020              [Page 18]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 6.1.  Token Transport
@@ -1061,9 +1061,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 19]
+Sengul, et al.          Expires December 22, 2020              [Page 19]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    CONNACK packet to indicate a clean session to the Client.  If the
@@ -1099,8 +1099,11 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    Handling errors are more primitive in MQTT v3.1.1 due to not having
    appropriate error fields, error codes, and server-side DISCONNECTs.
-   In the following, we list how errors are handled without such
-   protocol support.
+   Therefore, the broker will disconnect on almost any error and may not
+   keep session state, necessitating clients to make a greater effort to
+   ensure that tokens remain valid and not attempt to publish to topics
+   that they do not have permissions for.  The following lists how the
+   broker responds to specific errors.
 
    o  CONNECT without a token: It is not possible to support AS
       discovery via sending a tokenless CONNECT message to the Broker.
@@ -1111,17 +1114,17 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
    o  Client-RS PUBLISH authorization failure: In the case of a failure,
       it is not possible to return an error in MQTT v3.1.1.
+
+
+
+Sengul, et al.          Expires December 22, 2020              [Page 20]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+
+
       Acknowledgement messages only indicate success.  In the case of an
       authorization error, the Broker SHOULD disconnect the Client.
       Otherwise, it MUST ignore the PUBLISH message.  Also, as
-
-
-
-Sengul, et al.          Expires November 28, 2020              [Page 20]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
-
       DISCONNECT messages are only sent from a Client to the Broker, the
       server disconnection needs to take place below the application
       layer.
@@ -1168,16 +1171,15 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    [I-D.ietf-ace-oauth-authz].  Therefore, the security considerations
    outlined in [I-D.ietf-ace-oauth-authz] apply to this work.
 
+
+
+Sengul, et al.          Expires December 22, 2020              [Page 21]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+
+
    In addition, the security considerations outlined in MQTT v5.0 - the
    OASIS Standard [MQTT-OASIS-Standard-v5] and MQTT v3.1.1 - the OASIS
-
-
-
-Sengul, et al.          Expires November 28, 2020              [Page 21]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
-
    Standard [MQTT-OASIS-Standard] apply.  Mainly, this document provides
    an authorization solution for MQTT, the responsibility of which is
    left to the specific implementation in the MQTT standards.  In the
@@ -1224,15 +1226,16 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
    encrypted separately for the subscribers.  This functionality may be
    implemented using the proposal outlined in the CoAP Pub-Sub Profile
    [I-D.ietf-ace-pubsub-profile].  However, this solution would still
+
+
+
+Sengul, et al.          Expires December 22, 2020              [Page 22]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+
+
    not provide privacy for other properties of the message such as Topic
    Name.
-
-
-
-Sengul, et al.          Expires November 28, 2020              [Page 22]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
 10.  References
 
@@ -1243,7 +1246,7 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               L. Seitz, "Datagram Transport Layer Security (DTLS)
               Profile for Authentication and Authorization for
               Constrained Environments (ACE)", draft-ietf-ace-dtls-
-              authorize-10 (work in progress), May 2020.
+              authorize-11 (work in progress), June 2020.
 
    [I-D.ietf-ace-oauth-authz]
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
@@ -1279,16 +1282,17 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+Sengul, et al.          Expires December 22, 2020              [Page 23]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+
+
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
-
-
-
-Sengul, et al.          Expires November 28, 2020              [Page 23]
-
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
-
 
    [RFC5705]  Rescorla, E., "Keying Material Exporters for Transport
               Layer Security (TLS)", RFC 5705, DOI 10.17487/RFC5705,
@@ -1337,13 +1341,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-
-
-
-
-Sengul, et al.          Expires November 28, 2020              [Page 24]
+Sengul, et al.          Expires December 22, 2020              [Page 24]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    [I-D.ietf-ace-pubsub-profile]
@@ -1397,9 +1397,9 @@ Appendix B.  Document Updates
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 25]
+Sengul, et al.          Expires December 22, 2020              [Page 25]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    o  Reorganised Section 2 such that "Unauthorised Request:
@@ -1453,9 +1453,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 26]
+Sengul, et al.          Expires December 22, 2020              [Page 26]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    o  Added to Section 3.1, in case of an authorisation failure and QoS
@@ -1509,9 +1509,9 @@ Internet-Draft           MQTT-TLS profile of ACE                May 2020
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 27]
+Sengul, et al.          Expires December 22, 2020              [Page 27]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
    o  Expanded Client connection authorization to capture different
@@ -1565,9 +1565,9 @@ Acknowledgements
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 28]
+Sengul, et al.          Expires December 22, 2020              [Page 28]
 
-Internet-Draft           MQTT-TLS profile of ACE                May 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 Authors' Addresses
@@ -1621,4 +1621,4 @@ Authors' Addresses
 
 
 
-Sengul, et al.          Expires November 28, 2020              [Page 29]
+Sengul, et al.          Expires December 22, 2020              [Page 29]
