@@ -5,10 +5,10 @@
 ACE Working Group                                              C. Sengul
 Internet-Draft                                         Brunel University
 Intended status: Standards Track                                A. Kirby
-Expires: December 22, 2020                                      Oxbotica
+Expires: January 10, 2021                                       Oxbotica
                                                             P. Fremantle
                                                 University of Portsmouth
-                                                           June 20, 2020
+                                                            July 9, 2020
 
 
                         MQTT-TLS profile of ACE
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 22, 2020.
+   This Internet-Draft will expire on January 10, 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 1]
+Sengul, et al.          Expires January 10, 2021                [Page 1]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -91,27 +91,27 @@ Table of Contents
      3.2.  PUBLISH Messages from the Broker to the Subscriber
            Clients . . . . . . . . . . . . . . . . . . . . . . . . .  17
      3.3.  Authorizing SUBSCRIBE Messages  . . . . . . . . . . . . .  17
-   4.  Token Expiration and Reauthentication . . . . . . . . . . . .  17
+   4.  Token Expiration and Reauthentication . . . . . . . . . . . .  18
    5.  Handling Disconnections and Retained Messages . . . . . . . .  18
-   6.  Reduced Protocol Interactions for MQTT v3.1.1 . . . . . . . .  18
+   6.  Reduced Protocol Interactions for MQTT v3.1.1 . . . . . . . .  19
      6.1.  Token Transport . . . . . . . . . . . . . . . . . . . . .  19
      6.2.  Handling Authorization Errors . . . . . . . . . . . . . .  20
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
-   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  22
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  22
+   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  23
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  24
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  25
    Appendix A.  Checklist for profile requirements . . . . . . . . .  25
-   Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  25
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  28
+   Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  26
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  29
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 2]
+Sengul, et al.          Expires January 10, 2021                [Page 2]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 3]
+Sengul, et al.          Expires January 10, 2021                [Page 3]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    proposal outlined in the CoAP Pub-Sub Profile
@@ -221,9 +221,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 4]
+Sengul, et al.          Expires January 10, 2021                [Page 4]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    with their topics.  For additional information, please refer to the
@@ -277,9 +277,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 5]
+Sengul, et al.          Expires January 10, 2021                [Page 5]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    CONNECT
@@ -333,9 +333,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 6]
+Sengul, et al.          Expires January 10, 2021                [Page 6]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
            If the network connection is not closed normally, the Broker
@@ -389,9 +389,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 7]
+Sengul, et al.          Expires January 10, 2021                [Page 7]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
                              +---------------------+
@@ -445,9 +445,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 8]
+Sengul, et al.          Expires January 10, 2021                [Page 8]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    Note that the 'cnf' parameter in the web tokens are to be consumed by
@@ -501,9 +501,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020               [Page 9]
+Sengul, et al.          Expires January 10, 2021                [Page 9]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    X.509 certificate or an RPK from the Broker against the 'rs_cnf'
@@ -557,9 +557,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020              [Page 10]
+Sengul, et al.          Expires January 10, 2021               [Page 10]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    "authz-info" is a public topic, this response is not expected to
@@ -607,15 +607,15 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
                          (CPT=Control Packet Type)
 
    The CONNECT message flags are Username, Password, Will retain, Will
-   QoS, Will Flag, Clean Start, and Reserved.  Figure 6 shows how the
+   QoS, Will Flag, Clean Start, and Reserved.  Figure 8 shows how the
    flags MUST be set to use AUTH packets for authentication and
    authorisation, i.e. the username and password flags MUST be set to 0.
 
 
 
-Sengul, et al.          Expires December 22, 2020              [Page 11]
+Sengul, et al.          Expires January 10, 2021               [Page 11]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    An MQTT v5.0 RS MAY also support token transport using Username and
@@ -669,9 +669,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020              [Page 12]
+Sengul, et al.          Expires January 10, 2021               [Page 12]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    > 0) and PUBREL packets.  The Broker MUST still verify the Client is
@@ -725,9 +725,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020              [Page 13]
+Sengul, et al.          Expires January 10, 2021               [Page 13]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    'ace' and Authentication Data.  The Authentication Data MUST NOT be
@@ -781,9 +781,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020              [Page 14]
+Sengul, et al.          Expires January 10, 2021               [Page 14]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
    key used for the signature algorithm cannot be determined, or the
@@ -837,9 +837,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 
 
-Sengul, et al.          Expires December 22, 2020              [Page 15]
+Sengul, et al.          Expires January 10, 2021               [Page 15]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
 3.  Authorizing PUBLISH and SUBSCRIBE Messages
@@ -847,22 +847,36 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    To authorize a Client's PUBLISH and SUBSCRIBE messages, the Broker
    uses the scope field in the token (or in the introspection result).
    The scope field contains the publish and subscribe permissions for
-   the Client and is made up of space-delimited strings.  Scope strings
-   SHOULD be encoded as permission, followed by an underscore, followed
-   by a topic filter.  Two permissions apply to topic filters: 'publish'
-   and 'subscribe'.  Topic filters are implemented according to
-   Section 4.7 of MQTT v5.0 - the OASIS Standard
-   [MQTT-OASIS-Standard-v5] and includes special wildcard characters.
-   The multi-level wildcard, '#', matches any number of levels within a
-   topic, and the single-level wildcard, '+', matches one topic level.
+   the Client.  The scope is a JSON array, each item following the
+   Authorization Information Format (AIF) for ACE
+   [I-D.bormann-core-ace-aif].  The specific data model for MQTT is:
 
-   An example scope field may contain 'publish_topic1 subscribe_topic2/#
-   publish_+/topic3'.  This access token gives 'publish' permission to
-   the 'topic1', 'subscribe' permission to all the subtopics of
-   'topic2', and 'publish' permission to all topic3, skipping one level.
-   If the Will Flag is set, then the Broker MUST check that the token
-   allows the publication of the Will message (i.e. the scope is
-   "publish_" followed by the Will Topic).
+                    AIF-MQTT = AIF-Generic<topic_filter, permissions>
+                    AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
+                    topic_filter = tstr
+                    permissions = [+permission]
+                    permission = "pub"/"sub"
+
+                       Figure 5: AIF-MQTT data model
+
+   Topic filters are implemented according to Section 4.7 of MQTT v5.0 -
+   the OASIS Standard [MQTT-OASIS-Standard-v5] and includes special
+   wildcard characters.  The multi-level wildcard, '#', matches any
+   number of levels within a topic, and the single-level wildcard, '+',
+   matches one topic level.
+
+   An example scope field may contain:
+
+                    [["topic1", ["pub", "sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
+
+                          Figure 6: Example scope
+
+   This access token gives publish ("pub") and subscribe ("sub")
+   permissions to the 'topic1', publish permission to all the subtopics
+   of 'topic2', and subscribe permission to all topic3, skipping one
+   level.  If the Will Flag is set, then the Broker MUST check that the
+   token allows the publication of the Will message (i.e. the Will Topic
+   filter is found the scope JSON array).
 
 3.1.  PUBLISH Messages from the Publisher Client to the Broker
 
@@ -876,6 +890,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    If the Client is allowed to publish to the topic, the Broker must
    publish the message to all valid subscribers of the topic.  In the
    case of an authorization failure, the Broker MUST return an error, if
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 16]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    the Client has set the QoS level of the PUBLISH message to greater
    than or equal to 1.  Depending on the QoS level, the Broker responds
    with either a PUBACK or PUBREC packet with reason code '0x87 (Not
@@ -887,16 +909,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    (Not authorized)' and closes the network connection.  Note that the
    server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
    the server needs to drop the connection).
-
-
-
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 16]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
 
 3.2.  PUBLISH Messages from the Broker to the Subscriber Clients
 
@@ -933,6 +945,15 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    Filter.  Therefore, the Client may receive success codes for a subset
    of its Topic Filters while being unauthorized for the rest.
 
+
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 17]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
 4.  Token Expiration and Reauthentication
 
    The Broker MUST check for token expiration whenever a CONNECT,
@@ -946,14 +967,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    with the AS as described in Section 5.7 of the ACE framework
    [I-D.ietf-ace-oauth-authz].  Token expirations may trigger the RS to
    send PUBACK, SUBACK and DISCONNECT messages with return code set to
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 17]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
-
    'Not authorised'.  After sending a DISCONNECT message, the network
    connection is closed, and no more messages can be sent.  However, as
    a response to the PUBACK and SUBACK, the Client MAY reauthenticate.
@@ -989,6 +1002,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    in the CONNECT message.  The Client's token scopes MUST include the
    Will Topic.  The Will message MUST be published to the Will Topic
    regardless of whether the corresponding token has expired.  In the
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 18]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    case of a server-side DISCONNECT, the server returns the '0x87 Not
    Authorized' return code to the Client.
 
@@ -1002,14 +1023,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    Reason Code '0x84 (Unsupported Protocol Version)' in response to the
    connection requests.
 
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 18]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
-
 6.1.  Token Transport
 
    As in MQTT v5.0, The Token MAY either be transported before by
@@ -1022,7 +1035,7 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    TLS handshake, which can prompt the Client to obtain a valid token.
 
    To transport the token to the Broker inside the CONNECT message, the
-   Client uses the username and password fields.  Figure 5 shows the
+   Client uses the username and password fields.  Figure 7 shows the
    structure of the MQTT CONNECT message.
 
           0            8            16            24            32
@@ -1040,11 +1053,18 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
           |     Password data as signature/MAC (binary)          |
           +------------------------------------------------------+
 
-    Figure 5: MQTT CONNECT control message.  (CPT=Control Packet Type,
+    Figure 7: MQTT CONNECT control message.  (CPT=Control Packet Type,
                Rsvd=Reserved, len.=length, Proto.=Protocol)
 
-   Figure 6 shows how the MQTT connect flags MUST be set to initiate a
+   Figure 8 shows how the MQTT connect flags MUST be set to initiate a
    connection with the Broker.
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 19]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
 
    +-----------------------------------------------------------+
    |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
@@ -1053,19 +1073,11 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    | 1       | 1   |    X      |   X X  |   X     |  X   |  0  |
    +-----------------------------------------------------------+
 
-              Figure 6: MQTT CONNECT flags.  (Rsvd=Reserved)
+              Figure 8: MQTT CONNECT flags.  (Rsvd=Reserved)
 
    The Broker SHOULD NOT accept session continuation.  To this end, the
    Broker ignores how the Clean Session Flag is set, and on connection
    success, the Broker MUST set the Session Present flag to 0 in the
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 19]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
-
    CONNACK packet to indicate a clean session to the Client.  If the
    Broker wishes to support session continuation, it MUST still perform
    proof-of-possession validation on the provided Client token.  MQTT
@@ -1076,7 +1088,7 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    policies to limit misuse.
 
    The Client may set the Will Flag as desired (marked as 'X' in
-   Figure 6).  Username and Password flags MUST be set to 1 to ensure
+   Figure 8).  Username and Password flags MUST be set to 1 to ensure
    that the Payload of the CONNECT message includes both Username and
    Password fields.
 
@@ -1102,6 +1114,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    Therefore, the broker will disconnect on almost any error and may not
    keep session state, necessitating clients to make a greater effort to
    ensure that tokens remain valid and not attempt to publish to topics
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 20]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    that they do not have permissions for.  The following lists how the
    broker responds to specific errors.
 
@@ -1114,14 +1134,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
    o  Client-RS PUBLISH authorization failure: In the case of a failure,
       it is not possible to return an error in MQTT v3.1.1.
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 20]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
-
       Acknowledgement messages only indicate success.  In the case of an
       authorization error, the Broker SHOULD disconnect the Client.
       Otherwise, it MUST ignore the PUBLISH message.  Also, as
@@ -1156,6 +1168,16 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
    Name: mqtt_tls
 
+
+
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 21]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    Description: Profile for delegating Client authentication and
    authorization using MQTT as the application protocol and TLS For
    transport layer security.
@@ -1170,13 +1192,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    Authorization for Constrained Environments (ACE) framework
    [I-D.ietf-ace-oauth-authz].  Therefore, the security considerations
    outlined in [I-D.ietf-ace-oauth-authz] apply to this work.
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 21]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
 
    In addition, the security considerations outlined in MQTT v5.0 - the
    OASIS Standard [MQTT-OASIS-Standard-v5] and MQTT v3.1.1 - the OASIS
@@ -1211,6 +1226,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    after it disconnects for an extended period.  For MQTT v3.1.1, the
    session state may need to be stored indefinitely, as it does not have
    a Session Expiry Interval feature.  The RS SHOULD implement
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 22]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    administrative policies to limit misuse of the session continuation
    by the Client.
 
@@ -1226,14 +1249,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    encrypted separately for the subscribers.  This functionality may be
    implemented using the proposal outlined in the CoAP Pub-Sub Profile
    [I-D.ietf-ace-pubsub-profile].  However, this solution would still
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 22]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
-
    not provide privacy for other properties of the message such as Topic
    Name.
 
@@ -1241,19 +1256,17 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
 10.1.  Normative References
 
-   [I-D.ietf-ace-dtls-authorize]
-              Gerdes, S., Bergmann, O., Bormann, C., Selander, G., and
-              L. Seitz, "Datagram Transport Layer Security (DTLS)
-              Profile for Authentication and Authorization for
-              Constrained Environments (ACE)", draft-ietf-ace-dtls-
-              authorize-11 (work in progress), June 2020.
+   [I-D.bormann-core-ace-aif]
+              Bormann, C., "An Authorization Information Format (AIF)
+              for ACE", draft-bormann-core-ace-aif-09 (work in
+              progress), June 2020.
 
    [I-D.ietf-ace-oauth-authz]
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments (ACE) using the OAuth 2.0
-              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-33
-              (work in progress), February 2020.
+              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-35
+              (work in progress), June 2020.
 
    [I-D.ietf-ace-oauth-params]
               Seitz, L., "Additional OAuth Parameters for Authorization
@@ -1265,6 +1278,17 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
               Header parameters for carrying and referencing X.509
               certificates", draft-ietf-cose-x509-06 (work in progress),
               March 2020.
+
+
+
+
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 23]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
 
    [MQTT-OASIS-Standard]
               Banks, A., Ed. and R. Gupta, Ed., "OASIS Standard MQTT
@@ -1281,14 +1305,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 23]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
 
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
@@ -1321,6 +1337,15 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
+
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 24]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    [RFC8447]  Salowey, J. and S. Turner, "IANA Registry Updates for TLS
               and DTLS", RFC 8447, DOI 10.17487/RFC8447, August 2018,
               <https://www.rfc-editor.org/info/rfc8447>.
@@ -1339,18 +1364,17 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
               Internet of Things, September 2014,
               <http://dx.doi.org/10.1109/SIoT.2014.8>.
 
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 24]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
+   [I-D.ietf-ace-dtls-authorize]
+              Gerdes, S., Bergmann, O., Bormann, C., Selander, G., and
+              L. Seitz, "Datagram Transport Layer Security (DTLS)
+              Profile for Authentication and Authorization for
+              Constrained Environments (ACE)", draft-ietf-ace-dtls-
+              authorize-12 (work in progress), July 2020.
 
    [I-D.ietf-ace-pubsub-profile]
               Palombini, F., "Pub-Sub Profile for Authentication and
               Authorization for Constrained Environments (ACE)", draft-
-              ietf-ace-pubsub-profile-00 (work in progress), January
-              2020.
+              ietf-ace-pubsub-profile-01 (work in progress), July 2020.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -1370,6 +1394,13 @@ Appendix A.  Checklist for profile requirements
 
    o  Content format: For the HTTPS interactions with AS, "application/
       ace+json".
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 25]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
 
    o  PoP protocols: Either symmetric or asymmetric keys can be
       supported.
@@ -1392,15 +1423,6 @@ Appendix A.  Checklist for profile requirements
 Appendix B.  Document Updates
 
    Version 04 to 05:
-
-
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 25]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
 
    o  Reorganised Section 2 such that "Unauthorised Request:
       Authorisation Server Discovery" is presented under Section 2.
@@ -1429,6 +1451,13 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    o  Added that client reauthentication is accepted only for the
       challenge/response PoP.
 
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 26]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    o  Added Ed25519 as mandatory to implement.
 
    o  Fixed typos.
@@ -1449,14 +1478,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
 
    o  Added that MQTT v5 brokers MAY also implement reduced interactions
       described for MQTTv3.1.1.
-
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 26]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
 
    o  Added to Section 3.1, in case of an authorisation failure and QoS
       level 0, the RS sends a DISCONNECT with reason code '0x87 (Not
@@ -1483,6 +1504,16 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    o  Added the option of Broker certificate thumbprint in the 'rs_cnf'
       sent to the Client.
 
+
+
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 27]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    o  Clarified the use of a random nonce from the TLS Exporter for PoP,
       added to the IANA requirements that the label should be
       registered.
@@ -1504,15 +1535,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    o  Clarified protection of Application Message payload as out of
       scope, and cited draft-palombini-ace-coap-pubsub-profile for a
       potential solution
-
-
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 27]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
 
    o  Expanded Client connection authorization to capture different
       options for Client and Broker authentication over TLS and MQTT
@@ -1540,6 +1562,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
    o  Improved consistency in the use of terminology and upper/lower
       case.
 
+
+
+
+Sengul, et al.          Expires January 10, 2021               [Page 28]
+
+Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+
+
    o  Defined Broker and MQTTS.
 
    o  Clarified HTTPS use for C-AS and RS-AS communication.  Removed
@@ -1558,17 +1588,6 @@ Acknowledgements
    The authors would like to thank Ludwig Seitz for his review and his
    input on the authorization information endpoint, presented in the
    appendix.
-
-
-
-
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 28]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  June 2020
-
 
 Authors' Addresses
 
@@ -1602,23 +1621,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Sengul, et al.          Expires December 22, 2020              [Page 29]
+Sengul, et al.          Expires January 10, 2021               [Page 29]

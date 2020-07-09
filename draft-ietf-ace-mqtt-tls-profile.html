@@ -417,7 +417,7 @@
 
   <meta name="dct.creator" content="Sengul, C., Kirby, A., and P. Fremantle" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-mqtt-tls-profile-05" />
-  <meta name="dct.issued" scheme="ISO8601" content="2020-20" />
+  <meta name="dct.issued" scheme="ISO8601" content="2020-09" />
   <meta name="dct.abstract" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
   <meta name="description" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in an Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
 
@@ -441,7 +441,7 @@
 <td class="right">A. Kirby</td>
 </tr>
 <tr>
-<td class="left">Expires: December 22, 2020</td>
+<td class="left">Expires: January 10, 2021</td>
 <td class="right">Oxbotica</td>
 </tr>
 <tr>
@@ -454,7 +454,7 @@
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 20, 2020</td>
+<td class="right">July 9, 2020</td>
 </tr>
 
     	
@@ -470,7 +470,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 22, 2020.</p>
+<p>This Internet-Draft will expire on January 10, 2021.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2020 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -746,7 +746,7 @@
        +------------------------------------------------------+
         </pre>
 <p class="figure">Figure 2: MQTT v5 CONNECT control message with ACE authentication. (CPT=Control Packet Type)</p>
-<p id="rfc.section.2.2.3.p.3">The CONNECT message flags are Username, Password, Will retain, Will QoS, Will Flag, Clean Start, and Reserved.  <a href="#mqtt_connect_flags" class="xref">Figure 6</a> shows how the flags MUST be set to use AUTH packets for authentication and authorisation, i.e. the username and password flags MUST be set to 0.  An MQTT v5.0 RS MAY also support token transport using Username and Password to provide a security option for MQTT v3.1.1 clients, as described in  <a href="#MQTTv311" class="xref">Section 6</a>.  </p>
+<p id="rfc.section.2.2.3.p.3">The CONNECT message flags are Username, Password, Will retain, Will QoS, Will Flag, Clean Start, and Reserved.  <a href="#mqtt_connect_flags" class="xref">Figure 8</a> shows how the flags MUST be set to use AUTH packets for authentication and authorisation, i.e. the username and password flags MUST be set to 0.  An MQTT v5.0 RS MAY also support token transport using Username and Password to provide a security option for MQTT v3.1.1 clients, as described in  <a href="#MQTTv311" class="xref">Section 6</a>.  </p>
 <div id="rfc.figure.3"></div>
 <div id="mqttv5_connect_flags"></div>
 <pre>
@@ -828,8 +828,24 @@
 <p id="rfc.section.2.2.6.2.p.3">If the token is not self-contained and the Broker uses token introspection, it MAY cache the validation result to authorize the subsequent PUBLISH and SUBSCRIBE messages.  PUBLISH and SUBSCRIBE messages, which are sent after a connection set-up, do not contain access tokens. If the introspection result is not cached, then the RS needs to introspect the saved token for each request. The Broker SHOULD also use a cache time out to introspect tokens regularly.  </p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> Authorizing PUBLISH and SUBSCRIBE Messages</h1>
-<p id="rfc.section.3.p.1">To authorize a Client's PUBLISH and SUBSCRIBE messages, the Broker uses the scope field in the token (or in the introspection result).  The scope field contains the publish and subscribe permissions for the Client and is made up of space-delimited strings.  Scope strings SHOULD be encoded as permission, followed by an underscore, followed by a topic filter.  Two permissions apply to topic filters: 'publish' and 'subscribe'.  Topic filters are implemented according to Section 4.7 of <a href="#MQTT-OASIS-Standard-v5" class="xref">MQTT v5.0 - the OASIS Standard</a> and includes special wildcard characters.  The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+', matches one topic level.  </p>
-<p id="rfc.section.3.p.2">An example scope field may contain 'publish_topic1 subscribe_topic2/# publish_+/topic3'.  This access token gives 'publish' permission to the 'topic1', 'subscribe' permission to all the subtopics of 'topic2', and 'publish' permission to all topic3, skipping one level.  If the Will Flag is set, then the Broker MUST check that the token allows the publication of the Will message (i.e. the scope is "publish_" followed by the Will Topic).  </p>
+<div id="rfc.figure.5"></div>
+<div id="MQTTaif"></div>
+<pre>
+                    AIF-MQTT = AIF-Generic&lt;topic_filter, permissions&gt;
+                    AIF-Generic&lt;topic_filter, permissions&gt; = [* [topic_filter, permissions]]
+                    topic_filter = tstr
+                    permissions = [+permission]
+                    permission = "pub"/"sub"
+            </pre>
+<p class="figure">Figure 5: AIF-MQTT data model</p>
+<p id="rfc.section.3.p.1">To authorize a Client's PUBLISH and SUBSCRIBE messages, the Broker uses the scope field in the token (or in the introspection result).  The scope field contains the publish and subscribe permissions for the Client.  The scope is a JSON array, each item following the <a href="#I-D.bormann-core-ace-aif" class="xref">Authorization Information Format (AIF) for ACE</a>. The specific data model for MQTT is: <a href="#MQTT-OASIS-Standard-v5" class="xref">MQTT v5.0 - the OASIS Standard</a> and includes special wildcard characters.  The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+', matches one topic level.  </p>
+<div id="rfc.figure.6"></div>
+<div id="MQTTaifex"></div>
+<pre>
+                    [["topic1", ["pub", "sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
+            </pre>
+<p class="figure">Figure 6: Example scope</p>
+<p id="rfc.section.3.p.2">An example scope field may contain: </p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> PUBLISH Messages from the Publisher Client to the Broker</h1>
 <p id="rfc.section.3.1.p.1">On receiving the PUBLISH message, the Broker MUST use the type of message (i.e. PUBLISH) and the Topic name in the message header to match against the scope string in the cached token or its introspection result.  Following the example in the previous section, a client sending a PUBLISH message to 'a/topic3' would be allowed to publish, as the scope includes the  string 'publish_+/topic3'.  </p>
@@ -864,8 +880,8 @@
 </h1>
 <p id="rfc.section.6.1.p.1">As in MQTT v5.0, The Token MAY either be transported before by publishing to the "authz-info" topic, or inside the CONNECT message.  </p>
 <p id="rfc.section.6.1.p.2">In MQTT v3.1.1, after the Client published to the "authz-info" topic, the Broker cannot communicate the result of the token validation as PUBACK reason codes or server-side DISCONNECT messages are not supported.  In any case, an invalid token would fail the subsequent TLS handshake, which can prompt the Client to obtain a valid token.  </p>
-<p id="rfc.section.6.1.p.3">To transport the token to the Broker inside the CONNECT message, the Client uses the username and password fields.  <a href="#mqtt_connect_message" class="xref">Figure 5</a> shows the structure of the MQTT CONNECT message.  </p>
-<div id="rfc.figure.5"></div>
+<p id="rfc.section.6.1.p.3">To transport the token to the Broker inside the CONNECT message, the Client uses the username and password fields.  <a href="#mqtt_connect_message" class="xref">Figure 7</a> shows the structure of the MQTT CONNECT message.  </p>
+<div id="rfc.figure.7"></div>
 <div id="mqtt_connect_message"></div>
 <pre>
        0            8            16            24            32
@@ -883,9 +899,9 @@
        |     Password data as signature/MAC (binary)          |
        +------------------------------------------------------+
         </pre>
-<p class="figure">Figure 5: MQTT CONNECT control message. (CPT=Control Packet Type, Rsvd=Reserved, len.=length, Proto.=Protocol)</p>
-<p><a href="#mqtt_connect_flags" class="xref">Figure 6</a> shows how the MQTT connect flags MUST be set to initiate a connection with the Broker.  </p>
-<div id="rfc.figure.6"></div>
+<p class="figure">Figure 7: MQTT CONNECT control message. (CPT=Control Packet Type, Rsvd=Reserved, len.=length, Proto.=Protocol)</p>
+<p><a href="#mqtt_connect_flags" class="xref">Figure 8</a> shows how the MQTT connect flags MUST be set to initiate a connection with the Broker.  </p>
+<div id="rfc.figure.8"></div>
 <div id="mqtt_connect_flags"></div>
 <pre>
 +-----------------------------------------------------------+
@@ -895,9 +911,9 @@
 | 1       | 1   |    X      |   X X  |   X     |  X   |  0  |
 +-----------------------------------------------------------+
          </pre>
-<p class="figure">Figure 6: MQTT CONNECT flags. (Rsvd=Reserved)</p>
+<p class="figure">Figure 8: MQTT CONNECT flags. (Rsvd=Reserved)</p>
 <p id="rfc.section.6.1.p.5">The Broker SHOULD NOT accept session continuation.  To this end, the Broker ignores how the Clean Session Flag is set, and on connection success, the Broker MUST set the Session Present flag to 0 in the CONNACK packet to indicate a clean session to the Client. If the Broker wishes to support session continuation, it MUST still perform proof-of-possession validation on the provided Client token.  MQTT v3.1.1 does not use a Session Expiry Interval, and the Client expects that the Broker maintains the session state after it disconnects.  However, stored Session state can be discarded as a result of administrator policies, and Brokers SHOULD implement the necessary policies to limit misuse.  </p>
-<p id="rfc.section.6.1.p.6">The Client may set the Will Flag as desired (marked as 'X' in <a href="#mqtt_connect_flags" class="xref">Figure 6</a>).  Username and Password flags MUST be set to 1 to  ensure that the Payload of the CONNECT message includes both Username and Password fields.  </p>
+<p id="rfc.section.6.1.p.6">The Client may set the Will Flag as desired (marked as 'X' in <a href="#mqtt_connect_flags" class="xref">Figure 8</a>).  Username and Password flags MUST be set to 1 to  ensure that the Payload of the CONNECT message includes both Username and Password fields.  </p>
 <p id="rfc.section.6.1.p.7">The CONNECT in MQTT v3.1.1 does not have a field to indicate the authentication method. To signal that the Username field contains an ACE token, this field MUST be prefixed with 'ace' keyword, which is followed by the access token.  The Password field MUST be set to the keyed message digest (MAC) or signature associated with the access token for proof-of-possession.  The Client MUST apply the PoP key on the challenge derived from the TLS session as described in <a href="#pop_nonce" class="xref">Section 2.2.4.1</a>.  </p>
 <p id="rfc.section.6.1.p.8">In MQTT v3.1.1, the MQTT Username as a UTF-8 encoded string (i.e.  is prefixed by a  2-byte length field followed by UTF-8 encoded character data) and may be up to 65535 bytes.  Therefore, an access token that is not a valid UTF-8 MUST be Base64 <a href="#RFC4648" class="xref">[RFC4648]</a> encoded.  (The MQTT Password allows binary data up to 65535 bytes.) </p>
 <h1 id="rfc.section.6.2">
@@ -943,14 +959,14 @@
 <a href="#rfc.references.1">10.1.</a> Normative References</h1>
 <table><tbody>
 <tr>
-<td class="reference"><b id="I-D.ietf-ace-dtls-authorize">[I-D.ietf-ace-dtls-authorize]</b></td>
+<td class="reference"><b id="I-D.bormann-core-ace-aif">[I-D.bormann-core-ace-aif]</b></td>
 <td class="top">
-<a>Gerdes, S.</a>, <a>Bergmann, O.</a>, <a>Bormann, C.</a>, <a>Selander, G.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-dtls-authorize-11">Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-dtls-authorize-11, June 2020.</td>
+<a>Bormann, C.</a>, "<a href="https://tools.ietf.org/html/draft-bormann-core-ace-aif-09">An Authorization Information Format (AIF) for ACE</a>", Internet-Draft draft-bormann-core-ace-aif-09, June 2020.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-oauth-authz">[I-D.ietf-ace-oauth-authz]</b></td>
 <td class="top">
-<a>Seitz, L.</a>, <a>Selander, G.</a>, <a>Wahlstroem, E.</a>, <a>Erdtman, S.</a> and <a>H. Tschofenig</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-authz-33">Authentication and Authorization for Constrained Environments (ACE) using the OAuth 2.0 Framework (ACE-OAuth)</a>", Internet-Draft draft-ietf-ace-oauth-authz-33, February 2020.</td>
+<a>Seitz, L.</a>, <a>Selander, G.</a>, <a>Wahlstroem, E.</a>, <a>Erdtman, S.</a> and <a>H. Tschofenig</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-oauth-authz-35">Authentication and Authorization for Constrained Environments (ACE) using the OAuth 2.0 Framework (ACE-OAuth)</a>", Internet-Draft draft-ietf-ace-oauth-authz-35, June 2020.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-ace-oauth-params">[I-D.ietf-ace-oauth-params]</b></td>
@@ -1032,9 +1048,14 @@
 <a>Fremantle, P.</a>, <a>Aziz, B.</a>, <a>Kopecky, J.</a> and <a>P. Scott</a>, "<a href="http://dx.doi.org/10.1109/SIoT.2014.8">Federated Identity and Access Management for the Internet of Things</a>", research International Workshop on Secure Internet of Things, September 2014.</td>
 </tr>
 <tr>
+<td class="reference"><b id="I-D.ietf-ace-dtls-authorize">[I-D.ietf-ace-dtls-authorize]</b></td>
+<td class="top">
+<a>Gerdes, S.</a>, <a>Bergmann, O.</a>, <a>Bormann, C.</a>, <a>Selander, G.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-dtls-authorize-12">Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-dtls-authorize-12, July 2020.</td>
+</tr>
+<tr>
 <td class="reference"><b id="I-D.ietf-ace-pubsub-profile">[I-D.ietf-ace-pubsub-profile]</b></td>
 <td class="top">
-<a>Palombini, F.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-pubsub-profile-00">Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-pubsub-profile-00, January 2020.</td>
+<a>Palombini, F.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ace-pubsub-profile-01">Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-ietf-ace-pubsub-profile-01, July 2020.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC4949">[RFC4949]</b></td>
