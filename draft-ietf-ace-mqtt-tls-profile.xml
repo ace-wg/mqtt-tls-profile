@@ -475,7 +475,7 @@
                     The "authz-info" topic MUST be publish-only (i.e. the Clients are not allowed to subscribe to it).
                     "authz-info" is not protected, and hence, the Client uses the "TLS:Anon-MQTT:None" option over a TLS connection.
                     After publishing the token, the Client disconnects from the Broker and is expected to reconnect using client authentication 
-                    over TLS.
+                    over TLS (i.e. TLS:Known(RPK/PSK)-MQTT:none).
                 </t>
                 <t>
                     The Broker stores and indexes all tokens received to the "authz-info" topic in its key store
