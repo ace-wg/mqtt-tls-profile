@@ -1093,8 +1093,10 @@
 	 In the following, we comment on a few relevant issues based on the current MQTT specifications.
 	  </t>
 
-	  <t>To authorize a Client's publish and subscribe requests in an ongoing session, the RS caches the access token after accepting the
-	  connection from the Client. However, if some permissions are revoked in the meantime,
+	  <t>After the RS validates an access token and accepts a connection from a client, it caches the token  
+      to authorize a Client's publish and subscribe requests in an ongoing session. 
+      RS does not cache any invalid tokens.
+      If a client's permissions get revoked but the access token has not expired,
 	  the RS may still grant publish/subscribe to revoked topics.
       If the RS caches the token introspection responses, then the RS should use a reasonable cache timeout
        to introspect tokens regularly.
