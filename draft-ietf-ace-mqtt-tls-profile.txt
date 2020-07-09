@@ -1201,15 +1201,16 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    following, we comment on a few relevant issues based on the current
    MQTT specifications.
 
-   To authorize a Client's publish and subscribe requests in an ongoing
-   session, the RS caches the access token after accepting the
-   connection from the Client.  However, if some permissions are revoked
-   in the meantime, the RS may still grant publish/subscribe to revoked
-   topics.  If the RS caches the token introspection responses, then the
-   RS should use a reasonable cache timeout to introspect tokens
-   regularly.  When permissions change dynamically, it is expected that
-   AS also follows a reasonable expiration strategy for the access
-   tokens.
+   After the RS validates an access token and accepts a connection from
+   a client, it caches the token to authorize a Client's publish and
+   subscribe requests in an ongoing session.  RS does not cache any
+   invalid tokens.  If a client's permissions get revoked but the access
+   token has not expired, the RS may still grant publish/subscribe to
+   revoked topics.  If the RS caches the token introspection responses,
+   then the RS should use a reasonable cache timeout to introspect
+   tokens regularly.  When permissions change dynamically, it is
+   expected that AS also follows a reasonable expiration strategy for
+   the access tokens.
 
    The RS may monitor Client behaviour to detect potential security
    problems, especially those affecting availability.  These include
@@ -1225,7 +1226,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Interval, the RS may need to maintain Client's MQTT session state
    after it disconnects for an extended period.  For MQTT v3.1.1, the
    session state may need to be stored indefinitely, as it does not have
-   a Session Expiry Interval feature.  The RS SHOULD implement
 
 
 
@@ -1234,6 +1234,7 @@ Sengul, et al.          Expires January 10, 2021               [Page 22]
 Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
+   a Session Expiry Interval feature.  The RS SHOULD implement
    administrative policies to limit misuse of the session continuation
    by the Client.
 
@@ -1278,7 +1279,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
               Header parameters for carrying and referencing X.509
               certificates", draft-ietf-cose-x509-06 (work in progress),
               March 2020.
-
 
 
 
