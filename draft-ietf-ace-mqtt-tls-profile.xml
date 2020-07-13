@@ -776,11 +776,11 @@
             Format (AIF) for ACE</xref>. The specific data model for MQTT is:
             <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
             <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
-                    AIF-MQTT = AIF-Generic<topic_filter, permissions>
-                    AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
-                    topic_filter = tstr
-                    permissions = [+permission]
-                    permission = "pub"/"sub"
+AIF-MQTT = AIF-Generic<topic_filter, permissions>
+AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
+topic_filter = tstr
+permissions = [+permission]
+permission = "pub"/"sub"
             ]]></artwork>
             </figure>
             Topic filters are implemented according to 
@@ -793,14 +793,14 @@
             An example scope field may contain:
             <figure anchor="MQTTaifex" align="left" title="Example scope">
             <artwork type="" name="" align="left" alt=""><![CDATA[
-                    [["topic1", ["pub", "sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
+[["topic1", ["pub", "sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
             ]]></artwork>
             </figure>
             This access token gives publish ("pub") and subscribe ("sub") permissions to the 'topic1', 
             publish permission to all the subtopics of 'topic2',
             and subscribe permission to all topic3, skipping one level.
             If the Will Flag is set, then the Broker MUST check that the token
-            allows the publication of the Will message (i.e. the Will Topic filter is found the scope JSON array).
+            allows the publication of the Will message (i.e. the Will Topic filter is found in the scope).
         </t>
         <section title="PUBLISH Messages from the Publisher Client to the Broker">
             <t>
