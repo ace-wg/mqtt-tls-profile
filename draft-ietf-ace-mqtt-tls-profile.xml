@@ -776,11 +776,11 @@
             Format (AIF) for ACE</xref>. The specific data model for MQTT is:
             <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
             <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
-AIF-MQTT = AIF-Generic<topic_filter, permissions>
-AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
-topic_filter = tstr
-permissions = [+permission]
-permission = "pub"/"sub"
+ AIF-MQTT = AIF-Generic<topic_filter, permissions>
+ AIF-Generic<topic_filter, permissions> = [* [topic_filter,permissions]]
+ topic_filter = tstr
+ permissions = [+permission]
+ permission = "pub"/"sub"
             ]]></artwork>
             </figure>
             Topic filters are implemented according to 
@@ -793,7 +793,7 @@ permission = "pub"/"sub"
             An example scope field may contain:
             <figure anchor="MQTTaifex" align="left" title="Example scope">
             <artwork type="" name="" align="left" alt=""><![CDATA[
-[["topic1", ["pub", "sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
+ [["topic1", ["pub","sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
             ]]></artwork>
             </figure>
             This access token gives publish ("pub") and subscribe ("sub") permissions to the 'topic1', 
@@ -1256,6 +1256,19 @@ permission = "pub"/"sub"
      -->
 
 	<section anchor="document_updates" title="Document Updates">
+    <t> Version 05 to 06:
+        <list style="symbols">
+            <t>Replace the orignally proposed scope format with AIF model. Defined the AIF-MQTT,
+               gave an example with a JSON array. Added a normative reference to the AIF draft.</t>
+            <t>Clarified client connection after submitting token via "authz-info" topic as 
+            TLS:Known(RPK/PSK)-MQTT:none. </t>
+            <t>Expanded acronyms on their first use including the ones in the title.</t>
+            <t>Added a definition for "Session".</t>
+            <t>Corrected "CONNACK" definition, which earlier said it's the first packet sent by the broker.</t>
+            <t>Added a statement that the the broker will disconnect on almost any error and may not keep session state.</t>
+            <t>Clarified that the broker does not cache invalid tokens.</t> 
+        </list>
+    </t>
     <t> Version 04 to 05:
         <list style="symbols">
           <t>Reorganised Section 2 such that "Unauthorised Request: Authorisation Server Discovery" 
