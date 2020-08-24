@@ -606,7 +606,7 @@
                 If necessary, the Broker MAY support session continuation, and hence, maintain and use
                 client state from the existing session. The session state kept at the server MAY include token and its
                 introspection result (for reference tokens) in addition to the MQTT session state.
-                The MQTT session state is identified by the Client identifier, and includes
+                The MQTT session state is identified by the Client identifier and includes
                 state on client subscriptions, QoS 1 and QoS 2 messages which have
                 have not been completely acknowledged or pending transmission to the Client,
                 and if the Session is currently not connected,
@@ -632,8 +632,8 @@
                 at each connection, clients will only send or receive messages to their authorized topics. 
                 Therefore, while this issue is not expected to affect security, 
                 it may affect QoS (i.e. PUBLISH or QoS messages saved for Client A may be delivered to a Client B).
-                In addition, if this Client identifier represents a Client already connected to the Server, 
-                the Server sends a DISCONNECT packet to the existing Client with Reason Code of '0x8E (Session taken over)',
+                In addition, if this Client identifier represents a Client already connected to the Broker, 
+                the Broker sends a DISCONNECT packet to the existing Client with Reason Code of '0x8E (Session taken over)',
                 and closes the connection to the client. 
             </t>
 	    </section>
@@ -693,7 +693,8 @@
                 the token is validated as described in  <xref target="token_validation"></xref>.
 	        </t>
             <t>
-                The client MAY also re-authenticate using this flow.
+                The client MAY also re-authenticate using this challenge-response flow, 
+                as described in <xref target="reauthentication"></xref>.
             </t>
                 <figure align="center" anchor="pop_challenge_response" title="PoP Challenge/Response Protocol Flow - Success">
                     <artwork align="left"><![CDATA[
