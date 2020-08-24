@@ -835,7 +835,7 @@
                 the Client has set the QoS level of the PUBLISH message to greater than or equal to 1.
                 Depending on the QoS level, the Broker responds with either a PUBACK or PUBREC packet with reason code
                 '0x87 (Not authorized)'.
-		        On receiving a PUBACK with '0x87 (Not authorized)',
+		        On receiving an acknowledgement with '0x87 (Not authorized)',
                 the Client MAY reauthenticate by providing a new token as described in <xref target="reauthentication"></xref>.
 		    </t>
             <t>
@@ -856,7 +856,7 @@
                 The Broker MUST NOT forward messages to the unauthorized subscribers.
                 There is no way to inform the Clients with invalid tokens that an
                 authorization error has occurred other than sending a DISCONNECT message.
-                The Broker SHOULD send a DISCONNECT message with the reason code '0x87 (Not authorized)'.   
+                The Broker SHOULD send a DISCONNECT message with the reason code '0x87 (Not authorized)'.
             </t>
         </section>
     <section title="Authorizing SUBSCRIBE Messages">
@@ -870,8 +870,9 @@
         <t>
             On receiving the SUBSCRIBE message, the Broker MUST use the type of message (i.e.
             SUBSCRIBE) and the Topic Filter in the message header to match
-            against a scope string of the stored token or introspection result.
-            The Topic Filters MUST be equal or a subset of the scopes associated with the Client's token.
+            against the scope field of the stored token or introspection result.
+            The Topic Filters MUST be equal or a subset of at least one of the 'topic_filter' fields
+            in the scope array found in the Client's token.
         </t>
         <t>
             As a response to the SUBSCRIBE message, the Broker issues a SUBACK message.
@@ -897,14 +898,14 @@
             introspection request with the AS as described in Section 5.7 of the <xref
             target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
             Token expirations may trigger the RS to send PUBACK, SUBACK and DISCONNECT messages with return code
-            set to 'Not authorised'. After sending a DISCONNECT message, the network connection is closed, and
+            set to 'Not authorized'. After sending a DISCONNECT message, the network connection is closed, and
             no more messages can be sent.
 		    However, as a response to the PUBACK and SUBACK, the Client MAY reauthenticate.
             The Clients MAY also proactively update their tokens, i.e. before
-            they receive a message with 'Not authorized' return code.
+            they receive a message with a 'Not authorized' return code.
          </t> 
         <t>
-             To start reauthentication, the Client MUST send an AUTH packet with reason code 
+             To start reauthentication, the Client MUST send an AUTH packet with the reason code 
              '0x19 (Re-authentication)'.
             The Client MUST
 		    set the Authentication Method as 'ace' and transport the new token in the Authentication Data.
@@ -924,7 +925,7 @@
             By setting a RETAIN flag in a PUBLISH message,
             the publisher indicates to the Broker that it should store the most
             recent message for the associated topic.  Hence, the new subscribers can receive
-            the last sent message from the publisher of that particular topic without waiting
+            the last sent message from the publisher for that particular topic without waiting
             for the next PUBLISH message.
             The Broker MUST continue publishing
             the retained messages as long as the associated tokens are valid.
@@ -932,7 +933,7 @@
         <t>
             In case of disconnections due to network errors or server disconnection due to a protocol error
             (which includes authorization errors), the Will message must be sent if the Client supplied
-            a Will in the CONNECT message.  The Client's token scopes MUST include the Will Topic.
+            a Will in the CONNECT message.  The Client's token scope array MUST include the Will Topic.
             The Will message MUST be published to the Will Topic regardless of whether the corresponding
 		    token has expired.
             In the case of a server-side DISCONNECT, the server returns the '0x87 Not Authorized' return code
@@ -1028,7 +1029,7 @@
                     </t>
                     <t>
                         In MQTT v3.1.1, the MQTT Username as a UTF-8 encoded string (i.e.
-                        is prefixed by a  2-byte length field followed by UTF-8 encoded character data)
+                        is prefixed by a 2-byte length field followed by UTF-8 encoded character data)
                          and may be up to 65535 bytes.
                          Therefore, an access token that is not a valid UTF-8 MUST be Base64
                           <xref target="RFC4648"></xref> encoded.
@@ -1144,7 +1145,7 @@
 	        between Clients. This document does not protect the contents of the PUBLISH message from the Broker, and hence,
                 the content of the PUBLISH message is not signed or encrypted separately for the subscribers.
                 This functionality may be implemented using the proposal outlined in <xref target="I-D.ietf-ace-pubsub-profile">
-                the CoAP Pub-Sub Profile</xref>.
+                the ACE Pub-Sub Profile</xref>.
 	        However, this solution would still not provide privacy for other properties of the message such as Topic Name.
 	        </t>
         </section>
