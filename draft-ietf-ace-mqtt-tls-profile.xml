@@ -825,8 +825,8 @@
                 On receiving the PUBLISH message, the Broker MUST use the type of
                 message (i.e. PUBLISH) and the Topic name in the message header to match against the
                 scope array items in the cached token or its introspection result.
-                Following the example in the previous section, a client sending a SUBSCRIBE message to 'a/topic3' would be
-                allowed to publish, as the scope array includes the '["+/topic3",["sub"]]'.
+                Following the example in the previous section, a client sending a PUBLISH message to 'topic2/a' would be
+                allowed, as the scope array includes the '["topic2/#",["pub"]]'.
             </t>
             <t>
                 If the Client is allowed to publish to the topic,
