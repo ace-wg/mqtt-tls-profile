@@ -728,14 +728,7 @@
                   <section title="Unauthorised Request: Authorisation Server Discovery" anchor="as_discovery">
 	                <t>
 	                    If the Client does not provide a valid token or omits the Authentication Data field, 
-                        the Broker triggers AS discovery.
-                        The Broker MUST NOT process any data sent by the Client after the CONNECT packet 
-                        including AUTH packets (Note that this is different in MQTT v5.0, 
-                        the Broker is allowed to process 
-                        AUTH packets even if the Broker rejects the CONNECT).
-                    </t>
-                    <t>
-                    The Broker responds with the CONNACK
+                        the Broker triggers AS discovery. The Broker responds with the CONNACK
                         reason code '0x87 (Not Authorized)' and includes a User Property (identified by 38 (0x26)) for
                         the AS Request Creation Hints.
                         The User Property is a UTF-8 string pair, composed of a name and a value. The name
