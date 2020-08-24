@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-24T12:46:36.791291+00:00",
+  "timestamp": "2020-08-24T21:19:34.307771+00:00",
   "repo": "ace-wg/mqtt-tls-profile",
   "labels": [
     {
@@ -1766,7 +1766,31 @@
       "labels": [],
       "body": "Jim commented on Aug 15: Section 2.2.6.1 - I am not sure where you got this from: \"Note that this is different in MQTT v5.0, the Broker is allowed to process AUTH packets even if the Broker rejects the CONNECT).\"  I think that if the broker rejects the connect it must CONNACK and disconnect. ",
       "createdAt": "2020-08-24T12:43:40Z",
-      "updatedAt": "2020-08-24T12:43:40Z",
+      "updatedAt": "2020-08-24T12:48:59Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We had a discussion on the mailing list. I added the following as a result:\r\nAfter sending the CONNECT, the client MUST NOT send any packets other than DISCONNECT or AUTH that is in response to the broker AUTH until it has received a CONNACK. Similarly, the server MUST NOT process any packets other than DISCONNECT or an AUTH that is sent in response to its AUTH before it has sent a CONNACK. Removed the other warning message.",
+          "createdAt": "2020-08-24T12:48:59Z",
+          "updatedAt": "2020-08-24T12:48:59Z"
+        }
+      ]
+    },
+    {
+      "number": 62,
+      "id": "MDU6SXNzdWU2ODQ5NzIyNTg=",
+      "title": "Section 2.2.3 - session state includes Client Identifier",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/62",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On August 15, Jim commented: Section 2.2.3 - /Clean Start to 0/Clean Start to 0, specify the previous\r\nsession number/  - I think it should be stated that the session number is\r\nprovided, which is what the state is associated with.\r\n\r\n=> After discussion, it was clarified that session number referred to Client ID. ",
+      "createdAt": "2020-08-24T21:17:56Z",
+      "updatedAt": "2020-08-24T21:17:56Z",
       "closedAt": null,
       "comments": []
     }
