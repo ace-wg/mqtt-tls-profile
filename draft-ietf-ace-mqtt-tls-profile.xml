@@ -487,13 +487,11 @@
                 </t>
                 <t>
                     The Broker MUST verify the validity of the token
-                    (i.e. through local validation or introspection)
+                    (i.e. through local validation or introspection, if the token is a reference)
                     as described in <xref target="token_validation"></xref>.
-                    To validate the token, RS MAY need to introspect the token with the AS,
-                    e.g. if the token is a reference.
                     If the token is not valid, the Broker MUST discard the token.
                     Depending on the QoS level of the PUBLISH message, the Broker returns
-                    the error response as a PUBACK or a DISCONNECT message.
+                    the error response as a PUBACK or a DISCONNECT message as explained below.
                 </t>
                 <t>
                     If the QoS level is equal to 0, and the token is invalid or the claims
@@ -515,7 +513,7 @@
                 </t>
             </section>
             <section anchor="token-CONNECT" title="Transporting Access Token Inside the MQTT CONNECT">
-		        <t> 
+		        <t>
                     This section describes how the Client transports the token to the Broker
                     (RS) inside the CONNECT message. If this method is used,
                     the Client TLS connection is expected to be anonymous, and the Broker is
@@ -539,7 +537,7 @@
                     It also indicates the presence or absence of some fields in the Payload.
                     The payload contains one or more encoded fields, namely a unique Client
                     identifier for the Client, a Will Topic, Will Payload, User Name and Password.
-                    All but the Client identifier can be omitted depending on flags in the Variable Header.
+                    All but the Client identifier can be omitted depending on the flags in the Variable Header.
 		        </t>
 		  <figure align="center" anchor="mqtt5_connect_message"
                             title="MQTT v5 CONNECT control message with ACE authentication. (CPT=Control Packet Type)">
@@ -565,11 +563,11 @@
                 The CONNECT message flags are Username, Password, Will retain, Will QoS, Will Flag,
                 Clean Start, and Reserved.
                 <xref target="mqtt_connect_flags"></xref> shows how the
-                flags MUST be set to use AUTH packets for authentication and authorisation, 
+                flags MUST be set to use AUTH packets for authentication and authorisation,
                 i.e. the username and password flags MUST be set to 0.
-                An MQTT v5.0 RS MAY also support token transport using Username and Password to provide 
-                a security option for MQTT v3.1.1 clients, as 
-                described in  <xref target="MQTTv311"></xref>. 
+                An MQTT v5.0 RS MAY also support token transport using Username and Password to provide
+                a security option for MQTT v3.1.1 clients, as
+                described in  <xref target="MQTTv311"></xref>.
             </t>
             <figure align="center" anchor="mqttv5_connect_flags" title="CONNECT flags for AUTH">
                 <artwork align="left"><![CDATA[
@@ -602,23 +600,42 @@
                 start with a clean session regardless of how these parameters are set. Starting a clean session helps
                 the Broker avoid keeping unnecessary session state for unauthorised clients. If the Broker starts
                 a clean session, the Broker MUST set the Session Present flag to 0 in the CONNACK packet to signal
-                this to the Client. 
+                this to the Client.
             </t>
             <t>
-                If necessary, the Broker MAY support session continuation, and hence, maintain and use 
-                client state from the existing session. The client state MAY include token and its
-                introspection result (for reference tokens) in addition to the MQTT session state. 
-                When reconnecting to the Broker, the Client MUST still provide a token, as well as
-                setting the Clean Start to 0 and supplying a Session Expiry interval in the CONNECT message. 
-                The Broker MUST perform proof-of-possession validation on the provided token. 
-                If the token matches the stored state, 
-                the Broker MAY skip introspecting a token by reference, and use the stored introspection result. 
-                Continuing, both the Client and the Broker MUST resend any unacknowledged PUBLISH packets (where QoS > 0) 
-                and PUBREL packets. The Broker MUST still verify the Client is authorized to receive or send 
-                these packets. When a Client connects with a long Session Expiry Interval, the
+                If necessary, the Broker MAY support session continuation, and hence, maintain and use
+                client state from the existing session. The session state kept at the server MAY include token and its
+                introspection result (for reference tokens) in addition to the MQTT session state.
+                The MQTT session state is identified by the Client identifier, and includes
+                state on client subscriptions, QoS 1 and QoS 2 messages which have
+                have not been completely acknowledged or pending transmission to the Client,
+                and if the Session is currently not connected,
+                the time at which the Session will end and Session State will be discarded.
+            </t>
+            <t>
+                When reconnecting to a Broker that supports session continuation,
+                the Client MUST still provide a token, in addition to
+                using the same Client identifier,
+                setting the Clean Start to 0 and supplying a Session Expiry interval in the CONNECT message.
+                The Broker MUST perform proof-of-possession validation on the provided token.
+                If the token matches the stored state,
+                the Broker MAY skip introspecting a token by reference, and use the stored introspection result.
+                The Broker MUST also verify the Client is authorized to receive or send 
+                packets that are pending transmission. When a Client connects with a long Session Expiry Interval, the
                 Broker may need to  maintain Client's MQTT session state after it disconnects for an extended period. 
                 Brokers SHOULD implement administrative policies to limit misuse.
 	        </t>
+            <t>
+                Note that, according to the MQTT standard, the Broker must use the Client identifier to identify the session state.
+                In the case of a Client identifier collision, 
+                a client may take over another client's session. Given that clients provide a token
+                at each connection, clients will only send or receive messages to their authorized topics. 
+                Therefore, while this issue is not expected to affect security, 
+                it may affect QoS (i.e. PUBLISH or QoS messages saved for Client A may be delivered to a Client B).
+                In addition, if this Client identifier represents a Client already connected to the Server, 
+                the Server sends a DISCONNECT packet to the existing Client with Reason Code of '0x8E (Session taken over)',
+                and closes the connection to the client. 
+            </t>
 	    </section>
         <section anchor="AUTH-method" title="Authentication Using AUTH Property">
             <t>
