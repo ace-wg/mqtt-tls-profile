@@ -691,7 +691,7 @@ Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
    maintain and use client state from the existing session.  The session
    state kept at the server MAY include token and its introspection
    result (for reference tokens) in addition to the MQTT session state.
-   The MQTT session state is identified by the Client identifier, and
+   The MQTT session state is identified by the Client identifier and
    includes state on client subscriptions, QoS 1 and QoS 2 messages
    which have have not been completely acknowledged or pending
    transmission to the Client, and if the Session is currently not
@@ -721,7 +721,7 @@ Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
    security, it may affect QoS (i.e.  PUBLISH or QoS messages saved for
    Client A may be delivered to a Client B).  In addition, if this
    Client identifier represents a Client already connected to the
-   Server, the Server sends a DISCONNECT packet to the existing Client
+   Broker, the Broker sends a DISCONNECT packet to the existing Client
 
 
 
@@ -792,7 +792,8 @@ Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
    concatenated with the client nonce.  Next, the token is validated as
    described in Section 2.2.5.
 
-   The client MAY also re-authenticate using this flow.
+   The client MAY also re-authenticate using this challenge-response
+   flow, as described in Section 4.
 
                                 Resource
                     Client      Server
@@ -832,7 +833,6 @@ Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
    MAC MUST fail if the signature algorithm is set to "none", when the
    key used for the signature algorithm cannot be determined, or the
    computed and received signature/MAC do not match.
-
 
 
 
