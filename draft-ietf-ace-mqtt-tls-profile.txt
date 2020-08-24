@@ -932,10 +932,10 @@ Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
    On receiving the PUBLISH message, the Broker MUST use the type of
    message (i.e.  PUBLISH) and the Topic name in the message header to
-   match against the scope string in the cached token or its
+   match against the scope array items in the cached token or its
    introspection result.  Following the example in the previous section,
-   a client sending a PUBLISH message to 'a/topic3' would be allowed to
-   publish, as the scope includes the string 'publish_+/topic3'.
+   a client sending a SUBSCRIBE message to 'a/topic3' would be allowed
+   to publish, as the scope array includes the '["+/topic3",["sub"]]'.
 
    If the Client is allowed to publish to the topic, the Broker must
    publish the message to all valid subscribers of the topic.  In the
