@@ -5,14 +5,14 @@
 ACE Working Group                                              C. Sengul
 Internet-Draft                                         Brunel University
 Intended status: Standards Track                                A. Kirby
-Expires: January 10, 2021                                       Oxbotica
+Expires: February 25, 2021                                      Oxbotica
                                                             P. Fremantle
                                                 University of Portsmouth
-                                                            July 9, 2020
+                                                         August 24, 2020
 
 
                         MQTT-TLS profile of ACE
-                   draft-ietf-ace-mqtt-tls-profile-05
+                   draft-ietf-ace-mqtt-tls-profile-06
 
 Abstract
 
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 10, 2021.
+   This Internet-Draft will expire on February 25, 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Sengul, et al.          Expires January 10, 2021                [Page 1]
+Sengul, et al.          Expires February 25, 2021               [Page 1]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -78,40 +78,40 @@ Table of Contents
        2.2.3.  Transporting Access Token Inside the MQTT CONNECT . .  11
        2.2.4.  Authentication Using AUTH Property  . . . . . . . . .  13
          2.2.4.1.  Proof-of-Possession Using a Challenge from the
-                   TLS session . . . . . . . . . . . . . . . . . . .  13
+                   TLS session . . . . . . . . . . . . . . . . . . .  14
          2.2.4.2.  Proof-of-Possession via Broker-generated
-                   Challenge/Response  . . . . . . . . . . . . . . .  13
-       2.2.5.  Token Validation  . . . . . . . . . . . . . . . . . .  14
+                   Challenge/Response  . . . . . . . . . . . . . . .  14
+       2.2.5.  Token Validation  . . . . . . . . . . . . . . . . . .  15
        2.2.6.  The Broker's Response to Client Connection Request  .  15
          2.2.6.1.  Unauthorised Request: Authorisation Server
-                   Discovery . . . . . . . . . . . . . . . . . . . .  15
-         2.2.6.2.  Authorisation Success . . . . . . . . . . . . . .  15
+                   Discovery . . . . . . . . . . . . . . . . . . . .  16
+         2.2.6.2.  Authorisation Success . . . . . . . . . . . . . .  16
    3.  Authorizing PUBLISH and SUBSCRIBE Messages  . . . . . . . . .  16
-     3.1.  PUBLISH Messages from the Publisher Client to the Broker   16
+     3.1.  PUBLISH Messages from the Publisher Client to the Broker   17
      3.2.  PUBLISH Messages from the Broker to the Subscriber
-           Clients . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     3.3.  Authorizing SUBSCRIBE Messages  . . . . . . . . . . . . .  17
+           Clients . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     3.3.  Authorizing SUBSCRIBE Messages  . . . . . . . . . . . . .  18
    4.  Token Expiration and Reauthentication . . . . . . . . . . . .  18
-   5.  Handling Disconnections and Retained Messages . . . . . . . .  18
+   5.  Handling Disconnections and Retained Messages . . . . . . . .  19
    6.  Reduced Protocol Interactions for MQTT v3.1.1 . . . . . . . .  19
-     6.1.  Token Transport . . . . . . . . . . . . . . . . . . . . .  19
-     6.2.  Handling Authorization Errors . . . . . . . . . . . . . .  20
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  22
-   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  23
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  25
-   Appendix A.  Checklist for profile requirements . . . . . . . . .  25
-   Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  26
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  29
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
+     6.1.  Token Transport . . . . . . . . . . . . . . . . . . . . .  20
+     6.2.  Handling Authorization Errors . . . . . . . . . . . . . .  21
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  22
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
+   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  24
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  24
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  26
+   Appendix A.  Checklist for profile requirements . . . . . . . . .  26
+   Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  27
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  30
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  30
 
 
 
-Sengul, et al.          Expires January 10, 2021                [Page 2]
+Sengul, et al.          Expires February 25, 2021               [Page 2]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
 1.  Introduction
@@ -146,8 +146,8 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Authorisation Server (AS) that give Clients publish or subscribe
    permissions to different topics.
 
-   Clients prove their permission to publish/subscribe to topics hosted
-   on an MQTT broker using an access token, bound to a proof-of-
+   Clients prove their permission to publish and subscribe to topics
+   hosted on an MQTT broker using an access token, bound to a proof-of-
    possession (PoP) key.  This document describes how to authorize the
    following exchanges between the Clients and the Broker.
 
@@ -165,12 +165,12 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
 
-Sengul, et al.          Expires January 10, 2021                [Page 3]
+Sengul, et al.          Expires February 25, 2021               [Page 3]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
-   proposal outlined in the CoAP Pub-Sub Profile
+   proposal outlined in the ACE Pub-Sub Profile
    [I-D.ietf-ace-pubsub-profile].
 
    To provide communication confidentiality and RS authentication, TLS
@@ -221,9 +221,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
 
-Sengul, et al.          Expires January 10, 2021                [Page 4]
+Sengul, et al.          Expires February 25, 2021               [Page 4]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
    with their topics.  For additional information, please refer to the
@@ -277,9 +277,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
 
-Sengul, et al.          Expires January 10, 2021                [Page 5]
+Sengul, et al.          Expires February 25, 2021               [Page 5]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
    CONNECT
@@ -289,12 +289,12 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    CONNACK
            The Broker connection acknowledgment.  CONNACK packets
            contain return codes indicating either a success or an error
-           state to in response to a Client's CONNECT packet.
+           state in response to a Client's CONNECT packet.
 
    AUTH
-           Authentication Exchange.  An AUTH packet is sent from the
-           Client to the Broker or from the Broker to the Client as part
-           of an extended authentication exchange.  AUTH Properties
+           Authentication Exchange.  An AUTH control packet is sent from
+           the Client to the Broker or from the Broker to the Client as
+           part of an extended authentication exchange.  AUTH Properties
            include Authentication Method and Authentication Data.  The
            Authentication Method is set in the CONNECT packet, and
            consequent AUTH packets follow the same Authentication
@@ -306,12 +306,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
            or from the Broker to a subscribing Client.
 
    PUBACK
-           Response to PUBLISH request with QoS level 1.  PUBACK can be
-           sent from the Broker to a Client or a Client to the Broker.
+           Response to a PUBLISH request with QoS level 1.  A PUBACK can
+           be sent from the Broker to a Client or from a Client to the
+           Broker.
 
    PUBREC
            Response to PUBLISH request with QoS level 2.  PUBREC can be
-           sent from the Broker to a Client or a Client to the Broker.
+           sent from the Broker to a Client or from a Client to the
+           Broker.
 
    SUBSCRIBE
            Subscribe request sent from a Client.
@@ -329,15 +331,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
            Response sent by the Broker to the Client in response to
            PINGREQ.  It indicates the Broker is alive.
 
-   Will
 
 
-
-Sengul, et al.          Expires January 10, 2021                [Page 6]
+Sengul, et al.          Expires February 25, 2021               [Page 6]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
+   Will
            If the network connection is not closed normally, the Broker
            sends a last Will message for the Client, if the Client
            provided one in its CONNECT message.  If the Will Flag is
@@ -388,10 +389,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
 
-
-Sengul, et al.          Expires January 10, 2021                [Page 7]
+Sengul, et al.          Expires February 25, 2021               [Page 7]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
                              +---------------------+
@@ -438,22 +438,22 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    scopes (i.e. publish/subscribe permissions over topics), the AS
    issues an access token (Figure 1 (B)).  The response includes the
    parameters described in Section 5.6.2 of the ACE framework
-   [I-D.ietf-ace-oauth-authz].  The returned token is assumed to be
-   Proof-of-Possession (PoP) token by default.  This document follows
-   RFC 7800 [RFC7800] for PoP semantics for JWTs.  The PoP token
-   includes a 'cnf' parameter with a symmetric or asymmetric PoP key.
+   [I-D.ietf-ace-oauth-authz].  The returned token is a Proof-of-
+   Possession (PoP) token by default.  This document follows RFC 7800
+   [RFC7800] for PoP semantics for JWTs.  The PoP token includes a 'cnf'
+   parameter with a symmetric or asymmetric PoP key.  Note that the
 
 
 
-Sengul, et al.          Expires January 10, 2021                [Page 8]
+Sengul, et al.          Expires February 25, 2021               [Page 8]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
-   Note that the 'cnf' parameter in the web tokens are to be consumed by
-   the RS and not the Client.  For the asymmetric case, the PoP token
-   may include the 'rs_cnf' parameter containing the information about
-   the public key to be used by the RS to authenticate as described in
+   'cnf' parameter in the web tokens are to be consumed by the RS and
+   not the Client.  For the asymmetric case, the PoP token may include
+   the 'rs_cnf' parameter containing the information about the public
+   key to be used by the RS to authenticate as described in
    [I-D.ietf-ace-oauth-params].
 
    The AS returns error responses for JSON-based interactions following
@@ -501,9 +501,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
 
-Sengul, et al.          Expires January 10, 2021                [Page 9]
+Sengul, et al.          Expires February 25, 2021               [Page 9]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
    X.509 certificate or an RPK from the Broker against the 'rs_cnf'
@@ -536,8 +536,8 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    validate the token, RS MAY need to introspect the token with the AS,
    e.g. if the token is a reference.  If the token is not valid, the
    Broker MUST discard the token.  Depending on the QoS level of the
-   PUBLISH message, the Broker may return the error response as a PUBACK
-   or a DISCONNECT message.
+   PUBLISH message, the Broker returns the error response as a PUBACK or
+   a DISCONNECT message.
 
    If the QoS level is equal to 0, and the token is invalid or the
    claims cannot be obtained in the case of an introspected token, the
@@ -557,9 +557,9 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 
 
-Sengul, et al.          Expires January 10, 2021               [Page 10]
+Sengul, et al.          Expires February 25, 2021              [Page 10]
 
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
 
 
    "authz-info" is a public topic, this response is not expected to
@@ -574,6 +574,12 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    described in this section is similar to an earlier proposal by
    Fremantle et al [fremantle14].
 
+   After sending the CONNECT, the client MUST NOT send any packets other
+   than DISCONNECT or AUTH that is in response to the broker AUTH until
+   it has received a CONNACK.  Similarly, the server MUST NOT process
+   any packets other than DISCONNECT or an AUTH that is sent in response
+   to its AUTH before it has sent a CONNACK.
+
    Figure 2 shows the structure of the MQTT CONNECT message used in MQTT
    v5.0.  A CONNECT message is composed of a fixed header, a variable
    header and a payload.  The fixed header contains the Control Packet
@@ -586,6 +592,31 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    identifier for the Client, a Will Topic, Will Payload, User Name and
    Password.  All but the Client identifier can be omitted depending on
    flags in the Variable Header.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 11]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
           0            8            16            24            32
           +------------------------------------------------------+
@@ -610,14 +641,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    QoS, Will Flag, Clean Start, and Reserved.  Figure 8 shows how the
    flags MUST be set to use AUTH packets for authentication and
    authorisation, i.e. the username and password flags MUST be set to 0.
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 11]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    An MQTT v5.0 RS MAY also support token transport using Username and
    Password to provide a security option for MQTT v3.1.1 clients, as
    described in Section 6.
@@ -642,6 +665,15 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    according to Will QoS and Will retain parameters and MQTT Will
    management rules.  To avoid publishing Will Messages in the case of
    temporary network disconnections, the Client may specify a Will Delay
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 12]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
+
    Interval in the Will Properties.  Section 5 explains how the Broker
    deals with the retained messages in further detail.
 
@@ -666,14 +698,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    state, the Broker MAY skip introspecting a token by reference, and
    use the stored introspection result.  Continuing, both the Client and
    the Broker MUST resend any unacknowledged PUBLISH packets (where QoS
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 12]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    > 0) and PUBREL packets.  The Broker MUST still verify the Client is
    authorized to receive or send these packets.  When a Client connects
    with a long Session Expiry Interval, the Broker may need to maintain
@@ -697,6 +721,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    bytes.  Based on the Authentication Data, this profile allows:
 
    o  Proof-of-Possession using a challenge from the TLS session
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 13]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
    o  Proof-of-Possession via Broker generated challenge/response
 
@@ -722,14 +754,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    and the token, the RS MUST respond with an AUTH packet, with the
    Authenticate Reason Code set to '0x18 (Continue Authentication)'.
    This packet includes the Authentication Method, which MUST be set to
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 13]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    'ace' and Authentication Data.  The Authentication Data MUST NOT be
    empty and contains an 8-byte nonce as a challenge for the Client.
    The Client responds to this with an AUTH packet with a reason code
@@ -741,6 +765,26 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    described in Section 2.2.5.
 
    The client MAY also re-authenticate using this flow.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 14]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
                                 Resource
                     Client      Server
@@ -778,14 +822,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Ed25519 are mandatory to implement depending on the choice of
    symmetric or asymmetric validation.  Validation of the signature or
    MAC MUST fail if the signature algorithm is set to "none", when the
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 14]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    key used for the signature algorithm cannot be determined, or the
    computed and received signature/MAC do not match.
 
@@ -794,6 +830,17 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Based on the validation result (obtained either via local inspection
    or using the /introspection interface of the AS), the Broker MUST
    send a CONNACK message to the Client.
+
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 15]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
 2.2.6.1.  Unauthorised Request: Authorisation Server Discovery
 
@@ -835,13 +882,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    RS needs to introspect the saved token for each request.  The Broker
    SHOULD also use a cache time out to introspect tokens regularly.
 
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 15]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
 3.  Authorizing PUBLISH and SUBSCRIBE Messages
 
    To authorize a Client's PUBLISH and SUBSCRIBE messages, the Broker
@@ -851,11 +891,18 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Authorization Information Format (AIF) for ACE
    [I-D.bormann-core-ace-aif].  The specific data model for MQTT is:
 
-                    AIF-MQTT = AIF-Generic<topic_filter, permissions>
-                    AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
-                    topic_filter = tstr
-                    permissions = [+permission]
-                    permission = "pub"/"sub"
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 16]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
+
+ AIF-MQTT = AIF-Generic<topic_filter, permissions>
+ AIF-Generic<topic_filter, permissions> = [* [topic_filter,permissions]]
+ topic_filter = tstr
+ permissions = [+permission]
+ permission = "pub"/"sub"
 
                        Figure 5: AIF-MQTT data model
 
@@ -867,7 +914,7 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
    An example scope field may contain:
 
-                    [["topic1", ["pub", "sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
+ [["topic1", ["pub","sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
 
                           Figure 6: Example scope
 
@@ -876,7 +923,7 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    of 'topic2', and subscribe permission to all topic3, skipping one
    level.  If the Will Flag is set, then the Broker MUST check that the
    token allows the publication of the Will message (i.e. the Will Topic
-   filter is found the scope JSON array).
+   filter is found in the scope).
 
 3.1.  PUBLISH Messages from the Publisher Client to the Broker
 
@@ -890,14 +937,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    If the Client is allowed to publish to the topic, the Broker must
    publish the message to all valid subscribers of the topic.  In the
    case of an authorization failure, the Broker MUST return an error, if
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 16]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    the Client has set the QoS level of the PUBLISH message to greater
    than or equal to 1.  Depending on the QoS level, the Broker responds
    with either a PUBACK or PUBREC packet with reason code '0x87 (Not
@@ -907,6 +946,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
    For QoS level 0, the Broker sends a DISCONNECT with reason code '0x87
    (Not authorized)' and closes the network connection.  Note that the
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 17]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
+
    server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
    the server needs to drop the connection).
 
@@ -945,15 +992,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Filter.  Therefore, the Client may receive success codes for a subset
    of its Topic Filters while being unauthorized for the rest.
 
-
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 17]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
 4.  Token Expiration and Reauthentication
 
    The Broker MUST check for token expiration whenever a CONNECT,
@@ -964,6 +1002,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
    The token expiration is checked by checking the 'exp' claim of a JWT
    or introspection response, or via performing an introspection request
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 18]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
+
    with the AS as described in Section 5.7 of the ACE framework
    [I-D.ietf-ace-oauth-authz].  Token expirations may trigger the RS to
    send PUBACK, SUBACK and DISCONNECT messages with return code set to
@@ -1002,14 +1048,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    in the CONNECT message.  The Client's token scopes MUST include the
    Will Topic.  The Will message MUST be published to the Will Topic
    regardless of whether the corresponding token has expired.  In the
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 18]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    case of a server-side DISCONNECT, the server returns the '0x87 Not
    Authorized' return code to the Client.
 
@@ -1020,6 +1058,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    interactions for the MQTT v3.1.1 clients; MQTT v5.0 clients are NOT
    RECOMMENDED to use the flows described in this section.  Brokers that
    do not support MQTT v3.1.1 clients return a CONNACK packet with
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 19]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
+
    Reason Code '0x84 (Unsupported Protocol Version)' in response to the
    connection requests.
 
@@ -1059,13 +1105,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Figure 8 shows how the MQTT connect flags MUST be set to initiate a
    connection with the Broker.
 
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 19]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    +-----------------------------------------------------------+
    |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
    | flag    |flag |           |        |         |     |      |
@@ -1074,6 +1113,14 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    +-----------------------------------------------------------+
 
               Figure 8: MQTT CONNECT flags.  (Rsvd=Reserved)
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 20]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
    The Broker SHOULD NOT accept session continuation.  To this end, the
    Broker ignores how the Clean Session Flag is set, and on connection
@@ -1114,14 +1161,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Therefore, the broker will disconnect on almost any error and may not
    keep session state, necessitating clients to make a greater effort to
    ensure that tokens remain valid and not attempt to publish to topics
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 20]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    that they do not have permissions for.  The following lists how the
    broker responds to specific errors.
 
@@ -1131,6 +1170,13 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
       means to provide additional information to the Client.  Therefore,
       AS discovery needs to take place out-of-band.  CONNECT attempt
       MUST fail.
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 21]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
    o  Client-RS PUBLISH authorization failure: In the case of a failure,
       it is not possible to return an error in MQTT v3.1.1.
@@ -1168,16 +1214,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
    Name: mqtt_tls
 
-
-
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 21]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    Description: Profile for delegating Client authentication and
    authorization using MQTT as the application protocol and TLS For
    transport layer security.
@@ -1185,6 +1221,18 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    CBOR Value:
 
    Reference: [RFC-XXXX]
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 22]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
 8.  Security Considerations
 
@@ -1226,17 +1274,21 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    Interval, the RS may need to maintain Client's MQTT session state
    after it disconnects for an extended period.  For MQTT v3.1.1, the
    session state may need to be stored indefinitely, as it does not have
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 22]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    a Session Expiry Interval feature.  The RS SHOULD implement
    administrative policies to limit misuse of the session continuation
    by the Client.
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 23]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
 9.  Privacy Considerations
 
@@ -1280,20 +1332,19 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
               certificates", draft-ietf-cose-x509-06 (work in progress),
               March 2020.
 
-
-
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 23]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    [MQTT-OASIS-Standard]
               Banks, A., Ed. and R. Gupta, Ed., "OASIS Standard MQTT
               Version 3.1.1 Plus Errata 01", 2015, <http://docs.oasis-
               open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html>.
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 24]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
    [MQTT-OASIS-Standard-v5]
               Banks, A., Ed., Briggs, E., Ed., Borgendale, K., Ed., and
@@ -1337,18 +1388,19 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
-
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 24]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    [RFC8447]  Salowey, J. and S. Turner, "IANA Registry Updates for TLS
               and DTLS", RFC 8447, DOI 10.17487/RFC8447, August 2018,
               <https://www.rfc-editor.org/info/rfc8447>.
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 25]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
    [RFC8747]  Jones, M., Seitz, L., Selander, G., Erdtman, S., and H.
               Tschofenig, "Proof-of-Possession Key Semantics for CBOR
@@ -1395,15 +1447,16 @@ Appendix A.  Checklist for profile requirements
    o  Content format: For the HTTPS interactions with AS, "application/
       ace+json".
 
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 25]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    o  PoP protocols: Either symmetric or asymmetric keys can be
       supported.
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 26]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
    o  Unique profile identifier: mqtt_tls
 
@@ -1422,12 +1475,44 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
 Appendix B.  Document Updates
 
+   Version 05 to 06:
+
+   o  Replace the orignally proposed scope format with AIF model.
+      Defined the AIF-MQTT, gave an example with a JSON array.  Added a
+      normative reference to the AIF draft.
+
+   o  Clarified client connection after submitting token via "authz-
+      info" topic as TLS:Known(RPK/PSK)-MQTT:none.
+
+   o  Expanded acronyms on their first use including the ones in the
+      title.
+
+   o  Added a definition for "Session".
+
+   o  Corrected "CONNACK" definition, which earlier said it's the first
+      packet sent by the broker.
+
+   o  Added a statement that the the broker will disconnect on almost
+      any error and may not keep session state.
+
+   o  Clarified that the broker does not cache invalid tokens.
+
    Version 04 to 05:
 
    o  Reorganised Section 2 such that "Unauthorised Request:
       Authorisation Server Discovery" is presented under Section 2.
 
    o  Fixed Figure 2 to remove the "empty" word.
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 27]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
    o  Clarified that MQTT v5.0 Brokers may implement username/password
       option for transporting the ACE token only for MQTT v.3.1.1
@@ -1450,13 +1535,6 @@ Appendix B.  Document Updates
 
    o  Added that client reauthentication is accepted only for the
       challenge/response PoP.
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 26]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
 
    o  Added Ed25519 as mandatory to implement.
 
@@ -1483,6 +1561,15 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
       level 0, the RS sends a DISCONNECT with reason code '0x87 (Not
       authorized)'.
 
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 28]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
+
    o  Added a pointer to section 4.7 of MQTTv5 spec for more information
       on topic names and filters.
 
@@ -1503,16 +1590,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
 
    o  Added the option of Broker certificate thumbprint in the 'rs_cnf'
       sent to the Client.
-
-
-
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 27]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
 
    o  Clarified the use of a random nonce from the TLS Exporter for PoP,
       added to the IANA requirements that the label should be
@@ -1539,6 +1616,16 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    o  Expanded Client connection authorization to capture different
       options for Client and Broker authentication over TLS and MQTT
 
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 29]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
+
    o  Removed Payload (and specifically Client Identifier) from proof-
       of-possession in favor of using tls-exporter for a TLS-session
       based challenge.
@@ -1562,14 +1649,6 @@ Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
    o  Improved consistency in the use of terminology and upper/lower
       case.
 
-
-
-
-Sengul, et al.          Expires January 10, 2021               [Page 28]
-
-Internet-DraMessage Queuing Telemetry Transport (MQTT)-TLS pr  July 2020
-
-
    o  Defined Broker and MQTTS.
 
    o  Clarified HTTPS use for C-AS and RS-AS communication.  Removed
@@ -1590,6 +1669,18 @@ Acknowledgements
    appendix.
 
 Authors' Addresses
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 30]
+
+Internet-DrafMessage Queuing Telemetry Transport (MQTT)-TLS  August 2020
+
 
    Cigdem Sengul
    Brunel University
@@ -1621,4 +1712,25 @@ Authors' Addresses
 
 
 
-Sengul, et al.          Expires January 10, 2021               [Page 29]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sengul, et al.          Expires February 25, 2021              [Page 31]
