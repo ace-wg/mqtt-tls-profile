@@ -768,7 +768,7 @@
                     </t>
                     <t>
                     If the Broker accepts the connection, it MUST store the token until the end of
-                    the connection. On Client or Broker disconnection, 
+                    the connection. On Client or Broker disconnection,
                     the Client is expected to transport a token again on the next connection attempt.
                     </t>
                     <t>
@@ -824,9 +824,9 @@
             <t>
                 On receiving the PUBLISH message, the Broker MUST use the type of
                 message (i.e. PUBLISH) and the Topic name in the message header to match against the
-                scope string in the cached token or its introspection result.
-                Following the example in the previous section, a client sending a PUBLISH message to 'a/topic3' would be
-                allowed to publish, as the scope includes the  string 'publish_+/topic3'.
+                scope array items in the cached token or its introspection result.
+                Following the example in the previous section, a client sending a SUBSCRIBE message to 'a/topic3' would be
+                allowed to publish, as the scope array includes the '["+/topic3",["sub"]]'.
             </t>
             <t>
                 If the Client is allowed to publish to the topic,
