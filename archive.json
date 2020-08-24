@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-09T21:03:26.622992+00:00",
+  "timestamp": "2020-08-24T12:46:36.791291+00:00",
   "repo": "ace-wg/mqtt-tls-profile",
   "labels": [
     {
@@ -1042,15 +1042,15 @@
       "id": "MDU6SXNzdWU1NDk2NTUyNzM=",
       "title": "2.2.4.1 - Correct wording for TLS exporter value",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/41",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "On January 1, 2020, Jim wrote: \r\n2.2.4.1 - In my view it is not the secret, but the content that is being\r\nobtained from the TLS exporter.\u00a0 That is one is signing (or MACing) the\r\nexporter value not using that value to compute a MAC on something else.\r\nWhile it is true that only the two parties know that value, exposure to a\r\nthird party does not lead to a compromise.",
       "createdAt": "2020-01-14T15:49:03Z",
-      "updatedAt": "2020-05-18T21:46:50Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-09T21:22:30Z",
+      "closedAt": "2020-07-09T21:22:30Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1166,15 +1166,15 @@
       "id": "MDU6SXNzdWU1NDk2NjkzMTU=",
       "title": "Section 6. Explicitly say MQTT v5 supports MQTT v3.1.1 method as well",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/45",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Januar 1, 2020, Jim wrote: \r\nIt is not clear to me if the authentication method described in this\r\nsection is permitted with MQTT v5 or not.\u00a0 It does not say, but it appears\r\nto be a true statement.\u00a0 This should probably be explicit.",
       "createdAt": "2020-01-14T16:11:51Z",
-      "updatedAt": "2020-05-18T21:31:57Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-26T13:50:14Z",
+      "closedAt": "2020-07-26T13:50:14Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1360,15 +1360,15 @@
       "id": "MDU6SXNzdWU2MDI2MTIwMzY=",
       "title": "Figure 2 has an error",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/49",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jimsch",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I think that the string \"empty or\" should be removed from this diagram.  If you say that the method is ace and don't supply any data then the server cannot know who it is authenticating using the ace method.\r\n\r\n~~~ \r\n      |          Auth. Method (0x15) | 'ace'                 |\r\n       |          Auth. Data (0x16)   | empty or token or     |\r\n       |                                token + PoP data      |\r\n~~~",
       "createdAt": "2020-04-19T03:46:51Z",
-      "updatedAt": "2020-05-18T21:15:02Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-26T13:46:47Z",
+      "closedAt": "2020-07-26T13:46:47Z",
       "comments": [
         {
           "author": "jimsch",
@@ -1398,15 +1398,15 @@
       "id": "MDU6SXNzdWU2MDI4ODgwODg=",
       "title": "Need to have a length in section 2.2.4.2",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/50",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jimsch",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I need to have the length of the token for both the challenge response and the token+proof version.  I don't think it is possible to tell the difference between the length being there and it not being there.",
       "createdAt": "2020-04-20T02:07:14Z",
-      "updatedAt": "2020-05-18T21:14:26Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-26T13:45:27Z",
+      "closedAt": "2020-07-26T13:45:27Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1429,15 +1429,15 @@
       "id": "MDU6SXNzdWU2MDQxODIyNjA=",
       "title": "Reauthentication messages need to be defined",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/51",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jimsch",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I am not positive that I know the correct sequence for doing a re-authentication.  The message I sent recently just sent a token in the first message, but in my code comments it is talking about both a token and a nonce.  Should be documented.",
       "createdAt": "2020-04-21T18:10:08Z",
-      "updatedAt": "2020-05-18T15:25:04Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-30T18:12:06Z",
+      "closedAt": "2020-07-30T18:12:06Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1466,6 +1466,13 @@
           "body": "Added the following to Section 4: Token Expiration and Reauthentication Section: \r\n\"The Client MUST have used challenge-response PoP as defined in Section 4 and MUST use the same method for re-authentication. The Broker accepts re-authentication requests if the Client has already submitted a token (may be expired) and validated via challenge-response. Otherwise, the Broker MUST deny the request.\"\r\n\r\nMoved to AS discovery section under the Broker's Response to Client Connection Request - clarified that it can be sent when the Client does not provide a valid token (includes omitting the Authentication Data).  Added:\r\n\r\n\"The Broker MUST NOT process any data sent by the Client after the CONNECT packet including AUTH packets (Note that this is different in MQTT v5, the Broker is allowed to process AUTH packets even if the Broker rejects the CONNECT).\"\r\n\r\nThis is to avoid cases when the client does not send a CONNECT with a valid token, but then does AUTH with reauthentication with a valid token. \r\n\r\n",
           "createdAt": "2020-05-18T15:25:04Z",
           "updatedAt": "2020-05-18T15:25:04Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed in 108 WG meeting: The text introduced is fine. ",
+          "createdAt": "2020-07-30T18:12:06Z",
+          "updatedAt": "2020-07-30T18:12:06Z"
         }
       ]
     },
@@ -1474,15 +1481,15 @@
       "id": "MDU6SXNzdWU2MDQyNzc2ODE=",
       "title": "Clean session requirement - change MUST to SHOULD",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/52",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "In the interim, we discussed MUST is too strict when efficiency is considered. Therefore, we will drop this to SHOULD, and other SHOULDs around how the server keeps state, and for how long, and how it deals with any pending messages etc. \r\n",
       "createdAt": "2020-04-21T20:51:50Z",
-      "updatedAt": "2020-05-17T15:56:41Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-09T21:19:38Z",
+      "closedAt": "2020-07-09T21:19:38Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1512,15 +1519,15 @@
       "id": "MDU6SXNzdWU2NDIzNzQ5NTc=",
       "title": "Style issues/Typos",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/53",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Jim's comment:\r\n\r\n1) Style Issue. \"Abbreviations should be expanded in document title and upon\r\nfirst use in the document.  Full expansion of the text should be followed by\r\nthe abbreviation in parentheses.\"  Some items such as TLS are considered to\r\nbe known by everybody and thus do not need to be expanded.\r\nhttps://www.rfc-editor.org/materials/abbrev.expansion.txt contains both\r\n\"known\" and \"unknown\" abbreviations.  (Yes this means you are going to have\r\na really long title.)  (I might argue that  OASIS should be listed as well\r\nknown.)\r\n\r\n2) Section 1 - para 1 - Sentence two has a plurality mismatch between client\r\nand server.  I think in this case server (and broker) should be pluralized.\r\n\r\n3)  Section 1.3 - Broker - s/publishes/publish/  The set of pluralized items\r\nseems to be too large by one.\r\n\r\n4) Section 2.1 - para 3 s/the public key used by the RS/the public key to be\r\nused by the RS/",
       "createdAt": "2020-06-20T13:22:09Z",
-      "updatedAt": "2020-06-20T14:18:34Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-26T13:50:33Z",
+      "closedAt": "2020-07-26T13:50:33Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1536,31 +1543,53 @@
       "id": "MDU6SXNzdWU2NDIzODUzMTg=",
       "title": "Registrations thumbprints in the confirmation claim",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/54",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Jim's review:\r\nSection 2.1 - I think (but am not sure) that we may need to do some\r\nregistrations around the use of thumbprints in a confirmation claim.\u00a0 If I\r\nforget, please remind me to track this down.",
       "createdAt": "2020-06-20T14:19:41Z",
-      "updatedAt": "2020-06-20T14:19:41Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2020-07-30T18:11:30Z",
+      "closedAt": "2020-07-30T18:11:30Z",
+      "comments": [
+        {
+          "author": "jimsch",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The needed registrations have already been done for JWT.  They have not been done for CWT.  This document does not requirement so it would be optional if you want to do the registrations.",
+          "createdAt": "2020-07-20T00:45:56Z",
+          "updatedAt": "2020-07-20T00:45:56Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Should I be referring to https://tools.ietf.org/id/draft-ietf-oauth-mtls-12.html\r\nX.509 Certificate Thumbprint Confirmation Method for JWT instead in that section?\r\ncurrently referring to  draft-ietf-cose-x509? Will another draft implement or need it CWT?",
+          "createdAt": "2020-07-26T13:35:38Z",
+          "updatedAt": "2020-07-26T13:35:38Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As discussed in 108 WG meeting: CWT registration not needed for this profile. ",
+          "createdAt": "2020-07-30T18:11:27Z",
+          "updatedAt": "2020-07-30T18:11:27Z"
+        }
+      ]
     },
     {
       "number": 55,
       "id": "MDU6SXNzdWU2NDIzODYyNTI=",
       "title": "Definitions: Session",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/55",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Jim's review\r\n* Section 1.3 - I think we ought to define Session given that we no longer\r\nrequire that Clean Session be used.",
       "createdAt": "2020-06-20T14:25:35Z",
-      "updatedAt": "2020-06-22T16:33:34Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-09T21:18:32Z",
+      "closedAt": "2020-07-09T21:18:32Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1583,15 +1612,15 @@
       "id": "MDU6SXNzdWU2NDIzODY1ODk=",
       "title": "Section 2.2.2 - para #1 - s/using client authentication/using server authentication/",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/56",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Jim's review:\r\n* Section 2.2.2 - para #1 - s/using client authentication/using server\r\nauthentication/\u00a0 If we are doing MQTT as the default then the server not the\r\nclient is authenticated here.\u00a0 You may not want to have lost the potentially\r\nhere.",
       "createdAt": "2020-06-20T14:28:01Z",
-      "updatedAt": "2020-06-22T16:33:03Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-26T13:49:12Z",
+      "closedAt": "2020-07-26T13:49:12Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1621,7 +1650,7 @@
       "labels": [],
       "body": "Jim's review:\r\nSection 2.2.3 - I think that the client state MUST include the token and\r\neither the same token is supplied or a token with the same key is supplied\r\nin order to match with an existing state.",
       "createdAt": "2020-06-20T14:29:03Z",
-      "updatedAt": "2020-06-20T14:29:27Z",
+      "updatedAt": "2020-07-30T18:10:43Z",
       "closedAt": null,
       "comments": [
         {
@@ -1630,6 +1659,13 @@
           "body": "I used a MAY because:1) MQTT originally identifies resuming client with only client id.\u00a02) The client MUST\u00a0still provide a token when reconnecting and continuing a session, and the broker MUST perform a validation.\u00a0\r\nIf the broker additionally keeps the former token then it can do further matches to check if the new token is matching the old token, further confirming that it's the same client.\u00a0\r\n\r\nThe client may have gotten a new token, as it may know its token has expired, or it just expanded its right between sessions.\u00a0The CONNECT message does not specify how clients can push a historical and a new token.\u00a0\r\nIt may be seen as an issue that the broker authorises the current session (not the continuation of the session) and uses the MQTT way to access the session state by only the Client ID.\u00a0A problem may be that client A uses client_id1, disconnects and then client B connects with client_id1, both using session continuation.\u00a0\u00a0Then, the risk is client A's subscribed topics may be delivered to client B because client B's token has the same set of permissions.\u00a0This is acceptable as client B's token already covers those topics (it may have QoS issues for client A).\u00a0",
           "createdAt": "2020-06-20T14:29:27Z",
           "updatedAt": "2020-06-20T14:29:27Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As discussed in 108 WG meeting: Keep may, explain what may happen if Client IDs clash. ",
+          "createdAt": "2020-07-30T18:10:42Z",
+          "updatedAt": "2020-07-30T18:10:42Z"
         }
       ]
     },
@@ -1638,22 +1674,22 @@
       "id": "MDU6SXNzdWU2NDIzODY5NzM=",
       "title": "Section 6.2 - server behaviour clarified",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/58",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Section 6.2 - I think it makes sense to put in a note that between the\r\nfact that the server will disconnect on almost any error and is not required\r\nto keep session state between connections, clients need to make a greater\r\neffort to ensure that tokens remain valid and they do not attempt to publish\r\nto topics that they do not have permissions for.",
       "createdAt": "2020-06-20T14:30:31Z",
-      "updatedAt": "2020-06-20T14:30:37Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-26T13:48:41Z",
+      "closedAt": "2020-07-26T13:48:41Z",
       "comments": [
         {
           "author": "ciseng",
           "authorAssociation": "CONTRIBUTOR",
-          "body": "Added",
+          "body": "Added the following change:\r\nTherefore, the broker will disconnect on almost any error and may not keep session state, necessitating clients to make a greater effort to ensure that tokens remain valid and not attempt to publish to topics that they do not have permissions for.\r\nThe following lists how the broker responds to specific errors.",
           "createdAt": "2020-06-20T14:30:37Z",
-          "updatedAt": "2020-06-20T14:30:37Z"
+          "updatedAt": "2020-07-09T21:14:43Z"
         }
       ]
     },
@@ -1662,15 +1698,15 @@
       "id": "MDU6SXNzdWU2NDIzODcwNTY=",
       "title": "Section 8 - The storage of tokens ",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/59",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Section 8 - The storage of tokens long term can be restricted to only\r\ncurrent valid ones if an immediate validation of the token is done.\u00a0 This\r\nmeans that the RS spends time doing the validation, but does not need to\r\nconsume memory.",
       "createdAt": "2020-06-20T14:31:11Z",
-      "updatedAt": "2020-06-22T13:52:42Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-26T13:48:55Z",
+      "closedAt": "2020-07-26T13:48:55Z",
       "comments": [
         {
           "author": "ciseng",
@@ -1692,6 +1728,13 @@
           "body": "Got it. This was the behaviour I expected, I will specify in the text as well. \r\n",
           "createdAt": "2020-06-22T13:52:42Z",
           "updatedAt": "2020-06-22T13:52:42Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added to this section:\r\n\"After the RS validates an access token and accepts a connection from a client, it caches the token to authorize a Client's publish and subscribe requests in an ongoing session. RS does not cache any invalid tokens. If a client's permissions get revoked but the access token has not expired the RS may still grant publish/subscribe to revoked topics.\"",
+          "createdAt": "2020-07-09T21:11:25Z",
+          "updatedAt": "2020-07-09T21:11:25Z"
         }
       ]
     },
@@ -1700,14 +1743,30 @@
       "id": "MDU6SXNzdWU2NTQzNDUzODQ=",
       "title": "AIF-MQTT data model for scope",
       "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/60",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Update scope to use the following model (I simplified the permission values to pub and sub):\r\nAIF-MQTT = AIF_Generic<filter, permissions>\r\nfilter = tstr\r\npermissions = [ +permission ]\r\npermission = \"pub\" / \"sub\"",
+      "createdAt": "2020-07-09T21:01:38Z",
+      "updatedAt": "2020-07-30T18:10:00Z",
+      "closedAt": "2020-07-30T18:10:00Z",
+      "comments": []
+    },
+    {
+      "number": 61,
+      "id": "MDU6SXNzdWU2ODQ2MzU0NTE=",
+      "title": "Section 2.2.6.1 - Warning about CONNECT ",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/61",
       "state": "OPEN",
       "author": "ciseng",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
-      "body": "Update scope to use the following model (I simplified the permission values to pub and sub):\r\nAIF-MQTT = AIF_Generic<filter, permissions>\r\nfilter = tstr\r\npermissions = [ +permission ]\r\npermission = \"pub\" / \"sub\"\r\n\r\nUpdate the example to show a JSON array. \r\nIs the content-type now \"application/ace+aif+json\"?",
-      "createdAt": "2020-07-09T21:01:38Z",
-      "updatedAt": "2020-07-09T21:01:50Z",
+      "body": "Jim commented on Aug 15: Section 2.2.6.1 - I am not sure where you got this from: \"Note that this is different in MQTT v5.0, the Broker is allowed to process AUTH packets even if the Broker rejects the CONNECT).\"  I think that if the broker rejects the connect it must CONNACK and disconnect. ",
+      "createdAt": "2020-08-24T12:43:40Z",
+      "updatedAt": "2020-08-24T12:43:40Z",
       "closedAt": null,
       "comments": []
     }
