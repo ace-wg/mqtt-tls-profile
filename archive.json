@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-24T21:19:34.307771+00:00",
+  "timestamp": "2020-08-25T22:22:27.411640+00:00",
   "repo": "ace-wg/mqtt-tls-profile",
   "labels": [
     {
@@ -1650,7 +1650,7 @@
       "labels": [],
       "body": "Jim's review:\r\nSection 2.2.3 - I think that the client state MUST include the token and\r\neither the same token is supplied or a token with the same key is supplied\r\nin order to match with an existing state.",
       "createdAt": "2020-06-20T14:29:03Z",
-      "updatedAt": "2020-07-30T18:10:43Z",
+      "updatedAt": "2020-08-24T21:44:57Z",
       "closedAt": null,
       "comments": [
         {
@@ -1666,6 +1666,13 @@
           "body": "As discussed in 108 WG meeting: Keep may, explain what may happen if Client IDs clash. ",
           "createdAt": "2020-07-30T18:10:42Z",
           "updatedAt": "2020-07-30T18:10:42Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Made the following text changes - commit 51f08c5\r\n\r\n\" Note that, according to the MQTT standard, the Broker must use the Client identifier to identify the session state.\r\nIn the case of a Client identifier collision,\r\na client may take over another client's session. Given that clients provide a token at each connection, clients will only send or receive messages to their authorized topics.\r\nTherefore, while this issue is not expected to affect security,\r\nit may affect QoS (i.e. PUBLISH or QoS messages saved for Client A may be delivered to a Client B).\r\nIn addition, if this Client identifier represents a Client already connected to the broker,\r\nthe broker sends a DISCONNECT packet to the existing Client with Reason Code of '0x8E (Session taken over)',\r\nand closes the connection to the client. \"\r\n\r\n \r\n",
+          "createdAt": "2020-08-24T21:44:56Z",
+          "updatedAt": "2020-08-24T21:44:56Z"
         }
       ]
     },
@@ -1790,9 +1797,72 @@
       "labels": [],
       "body": "On August 15, Jim commented: Section 2.2.3 - /Clean Start to 0/Clean Start to 0, specify the previous\r\nsession number/  - I think it should be stated that the session number is\r\nprovided, which is what the state is associated with.\r\n\r\n=> After discussion, it was clarified that session number referred to Client ID. ",
       "createdAt": "2020-08-24T21:17:56Z",
-      "updatedAt": "2020-08-24T21:17:56Z",
+      "updatedAt": "2020-08-24T21:25:20Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Made the following text changes - commit 51f08c5f7c33874abe95462e1c4f1daee7c8a1bb\r\n\"The session state kept at the server MAY include token and its\r\n                introspection result (for reference tokens) in addition to the MQTT session state.\r\n                The MQTT session state is identified by the Client identifier and includes\r\n                state on client subscriptions, QoS 1 and QoS 2 messages which have\r\n                have not been completely acknowledged or pending transmission to the Client,\r\n                and if the Session is currently not connected,\r\n                the time at which the Session will end and Session State will be discarded.\"\r\n\r\n\" Note that, according to the MQTT standard, the Broker must use the Client identifier to identify the session state.\r\n                In the case of a Client identifier collision, \r\n                a client may take over another client's session. Given that clients provide a token at each connection, clients will only send or receive messages to their authorized topics. \r\n                Therefore, while this issue is not expected to affect security, \r\n                it may affect QoS (i.e. PUBLISH or QoS messages saved for Client A may be delivered to a Client B).\r\n                In addition, if this Client identifier represents a Client already connected to the broker, \r\n                the broker sends a DISCONNECT packet to the existing Client with Reason Code of '0x8E (Session taken over)',\r\n                and closes the connection to the client. \"",
+          "createdAt": "2020-08-24T21:24:01Z",
+          "updatedAt": "2020-08-24T21:25:20Z"
+        }
+      ]
+    },
+    {
+      "number": 63,
+      "id": "MDU6SXNzdWU2ODQ5ODE2NDk=",
+      "title": "Section 2.2.4 -Clarify reauthentication",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/63",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On August 15th, Jim commented: Section 2.2.4 - Last sentence.  There is a difference between the connect\r\nand re-auth flows in that the first and last messages are going to be AUTH\r\n'25', AUTH '0' not CONNECT/CONNACK.  Everything else does stay the same. -\r\nMight just want to say a similar flow and point forward.",
+      "createdAt": "2020-08-24T21:36:16Z",
+      "updatedAt": "2020-08-24T21:43:43Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": " Added: The client MAY also re-authenticate using this challenge-response flow, as described in Section 4. ",
+          "createdAt": "2020-08-24T21:43:43Z",
+          "updatedAt": "2020-08-24T21:43:43Z"
+        }
+      ]
+    },
+    {
+      "number": 64,
+      "id": "MDU6SXNzdWU2ODQ5OTE4Njk=",
+      "title": "Section 3.1 - Missed a case of \"publish_+/topic3\"",
+      "url": "https://github.com/ace-wg/mqtt-tls-profile/issues/64",
+      "state": "OPEN",
+      "author": "ciseng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The text is buggy due to scope string format and example change.",
+      "createdAt": "2020-08-24T21:49:31Z",
+      "updatedAt": "2020-08-24T21:58:24Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fixed as: On receiving the PUBLISH message, the Broker MUST use the type of\r\n                message (i.e. PUBLISH) and the Topic name in the message header to match against the\r\n                scope array items in the cached token or its introspection result.\r\n                Following the example in the previous section, a client sending a SUBSCRIBE message to 'a/topic3' would be\r\n                allowed to publish, as the scope array includes the '[\"+/topic3\",[\"sub\"]]'.",
+          "createdAt": "2020-08-24T21:55:14Z",
+          "updatedAt": "2020-08-24T21:55:14Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "That was still buggy as the example should be about publish:\r\nOn receiving the PUBLISH message, the Broker MUST use the type of\r\n                message (i.e. PUBLISH) and the Topic name in the message header to match against the\r\n                scope array items in the cached token or its introspection result.\r\n                Following the example in the previous section, a client sending a PUBLISH message to 'topic2/a' would be\r\n                allowed, as the scope array includes the '[\"topic2/#\",[\"pub\"]]'.",
+          "createdAt": "2020-08-24T21:58:24Z",
+          "updatedAt": "2020-08-24T21:58:24Z"
+        }
+      ]
     }
   ],
   "pulls": [
