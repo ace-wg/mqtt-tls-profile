@@ -43,7 +43,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-06" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-07" ipr="trust200902">
     <!-- category values: std, bcp, info, exp, and historic
        ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
           or pre5378Trust200902
@@ -55,7 +55,7 @@
         <!-- The abbreviated title is used in the page header - it is only necessary if the
              full title is longer than 39 characters -->
 
-        <title abbrev="Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication and Authorization for Constrained Environments (ACE) Framework">MQTT-TLS profile of ACE</title>
+        <title abbrev="MQTT-TLS profile of ACE">Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication and Authorization for Constrained Environments (ACE) Framework</title>
 
         <!-- add 'role="editor"' below for the editors if appropriate -->
 
@@ -1275,9 +1275,21 @@
      -->
 
 	<section anchor="document_updates" title="Document Updates">
+    <t> Version 06 to 07:
+        <list style="symbols">
+            <t>Corrected the title.</t>
+            <t>In Section 2.2.3, added the constraint on which packets the Client can send, and the server 
+               can process after CONNECT before CONNACK.</t>
+            <t>In Section 2.2.3, clarified that session state is identified by Client Identifier, 
+            and listed its content.</t>
+            <t>In Section 2.2.3, clarified the issue of Client Identifier collision, when the broker supports
+            session continuation.</t>
+            <t>Corrected the buggy scope example in Section 3.1.</t>
+        </list>
+    </t>
     <t> Version 05 to 06:
         <list style="symbols">
-            <t>Replace the orignally proposed scope format with AIF model. Defined the AIF-MQTT,
+            <t>Replace the originally proposed scope format with AIF model. Defined the AIF-MQTT,
                gave an example with a JSON array. Added a normative reference to the AIF draft.</t>
             <t>Clarified client connection after submitting token via "authz-info" topic as 
             TLS:Known(RPK/PSK)-MQTT:none. </t>
