@@ -1279,7 +1279,7 @@
 		</front>
 		<seriesInfo name="research" value="International Workshop on Secure Internet of Things"></seriesInfo>
 	    </reference>
-          <?rfc include="reference.I-D.ietf-ace-pubsub-profile"?>
+          <?rfc include="reference.I-D.draft-ietf-ace-pubsub-profile-01"?>
         </references>
 
         <section anchor="app-profile-requirements" title="Checklist for profile requirements">
