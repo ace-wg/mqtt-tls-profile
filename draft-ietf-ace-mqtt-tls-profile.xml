@@ -690,7 +690,7 @@
                 which has a property identifier 22 (0x16) and is binary data.
                 The binary data in MQTT is represented by a two-byte integer length,
                  which indicates the number of data bytes, followed by that number of bytes.
-                Based on the Authentication Data, this profile allows:
+                Based on the Authentication Data, RS MUST support both options below:
                 <list style="symbols">
                     <t>Proof-of-Possession using a challenge from the TLS session</t>
                     <t>Proof-of-Possession via Broker generated challenge/response</t>
