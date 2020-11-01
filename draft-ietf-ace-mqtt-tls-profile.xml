@@ -558,11 +558,11 @@
                      by Fremantle et al <xref target="fremantle14"></xref>.
 		        </t>
                 <t>
-                    After sending the CONNECT, the client MUST NOT send any packets other than DISCONNECT
-                    or AUTH that is in response to the broker AUTH until it has received a CONNACK.
-                    Similarly, the server MUST NOT process any packets from that client
-                    other than DISCONNECT or an AUTH that is
-                    sent in response to its AUTH before it has sent a CONNACK.
+                    After sending the CONNECT, the client MUST wait to receive the CONNACK from
+                    the Broker. The only messages it is allowed to send are DISCONNECT
+                    or AUTH that is in response to the broker AUTH.
+                    Similarly, the server MUST NOT process any packets before it has sent a CONNACK.
+                    The only exceptions are client DISCONNECT or an AUTH response from the Client.
                 </t>
 		        <t>
 		            <xref target="mqtt5_connect_message"></xref> shows the structure of the
