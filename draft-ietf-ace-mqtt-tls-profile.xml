@@ -459,7 +459,7 @@
                     The Client and the Broker MUST perform mutual authentication.
                     The Client MUST authenticate to the Broker either over MQTT or TLS.
                     For MQTT, the options are "None" and "ace".
-                    For TLS, the options are "Anon" for an anonymous client, 
+                    For TLS, the options are "Anon" for an anonymous client,
                     and "Known(RPK/PSK)" for Raw Public Keys (RPK) <xref target="RFC7250"></xref> and Pre-Shared Keys (PSK), respectively.
                     Combined, client authentication has the following options:
                     <list style="symbols">
@@ -474,7 +474,9 @@
                         <t>"TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen. In any case, the token transported in the CONNECT
                             overwrites any permissions passed during the TLS authentication.</t>
                     </list>
-                     It is RECOMMENDED that the Client follows TLS:Anon-MQTT:ace.
+                     It is RECOMMENDED that the Client uses "TLS:Anon-MQTT:ace" as a first choice when working with protected topics.
+                     However, depending on the Client capability, Client MAY use "TLS:Known(RPK/PSK)-MQTT:none", and 
+                     consequently "TLS:Anon-MQTT:None" to submit its token to "authz-info". 
                 </t>
                 <t>
                     The Broker MUST be authenticated during the TLS handshake.
