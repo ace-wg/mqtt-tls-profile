@@ -102,20 +102,6 @@
             </address>
         </author>
 
-	    <!-- Author 3 -->
-	    <author fullname="Paul Fremantle" initials="P.F"
-		    surname="Fremantle">
-	        <organization>University of Portsmouth</organization>
-	        <address>
-	            <postal>
-	                <street>School of Computing, Buckingham House</street>
-	                <city>Portsmouth</city>
-	                <code>PO1 3HE</code>
-	                <country>UK</country>
-	            </postal>
-	            <email>paul.fremantle@port.ac.uk</email>
-	        </address>
-	    </author>
     <date year="2020"/>
         <!-- If the month and year are both specified and are the current ones, xml2rfc will fill
              in the current day for you. If only the current year is specified, xml2rfc will fill
@@ -923,7 +909,7 @@
                 the Client MAY reauthenticate by providing a new token as described in <xref target="reauthentication"></xref>.
 		    </t>
             <t>
-                For QoS level 0, the Broker sends a DISCONNECT with reason code '0x87 (Not authorized)'
+                For QoS level 0, the Broker sends a DISCONNECT with reason code "0x87 (Not authorized)"
                 and closes the network connection.  Note that the server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
                 the server needs to drop the connection).
             </t>
@@ -1476,8 +1462,8 @@
 
 	<section anchor="Acknowledgements" title="Acknowledgements" numbered="no" toc="default">
 		<t>
-                The authors would like to thank Ludwig Seitz for his review and his input on the authorization information endpoint,
-		 presented in the appendix.
+                The authors would like to thank Ludwig Seitz for his review and his input on the authorization information endpoint.
+                The authors would like to thank Paul Fremantle for the initial discussions on MQTT v5.0 support. 
               </t>
 	</section>
     </back>
