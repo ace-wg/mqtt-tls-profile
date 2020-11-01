@@ -551,7 +551,7 @@
                 <t>
                     After sending the CONNECT, the client MUST NOT send any packets other than DISCONNECT
                     or AUTH that is in response to the broker AUTH until it has received a CONNACK.
-                    Similarly, the server MUST NOT process any packets from that client 
+                    Similarly, the server MUST NOT process any packets from that client
                     other than DISCONNECT or an AUTH that is
                     sent in response to its AUTH before it has sent a CONNACK.
                 </t>
@@ -650,14 +650,14 @@
                 The Broker MUST perform proof-of-possession validation on the provided token.
                 If the token matches the stored state,
                 the Broker MAY skip introspecting a token by reference, and use the stored introspection result.
-                The Broker MUST also verify the Client is authorized to receive or send 
+                The Broker MUST also verify the Client is authorized to receive or send
                 packets that are pending transmission. When a Client connects with a long Session Expiry Interval, the
                 Broker may need to  maintain Client's MQTT session state after it disconnects for an extended period. 
                 Brokers SHOULD implement administrative policies to limit misuse.
 	        </t>
             <t>
                 Note that, according to the MQTT standard, the Broker must use the Client identifier to identify the session state.
-                In the case of a Client identifier collision, 
+                In the case of a Client identifier collision,
                 a client may take over another client's session. Given that clients provide a token
                 at each connection, clients will only send or receive messages to their authorized topics. 
                 Therefore, while this issue is not expected to affect security, 
@@ -688,9 +688,18 @@
                 </list>
             </t>
         <section title="Proof-of-Possession Using a Challenge from the TLS session" anchor="pop_nonce">
+            <figure align="center" anchor="authdata_tlsexporter" title="Authentication Data for PoP based on TLS exporter content">
+                <artwork align="left"><![CDATA[
++-----------------------------------------------------------------+
+|Authentication|Token Length|Token   |MAC or Signature            |
+|Data Length   |            |        |(over TLS exporter content) |
++-----------------------------------------------------------------+
+         ]]></artwork>
+         </figure>
 	        <t>
                 For this option, the Authentication Data MUST contain the two-byte integer token length,
-                the token, and the keyed message digest (MAC) or the Client signature.
+                the token, and the keyed message digest (MAC) or the Client signature (as shown in 
+                <xref target="authdata_tlsexporter"></xref>).
                 The Proof-of-Possession key in the token is used to calculate to
                  the keyed message digest (MAC) or the Client signature
                 based on the contained obtained from the TLS exporter (<xref target="RFC5705"></xref>
@@ -704,26 +713,54 @@
 	        </t>
         </section>
         <section title="Proof-of-Possession via Broker-generated Challenge/Response" anchor="pop_challenge">
+            <figure align="center" anchor="authdata_challenge_client" title="Authentication Data to Initiate PoP based on Challenge/Response">
+                <artwork align="left"><![CDATA[
++------------------------------------+
+|Authentication|Token Length|Token   |
+|Data Length   |            |        |
++------------------------------------+
+         ]]></artwork>
+         </figure>
+         <figure align="center" anchor="authdata_challenge_broker_challenge" title="Authentication Data for Broker Challenge">
+                <artwork align="left"><![CDATA[
++------------------------------+
+|Authentication|Nonce (8 bytes)|
+|Data Length   |               |
++------------------------------+
+         ]]></artwork>
+         </figure>
 	        <t>
 	            For this option, the RS follows a Broker-generated challenge/response protocol.
-                The success case is illustrated in <xref target="pop_challenge_response"></xref>.
                 If the Authentication Data contains only the two-byte integer token length and
-                the token, the RS MUST respond with an AUTH packet,
+                the token (as shown in <xref target="authdata_challenge_client"></xref>),
+                the RS MUST respond with an AUTH packet,
                 with the Authenticate Reason Code set to "0x18 (Continue Authentication)".
                 This packet includes the Authentication Method, which MUST be set to "ace"
                 and Authentication Data. The Authentication Data MUST NOT be empty and contains
-                an 8-byte nonce as a challenge for the Client. The Client responds to this with an AUTH packet
+                an 8-byte nonce as a challenge for the Client (<xref target="authdata_challenge_broker_challenge"></xref>).
+            </t>
+<figure align="center" anchor="authdata_challenge_client_response" title="Authentication Data for Client Challenge Response">
+                <artwork align="left"><![CDATA[
++------------------------------------------------------------------+
+|Authentication|Client Nonce   |Client|MAC or Signature            |
+|Data Length   |Length         |nonce |(over RS nonce+Client nonce)|
++------------------------------------------------------------------+
+         ]]></artwork>
+         </figure>
+            <t>
+                The Client responds to this with an AUTH packet
                 with a reason code "0x18 (Continue Authentication)".
                 Similarly, the Client packet sets the Authentication Method to "ace".
-                The Authentication Data in the Client's response is formatted as the
-                client nonce length,  the client nonce, and
+                The Authentication Data in the Client's response is formatted as shown
+                in <xref target="authdata_challenge_client_response"></xref> and includes the
+                client nonce length, the client nonce, and
                 the signature or MAC computed over the RS nonce concatenated with the client nonce
                 using PoP key in the token.
-                Next,
-                the token is validated as described in  <xref target="token_validation"></xref>.
 	        </t>
             <t>
-                The client MAY also re-authenticate using this challenge-response flow, 
+                Next, the token is validated as described in  <xref target="token_validation"></xref>.
+                The success case is illustrated in <xref target="pop_challenge_response"></xref>.
+                The client MAY also re-authenticate using this challenge-response flow,
                 as described in <xref target="reauthentication"></xref>.
             </t>
                 <figure align="center" anchor="pop_challenge_response" title="PoP Challenge/Response Protocol Flow - Success">
