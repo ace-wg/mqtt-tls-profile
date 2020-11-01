@@ -290,6 +290,14 @@
                             The level of assurance for the delivery of an Application Message. The QoS level can be 0-2,
                             where "0" indicates "At most once delivery", "1" "At least once delivery", and "2" "Exactly once delivery".
                         </t>
+                        <t hangText="Property">
+                            <vspace blankLines="0"/>
+                            The last field of the Variable Header in a number of MQTT control messages (e.g. CONNECT, CONNACK)
+                            is a set of properties.
+                            A Property consists of an Identifier which defines its usage and data type, followed by a value.
+                            The Identifier is encoded as a Variable Byte Integer. For example, "Authentication Data" property
+                            with an identifier 22.
+                        </t>
                         <t hangText="Topic Name">
                             <vspace blankLines="0"/>
                             The label attached to an Application Message, which is matched to a Subscription.
