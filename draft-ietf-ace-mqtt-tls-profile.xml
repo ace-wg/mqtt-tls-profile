@@ -477,7 +477,8 @@
                             validated using one of the methods described in <xref target="app-authzinfo"></xref>. This option also supports
                             a tokenless connection request for AS discovery.</t>
                         <t>"TLS:Known(RPK/PSK)-MQTT:none": For the RPK, the token MUST have been published to the "authz-info" topic.
-                            For the PSK, the token MAY be, alternatively, provided in the "psk_identity".
+                            For the PSK, the token MAY be, alternatively, provided as an "identity" in the "identities" field
+                            in the client's "pre_shared_key" extension.
                             The TLS session set-up is as described in <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.</t>
                         <t>"TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen as the token transported in the CONNECT
                             overwrites any permissions passed during the TLS authentication.</t>
