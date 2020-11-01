@@ -376,7 +376,7 @@
                             <vspace blankLines="0"/>
                             If the network connection is not closed normally, the Broker sends a last Will message
                             for the Client, if the Client provided one in its CONNECT message.
-                            If the Will Flag is set, then the payload of the CONNECT message includes information
+                            If the Will Flag is set in the CONNECT flags, then the payload of the CONNECT message includes information
                             about the Will. The information consists of the Will Properties, Will Topic,
                             and Will Payload fields.
 			            </t>
@@ -899,7 +899,7 @@
             publish permission to all the subtopics of "topic2",
             and subscribe permission to all "topic3", skipping one level.
             If the Will Flag is set, then the Broker MUST check that the token
-            allows the publication of the Will message (i.e. the Will Topic filter is found in the scope).
+            allows the publication of the Will message (i.e. the Will Topic filter is in the scope array).
         </t>
         <section title="PUBLISH Messages from the Publisher Client to the Broker">
             <t>
