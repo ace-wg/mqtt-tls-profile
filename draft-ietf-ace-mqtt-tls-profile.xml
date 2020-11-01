@@ -14,12 +14,16 @@
     <!ENTITY RFC6749 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
     <!ENTITY RFC7800 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7800.xml">
     <!ENTITY RFC7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
+    <!ENTITY RFC7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
     <!ENTITY RFC7250 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7250.xml">
     <!ENTITY RFC7252 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7252.xml">
+    <!ENTITY RFC7519 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7519.xml">
     <!ENTITY RFC8446 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8446.xml">
     <!ENTITY RFC5705 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5705.xml">
     <!ENTITY RFC8032 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8032.xml">
+    <!ENTITY RFC8392 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8392.xml">
     <!ENTITY RFC8447 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8447.xml">
+    <!ENTITY RFC8610 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8610.xml">
     <!ENTITY RFC8747 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8747.xml">
 	]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -136,7 +140,7 @@
         <abstract>
             <t>
                 This document specifies a profile for the ACE (Authentication and Authorization for Constrained
-                Environments) framework to enable authorization in an Message Queuing Telemetry Transport
+                Environments) framework to enable authorization in a Message Queuing Telemetry Transport
                 (MQTT)-based publish-subscribe messaging system.
                 Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize
                 MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.
@@ -198,14 +202,15 @@
 		        <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref> regarding Client and RS
                 registration with the AS and setting up keying material.
                 While the Client-Broker exchanges are only over MQTT, the required Client-AS and
-                RS-AS interactions are described for HTTPS-based communication, using 'application/ace+json'
+                RS-AS interactions are described for HTTPS-based communication <xref target="RFC7230"></xref>, 
+                using 'application/ace+json'
                 content type, and unless otherwise specified, using JSON encoding. The token may be a
-                reference or JSON Web Token (JWT).
+                reference or JSON Web Token (JWT) <xref target="RFC7519"></xref>.
                 For JWTs, this document follows <xref target="RFC7800"></xref>
                 for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP,
                 e.g. Constrained Application Protocol (CoAP) <xref target="RFC7252"></xref> or MQTT.
                 Implementations MAY also use 'application/ace+cbor' content type, and CBOR encoding <xref target="7049"></xref>, and
-                CBOR Web Token (CWT) and associated PoP semantics to reduce the protocol memory and bandwidth
+                CBOR Web Token (CWT) <xref target="8392"></xref> and associated PoP semantics to reduce the protocol memory and bandwidth
                 requirements.  For more information, see <xref target="RFC8747">Proof-of-Possession Key
                 Semantics for CBOR Web Tokens (CWTs)</xref>.
             </t>
@@ -431,7 +436,7 @@
             </t>
             <t> The AS returns error responses for JSON-based interactions
                 following Section 5.2 of <xref target="RFC6749"></xref>.
-                When CBOR is used, the interactions must implement
+                When CBOR is used, the interactions MUST implement
                 Section 5.6.3 of the <xref
                 target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
             </t>
@@ -527,7 +532,8 @@
                 <t>
                     After sending the CONNECT, the client MUST NOT send any packets other than DISCONNECT
                     or AUTH that is in response to the broker AUTH until it has received a CONNACK.
-                    Similarly, the server MUST NOT process any packets other than DISCONNECT or an AUTH that is
+                    Similarly, the server MUST NOT process any packets from that client 
+                    other than DISCONNECT or an AUTH that is
                     sent in response to its AUTH before it has sent a CONNACK.
                 </t>
 		        <t>
@@ -797,7 +803,8 @@
             the Broker uses the scope field in the token (or in the introspection result).
             The scope field contains the publish and subscribe permissions for the Client. 
             The scope is a JSON array, each item following the <xref target="I-D.ietf-ace-aif">Authorization Information 
-            Format (AIF) for ACE</xref>. The specific data model for MQTT is:
+            Format (AIF) for ACE</xref>.  Using the Concise Data Definition Language (CDDL) <xref target="RFC8610"></xref>,
+            the specific data model for MQTT is:
             <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
             <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
  AIF-MQTT = AIF-Generic<topic_filter, permissions>
@@ -1187,6 +1194,9 @@
         &RFC8747;
         &RFC8032;
         &RFC6234;
+        &RFC8610;
+        &RFC7519;
+        &RFC7230;
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
@@ -1236,6 +1246,7 @@
             &RFC4949;
             &RFC7252;
             &RFC7049;
+            &RFC8392;
              <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
 	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
