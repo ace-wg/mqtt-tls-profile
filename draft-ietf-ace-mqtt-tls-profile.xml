@@ -209,8 +209,8 @@
                 For JWTs, this document follows <xref target="RFC7800"></xref>
                 for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP,
                 e.g. Constrained Application Protocol (CoAP) <xref target="RFC7252"></xref> or MQTT.
-                Implementations MAY also use 'application/ace+cbor' content type, and CBOR encoding <xref target="7049"></xref>, and
-                CBOR Web Token (CWT) <xref target="8392"></xref> and associated PoP semantics to reduce the protocol memory and bandwidth
+                Implementations MAY also use "application/ace+cbor" content type, and CBOR encoding <xref target="RFC7049"></xref>, and
+                CBOR Web Token (CWT) <xref target="RFC8392"></xref> and associated PoP semantics to reduce the protocol memory and bandwidth
                 requirements.  For more information, see <xref target="RFC8747">Proof-of-Possession Key
                 Semantics for CBOR Web Tokens (CWTs)</xref>.
             </t>
@@ -241,7 +241,7 @@
                 </t>
                 <t>
                   <list hangIndent="8" style="hanging">
-                  <t hangtext="Client Authorization Server (CAS)">
+                  <t hangText="Client Authorization Server (CAS)">
                    <vspace blankLines="0"/>
                   An entity that prepares and endorses authentication and authorization data for a Client, 
                   and communicates using HTTPS to the AS.
@@ -1252,8 +1252,8 @@
 	    </reference>
             <?rfc include="reference.I-D.ietf-ace-oauth-authz.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
-            <?rfc include="reference.I-D.draft-ietf-cose-x509-06.xml"?>
-            <?rfc include="reference.I-D.draft-ietf-ace-aif.xml"?>
+            <?rfc include="reference.I-D.draft-ietf-cose-x509-07.xml"?>
+            <?rfc include="reference.I-D.ietf-ace-aif.xml"?>
         </references>
 
         <references title="Informative References">
