@@ -409,9 +409,8 @@
                 The first step in the protocol flow (Figure 1 (A)) is the token acquisition by the Client
                 from the AS. The Client and the AS MUST perform mutual authentication.
                 The Client requests an access token from the AS as
-                described in Section 5.6.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>,
-                however, it MUST set the profile parameter to 'mqtt_tls'. The media format is 'application/ace+json'.
-                The AS uses JSON in the payload of its responses to both to the Client and the RS.
+                described in Section 5.6.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. The media format is 'application/ace+json'.
+                The AS uses JSON in the payload of its responses to the Client and the RS.
             </t>
             <t>
                 If the AS successfully verifies the access token request and authorizes the Client for the
@@ -440,7 +439,7 @@
                     The Client MUST authenticate to the Broker either over MQTT or TLS.
                     For MQTT, the options are "None" and "ace".
                     For TLS, the options are "Anon" for an anonymous client, 
-                    and "Known(RPK/PSK)" for Raw Public Keys (RPK) and Pre-Shared Keys (PSK), respectively.
+                    and "Known(RPK/PSK)" for Raw Public Keys (RPK) <xref target="RFC7250"></xref> and Pre-Shared Keys (PSK), respectively.
                     Combined, client authentication has the following options:
                     <list style="symbols">
                         <t>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization,
@@ -532,7 +531,8 @@
                     MQTT CONNECT message used in MQTT v5.0.
                     A CONNECT message is composed of a fixed header, a variable header and a payload.
                     The fixed header contains the Control Packet Type (CPT), Reserved, and Remaining Length fields.
-                    The Variable Header contains the Protocol Name, Protocol Level, Connect Flags, Keep Alive, and Properties fields.
+                    The Variable Header contains the Protocol Name, Protocol Level,
+                    Connect Flags, Keep Alive, and Properties fields.
                     The Connect Flags in the variable header specify the properties of the MQTT session.
                     It also indicates the presence or absence of some fields in the Payload.
                     The payload contains one or more encoded fields, namely a unique Client
@@ -759,7 +759,9 @@
                  </section>
                  <section title="Authorisation Success" anchor="auth_success">
                    <t>
-                    On success, the reason code of the CONNACK is '0x00 (Success)'.
+                    On success, the reason code of the CONNACK is "0x00 (Success)". 
+                    The AS informs the client that selected profile is "mqtt_tls" 
+                    using the "ace_profile" parameter in the token response.
                     If the Broker starts a new session, it MUST also set Session Present to 0
                     in the CONNACK packet to signal a clean session to the Client. Otherwise,
                     it MUST set Session Present to 1.
