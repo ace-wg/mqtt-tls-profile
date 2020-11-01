@@ -171,7 +171,7 @@
 
             <t>
                 Messages are published under a Topic Name,
-                and subscribers must subscribe to the Topic Names to receive the corresponding messages.
+                and subscribers subscribe to the Topic Names to receive the corresponding messages.
                 The Broker uses the Topic Name in a published message to determine which
                 subscribers to relay the messages.
                 In this document, topics, more specifically, Topic Names, are treated as resources.
@@ -192,7 +192,7 @@
                 </list>
                 Clients use MQTT PUBLISH message to publish to a topic.
                 This document does not protect the payload of the PUBLISH message from the Broker. Hence,
-                the payload is not signed or encrypted specifically for the subscribers. This functionality may 
+                the payload is not signed or encrypted specifically for the subscribers. This functionality MAY 
                 be implemented using the proposal outlined in the 
                 <xref target="I-D.ietf-ace-pubsub-profile">ACE Pub-Sub Profile</xref>.
             </t>
@@ -204,7 +204,7 @@
                 While the Client-Broker exchanges are only over MQTT, the required Client-AS and
                 RS-AS interactions are described for HTTPS-based communication <xref target="RFC7230"></xref>, 
                 using 'application/ace+json'
-                content type, and unless otherwise specified, using JSON encoding. The token may be a
+                content type, and unless otherwise specified, using JSON encoding. The token MAY be a
                 reference or JSON Web Token (JWT) <xref target="RFC7519"></xref>.
                 For JWTs, this document follows <xref target="RFC7800"></xref>
                 for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP,
@@ -393,7 +393,7 @@
                 and use the introspection endpoint, specified in Section 5.7 of the ACE framework.
                 The Client and the Broker use HTTPS to communicate to AS via these endpoints.
                 The Client and the Broker use MQTT to communicate between them.
-                The C-AS and Broker-AS communication may be implemented using protocols other than HTTPS,
+                The C-AS and Broker-AS communication MAY be implemented using protocols other than HTTPS,
                 e.g. CoAP or MQTT.
             </t>
             <t>
@@ -622,12 +622,12 @@
                 not closed normally. The situations in which the Will message
                 is published include disconnections due to I/O or network failures,
                 and the server closing the network connection due to a protocol error.
-                The Client may set the Will Flag as desired (marked as 'X' in <xref target="mqttv5_connect_flags"></xref>).
-                If the Will Flag is set to 1 and the Broker accepts the connection request, the Broker must
-                store the Will message and  publish it when the network connection is closed according to Will QoS and
+                The Client MAY set the Will Flag as desired (marked as 'X' in <xref target="mqttv5_connect_flags"></xref>).
+                If the Will Flag is set to 1 and the Broker accepts the connection request, the Broker
+                stores the Will message and  publish it when the network connection is closed according to Will QoS and
 	            Will retain parameters and MQTT Will management rules.  To avoid publishing Will Messages
                 in the case of temporary network disconnections,
-                the Client may specify a Will Delay Interval in the Will Properties.
+                the Client MAY specify a Will Delay Interval in the Will Properties.
                 <xref target="disconnections"></xref> explains how the Broker deals with the retained messages in further detail.
             </t>
              <t>
@@ -665,7 +665,7 @@
                 Brokers SHOULD implement administrative policies to limit misuse.
 	        </t>
             <t>
-                Note that, according to the MQTT standard, the Broker must use the Client identifier to identify the session state.
+                Note that, according to the MQTT standard, the Broker uses the Client identifier to identify the session state.
                 In the case of a Client identifier collision,
                 a client may take over another client's session. Given that clients provide a token
                 at each connection, clients will only send or receive messages to their authorized topics. 
@@ -914,7 +914,7 @@
             </t>
             <t>
                 If the Client is allowed to publish to the topic,
-                the Broker must publish the message to all valid subscribers of the topic.
+                the Broker publishes the message to all valid subscribers of the topic.
 		       In the case of an authorization failure, the Broker MUST return an error, if
                 the Client has set the QoS level of the PUBLISH message to greater than or equal to 1.
                 Depending on the QoS level, the Broker responds with either a PUBACK or PUBREC packet with reason code
@@ -1007,7 +1007,7 @@
             In the case of a Client DISCONNECT,  the Broker
             deletes all the session state but MUST keep the retained messages.
             By setting a RETAIN flag in a PUBLISH message,
-            the publisher indicates to the Broker that it should store the most
+            the publisher indicates to the Broker to store the most
             recent message for the associated topic.  Hence, the new subscribers can receive
             the last sent message from the publisher for that particular topic without waiting
             for the next PUBLISH message.
@@ -1016,7 +1016,7 @@
         </t>
         <t>
             In case of disconnections due to network errors or server disconnection due to a protocol error
-            (which includes authorization errors), the Will message must be sent if the Client supplied
+            (which includes authorization errors), the Will message is sent if the Client supplied
             a Will in the CONNECT message.  The Client's token scope array MUST include the Will Topic.
             The Will message MUST be published to the Will Topic regardless of whether the corresponding
 		    token has expired.
@@ -1095,7 +1095,7 @@
                 However, stored Session state can be discarded as a result of administrator policies, and Brokers SHOULD
                 implement the necessary policies to limit misuse.
                     </t>
-                    <t>The Client may set the Will Flag
+                    <t>The Client MAY set the Will Flag
                          as desired (marked as 'X' in <xref
                             target="mqtt_connect_flags"></xref>).
                         Username and Password flags MUST be set to 1 to  ensure that the Payload of the
@@ -1146,7 +1146,7 @@
 		       Otherwise, it MUST ignore the PUBLISH message. Also, as DISCONNECT messages are only sent
                 from a Client to the Broker, the server disconnection needs to take place below the application layer.
 		      </t>
-		      <t> SUBSCRIBE authorization failure:  In the  SUBACK packet, the return code must be 0x80 indicating
+		      <t> SUBSCRIBE authorization failure:  In the  SUBACK packet, the return code is 0x80 indicating
                'Failure' for the unauthorized topic(s). Note that, in both MQTT versions, a reason code is
                 returned for each Topic Filter.
 		      </t>
@@ -1200,7 +1200,7 @@
       RS does not cache any invalid tokens.
       If a client's permissions get revoked but the access token has not expired,
 	  the RS may still grant publish/subscribe to revoked topics.
-      If the RS caches the token introspection responses, then the RS should use a reasonable cache timeout
+      If the RS caches the token introspection responses, then the RS SHOULD use a reasonable cache timeout
        to introspect tokens regularly.
 	  When permissions change dynamically, it is expected that AS also
        follows a reasonable expiration strategy for the access tokens.
