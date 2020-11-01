@@ -12,7 +12,9 @@
     <!ENTITY RFC4949 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4949.xml">
     <!ENTITY RFC6749 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
     <!ENTITY RFC7800 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7800.xml">
+    <!ENTITY RFC7049 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7049.xml">
     <!ENTITY RFC7250 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7250.xml">
+    <!ENTITY RFC7252 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7252.xml">
     <!ENTITY RFC8446 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8446.xml">
     <!ENTITY RFC5705 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5705.xml">
     <!ENTITY RFC8447 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8447.xml">
@@ -190,17 +192,17 @@
             </t>
             <t>
                 To provide communication confidentiality and RS authentication, TLS is used, and
-                TLS 1.3 is RECOMMENDED. This document makes the same assumptions as Section 4 of the
+                TLS 1.3 <xref target="RFC8446"></xref> is RECOMMENDED. This document makes the same assumptions as Section 4 of the
 		        <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref> regarding Client and RS
                 registration with the AS and setting up keying material.
                 While the Client-Broker exchanges are only over MQTT, the required Client-AS and
                 RS-AS interactions are described for HTTPS-based communication, using 'application/ace+json'
                 content type, and unless otherwise specified, using JSON encoding. The token may be a
                 reference or JSON Web Token (JWT).
-                For JWTs, this document follows <xref target="RFC7800">RFC 7800</xref>
+                For JWTs, this document follows <xref target="RFC7800"></xref>
                 for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP,
-                e.g. Constrained Application Protocol (CoAP) or MQTT.
-                Implementations MAY also use 'application/ace+cbor' content type, and CBOR encoding, and
+                e.g. Constrained Application Protocol (CoAP) <xref target="RFC7252"></xref> or MQTT.
+                Implementations MAY also use 'application/ace+cbor' content type, and CBOR encoding <xref target="7049"></xref>, and
                 CBOR Web Token (CWT) and associated PoP semantics to reduce the protocol memory and bandwidth
                 requirements.  For more information, see <xref target="RFC8747">Proof-of-Possession Key
                 Semantics for CBOR Web Tokens (CWTs)</xref>.
@@ -217,8 +219,7 @@
 
             <section title="ACE-Related Terminology">
                 <t>
-                    The terminology for entities in the architecture is defined in OAuth 2.0 <xref target="RFC6749">RFC
-                    6749 </xref> such as "Client" (C),
+                    The terminology for entities in the architecture is defined in OAuth 2.0 <xref target="RFC6749"></xref> such as "Client" (C),
                      "Resource Server" (RS) and "Authorization Server" (AS).
                 </t>
                 <t>
@@ -227,7 +228,7 @@
                 </t>
                 <t>
                     Certain security-related terms such as "authentication", "authorization", "confidentiality", "(data)
-                    integrity", "message authentication code", and "verify" are taken from  <xref target="RFC4949">RFC 4949</xref>.
+                    integrity", "message authentication code", and "verify" are taken from  <xref target="RFC4949"></xref>.
                 </t>
             </section>
 
@@ -418,7 +419,7 @@
                 the AS issues an access token (Figure 1 (B)). The response includes the parameters described
                 in Section 5.6.2 of <xref target="I-D.ietf-ace-oauth-authz">the ACE framework</xref>.
                 The returned token is a Proof-of-Possession (PoP) token by default.
-                This document follows <xref target="RFC7800">RFC 7800</xref> for PoP semantics for JWTs.
+                This document follows <xref target="RFC7800"></xref> for PoP semantics for JWTs.
                 The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key.
                 Note that the 'cnf' parameter in the web tokens are to be consumed by the RS and not the Client.
                 For the asymmetric case, the PoP token may include the 'rs_cnf' parameter containing the information
@@ -426,7 +427,7 @@
                 by the RS to authenticate as described in <xref target="I-D.ietf-ace-oauth-params"></xref>.
             </t>
             <t> The AS returns error responses for JSON-based interactions
-                following Section 5.2 of <xref target="RFC6749">RFC 6749</xref>.
+                following Section 5.2 of <xref target="RFC6749"></xref>.
                 When CBOR is used, the interactions must implement
                 Section 5.6.3 of the <xref
                 target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
@@ -608,7 +609,7 @@
                 introspection result (for reference tokens) in addition to the MQTT session state.
                 The MQTT session state is identified by the Client identifier and includes
                 state on client subscriptions, QoS 1 and QoS 2 messages which have
-                have not been completely acknowledged or pending transmission to the Client,
+                not been completely acknowledged or pending transmission to the Client,
                 and if the Session is currently not connected,
                 the time at which the Session will end and Session State will be discarded.
             </t>
@@ -792,12 +793,12 @@
             To authorize a Client's PUBLISH and SUBSCRIBE messages,
             the Broker uses the scope field in the token (or in the introspection result).
             The scope field contains the publish and subscribe permissions for the Client. 
-            The scope is a JSON array, each item following the <xref target="I-D.bormann-core-ace-aif">Authorization Information 
+            The scope is a JSON array, each item following the <xref target="I-D.ietf-ace-aif">Authorization Information 
             Format (AIF) for ACE</xref>. The specific data model for MQTT is:
             <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
             <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
  AIF-MQTT = AIF-Generic<topic_filter, permissions>
- AIF-Generic<topic_filter, permissions> = [* [topic_filter,permissions]]
+ AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
  topic_filter = tstr
  permissions = [+permission]
  permission = "pub"/"sub"
@@ -952,7 +953,7 @@
         with Reason Code '0x84 (Unsupported Protocol Version)' in response to the connection requests.
         </t>
 	    <section anchor="token_311" title="Token Transport">
-            <t> As in MQTT v5.0, The Token MAY either be transported before by publishing
+            <t> As in MQTT v5.0, the token MAY either be transported before by publishing
              to the "authz-info" topic,
             or inside the CONNECT message.
             </t>
@@ -1054,7 +1055,7 @@
                 CONNECT without a token: It is not possible to support AS discovery via sending a tokenless CONNECT
                  message to the Broker. This is because a CONNACK packet in MQTT v3.1.1
                   does not include a means to provide additional information to the Client.
-			    Therefore, AS discovery needs to take place out-of-band. CONNECT attempt MUST fail.
+			    Therefore, AS discovery needs to take place out-of-band. The tokenless CONNECT attempt MUST fail.
 		      </t>
 		      <t>
                 Client-RS PUBLISH authorization failure: In the case of a failure,
@@ -1084,9 +1085,8 @@
         <!-- Possibly a 'Acknowledgements'/ 'Contributors' section ... -->
         <section anchor="IANA" title="IANA Considerations">
          <t>
-            This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge' from <xref target="pop_nonce"></xref>
-            in the TLS Exporter Label Registry
-            <xref target="RFC8447">TLS-REGISTRIES</xref>.
+            This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge' (introduced in <xref target="pop_nonce"></xref>
+           in this document) in the TLS Exporter Label Registry <xref target="RFC8447">TLS-REGISTRIES</xref>.
          </t>
          <t>In addition, the following registrations are done for the ACE OAuth Profile Registry following the procedure specified in
 	        <xref target="I-D.ietf-ace-oauth-authz"></xref>.
@@ -1222,13 +1222,15 @@
             <?rfc include="reference.I-D.ietf-ace-oauth-authz.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
             <?rfc include="reference.I-D.draft-ietf-cose-x509-06.xml"?>
-            <?rfc include="reference.I-D.bormann-core-ace-aif.xml"?>
+            <?rfc include="reference.I-D.draft-ietf-ace-aif.xml"?>
         </references>
 
         <references title="Informative References">
             <!-- Here we use entities that we defined at the beginning. -->
             <!-- A reference written by by an organization not a person. -->
             &RFC4949;
+            &RFC7252;
+            &RFC7049;
              <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
 	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
