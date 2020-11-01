@@ -474,9 +474,14 @@
                         <t>"TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen. In any case, the token transported in the CONNECT
                             overwrites any permissions passed during the TLS authentication.</t>
                     </list>
-                     It is RECOMMENDED that the Client uses "TLS:Anon-MQTT:ace" as a first choice when working with protected topics.
-                     However, depending on the Client capability, Client MAY use "TLS:Known(RPK/PSK)-MQTT:none", and 
-                     consequently "TLS:Anon-MQTT:None" to submit its token to "authz-info". 
+                     It is RECOMMENDED that the Client implements "TLS:Anon-MQTT:ace" as a first choice when working with protected topics.
+                     However, depending on the Client capability, Client MAY implement only "TLS:Known(RPK/PSK)-MQTT:none", and
+                     consequently "TLS:Anon-MQTT:None" to submit its token to "authz-info".
+                     The Broker MUST accept "TLS:Anon-MQTT:ace".
+                     To support Clients with different capabilities, the Broker MAY support multiple authentication options,
+                     e.g. support "TLS:Known(RPK)-MQTT:none" and "TLS:Anon-MQTT:None",
+                     to enable RPK-based client authentication, but fall back to "TLS:Anon-MQTT:ace" if the Client does not
+                     send a client certificate (i.e. it sends an empty Certificate message) during the TLS handshake.
                 </t>
                 <t>
                     The Broker MUST be authenticated during the TLS handshake.
