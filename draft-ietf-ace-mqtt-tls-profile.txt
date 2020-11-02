@@ -11,7 +11,7 @@ Expires: May 6, 2021                                            Oxbotica
 
 Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication
      and Authorization for Constrained Environments (ACE) Framework
-                   draft-ietf-ace-mqtt-tls-profile-07
+                   draft-ietf-ace-mqtt-tls-profile-08
 
 Abstract
 
@@ -103,7 +103,7 @@ Table of Contents
      10.2.  Informative References . . . . . . . . . . . . . . . . .  27
    Appendix A.  Checklist for profile requirements . . . . . . . . .  28
    Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  29
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  32
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  33
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  33
 
 
@@ -214,7 +214,7 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    defined in Section 1.3.  Hence, the "Resource Owner" is any entity
    that can authoritatively speak for the topic.  This document also
    defines a Client Authorisation Server, for Clients that are not able
-   to support both HTTP and MQTT communication.
+   to support HTTP.
 
    Client Authorization Server (CAS)
 
@@ -267,13 +267,13 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
            "Exactly once delivery".
 
    Property
-           The last field of the Variable Header in a number of MQTT
-           control messages (e.g.  CONNECT, CONNACK) is a set of
-           properties.  A Property consists of an Identifier which
-           defines its usage and data type, followed by a value.  The
-           Identifier is encoded as a Variable Byte Integer.  For
-           example, "Authentication Data" property with an identifier
-           22.
+           The last field of the Variable Header is a set of properties
+           for several MQTT control messages (e.g.  CONNECT, CONNACK) .
+           A Property consists of an Identifier which defines its usage
+           and data type, followed by a value.  The Identifier is
+           encoded as a Variable Byte Integer.  For example,
+           "Authentication Data" property with an Identifier 22.
+
 
 
 
@@ -485,9 +485,9 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    o  "TLS:Known(RPK/PSK)-MQTT:none": For the RPK, the token MUST have
       been published to the "authz-info" topic.  For the PSK, the token
       MAY be, alternatively, provided as an "identity" in the
-      "identities" field in the client's "pre_shared_key" extension.
-      The TLS session set-up is as described in DTLS profile for ACE
-      [I-D.ietf-ace-dtls-authorize].
+      "identities" field in the client's "pre_shared_key" extension in
+      TLS 1.3.  The TLS session set-up is as described in DTLS profile
+      for ACE [I-D.ietf-ace-dtls-authorize].
 
    o  "TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen as
       the token transported in the CONNECT overwrites any permissions
@@ -495,9 +495,9 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
 
    It is RECOMMENDED that the Client implements "TLS:Anon-MQTT:ace" as a
    first choice when working with protected topics.  However, depending
-   on the Client capability, Client MAY implement only "TLS:Known(RPK/
-   PSK)-MQTT:none", and consequently "TLS:Anon-MQTT:None" to submit its
-   token to "authz-info".  The Broker MUST accept "TLS:Anon-MQTT:ace".
+   on the Client capability, Client MAY implement "TLS:Known(RPK/PSK)-
+   MQTT:none", and consequently "TLS:Anon-MQTT:None" to submit its token
+   to "authz-info".
 
 
 
@@ -506,12 +506,13 @@ Sengul & Kirby             Expires May 6, 2021                  [Page 9]
 Internet-Draft           MQTT-TLS profile of ACE           November 2020
 
 
-   To support Clients with different capabilities, the Broker MAY
-   support multiple authentication options, e.g. support
-   "TLS:Known(RPK)-MQTT:none" and "TLS:Anon-MQTT:None", to enable RPK-
-   based client authentication, but fall back to "TLS:Anon-MQTT:ace" if
-   the Client does not send a client certificate (i.e. it sends an empty
-   Certificate message) during the TLS handshake.
+   The Broker MUST support "TLS:Anon-MQTT:ace".  To support Clients with
+   different capabilities, the Broker MAY provide multiple client
+   authentication options, e.g. support "TLS:Known(RPK)-MQTT:none" and
+   "TLS:Anon-MQTT:None", to enable RPK-based client authentication, but
+   fall back to "TLS:Anon-MQTT:ace" if the Client does not send a client
+   certificate (i.e. it sends an empty Certificate message) during the
+   TLS handshake.
 
    The Broker MUST be authenticated during the TLS handshake.  If the
    Client authentication uses TLS:Known(RPK/PSK), then the Broker is
@@ -556,7 +557,6 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
 
 
 
-
 Sengul & Kirby             Expires May 6, 2021                 [Page 10]
 
 Internet-Draft           MQTT-TLS profile of ACE           November 2020
@@ -587,10 +587,10 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
 
    After sending the CONNECT, the client MUST wait to receive the
    CONNACK from the Broker.  The only messages it is allowed to send are
-   DISCONNECT or AUTH that is in response to the broker AUTH.
-   Similarly, the server MUST NOT process any packets before it has sent
-   a CONNACK.  The only exceptions are client DISCONNECT or an AUTH
-   response from the Client.
+   DISCONNECT or AUTH that is in response to the Broker AUTH.
+   Similarly, the Broker MUST NOT process any packets before it has sent
+   a CONNACK.  The only exceptions are DISCONNECT or an AUTH response
+   from the Client.
 
    Figure 2 shows the structure of the MQTT CONNECT message used in MQTT
    v5.0.  A CONNECT message is composed of a fixed header, a variable
@@ -638,7 +638,7 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
                          (CPT=Control Packet Type)
 
    The CONNECT message flags are Username, Password, Will retain, Will
-   QoS, Will Flag, Clean Start, and Reserved.  Figure 12 shows how the
+   QoS, Will Flag, Clean Start, and Reserved.  Figure 3 shows how the
    flags MUST be set to use AUTH packets for authentication and
    authorisation, i.e. the username and password flags MUST be set to 0.
    An MQTT v5.0 RS MAY also support token transport using Username and
@@ -664,7 +664,7 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    message and publish it when the network connection is closed
    according to Will QoS and Will retain parameters and MQTT Will
    management rules.  To avoid publishing Will Messages in the case of
-   temporary network disconnections, the Client MAY specify a Will Delay
+   temporary network disconnections, the Client specifies a Will Delay
 
 
 
@@ -766,8 +766,8 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    For this option, the Authentication Data MUST contain the two-byte
    integer token length, the token, and the keyed message digest (MAC)
    or the Client signature (as shown in Figure 4).  The Proof-of-
-   Possession key in the token is used to calculate to the keyed message
-   digest (MAC) or the Client signature based on the contained obtained
+   Possession key in the token is used to calculate the keyed message
+   digest (MAC) or the Client signature based on the content obtained
    from the TLS exporter ([RFC5705] for TLS 1.2 and for TLS 1.3,
    Section 7.5 of [RFC8446]).  This content is exported from the TLS
    session using the exporter label 'EXPORTER-ACE-MQTT-Sign-Challenge',
@@ -981,8 +981,10 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    This access token gives publish ("pub") and subscribe ("sub")
    permissions to the "topic1", publish permission to all the subtopics
    of "topic2", and subscribe permission to all "topic3", skipping one
-   level.  If the Will Flag is set, then the Broker MUST check that the
-   token allows the publication of the Will message (i.e. the Will Topic
+   level.
+
+   If the Will Flag is set, then the Broker MUST check that the token
+   allows the publication of the Will message (i.e. the Will Topic
    filter is in the scope array).
 
 3.1.  PUBLISH Messages from the Publisher Client to the Broker
@@ -1000,8 +1002,6 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    the Client has set the QoS level of the PUBLISH message to greater
    than or equal to 1.  Depending on the QoS level, the Broker responds
    with either a PUBACK or PUBREC packet with reason code '0x87 (Not
-   authorized)'.  On receiving an acknowledgement with '0x87 (Not
-
 
 
 
@@ -1010,6 +1010,7 @@ Sengul & Kirby             Expires May 6, 2021                 [Page 18]
 Internet-Draft           MQTT-TLS profile of ACE           November 2020
 
 
+   authorized)'.  On receiving an acknowledgement with '0x87 (Not
    authorized)', the Client MAY reauthenticate by providing a new token
    as described in Section 4.
 
@@ -1053,7 +1054,6 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    Client is 'Not authorized'.  A reason code is returned for each Topic
    Filter.  Therefore, the Client may receive success codes for a subset
    of its Topic Filters while being unauthorized for the rest.
-
 
 
 
@@ -1268,7 +1268,7 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
 
    This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge'
    (introduced in Section 2.2.4.1 in this document) in the TLS Exporter
-   Label Registry TLS-REGISTRIES [RFC8447].
+   Label Registry [RFC8447].
 
    In addition, the following registrations are done for the ACE OAuth
    Profile Registry following the procedure specified in
@@ -1580,6 +1580,25 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
 
 Appendix B.  Document Updates
 
+   Version 07 to 08:
+
+   o  Fixed several nits, typos based on WG reviews.
+
+   o  Added missing references.
+
+   o  Added the definition for Property defined by MQTT, and Client
+      Authorisation Server.
+
+   o  Added artwork to show Authorisation Data format for various PoP-
+      related message exchange.
+
+   o  Removed all MQTT-related must/should/may.
+
+   o  Made AS discovery optional.
+
+   o  Clarified what the client and server must implement for client
+      authentication; cleaned up TLS 1.3 related language.
+
    Version 06 to 07:
 
    o  Corrected the title.
@@ -1596,6 +1615,16 @@ Appendix B.  Document Updates
    o  Corrected the buggy scope example in Section 3.1.
 
    Version 05 to 06:
+
+
+
+
+
+
+Sengul & Kirby             Expires May 6, 2021                 [Page 29]
+
+Internet-Draft           MQTT-TLS profile of ACE           November 2020
+
 
    o  Replace the originally proposed scope format with AIF model.
       Defined the AIF-MQTT, gave an example with a JSON array.  Added a
@@ -1618,13 +1647,6 @@ Appendix B.  Document Updates
    o  Clarified that the broker does not cache invalid tokens.
 
    Version 04 to 05:
-
-
-
-Sengul & Kirby             Expires May 6, 2021                 [Page 29]
-
-Internet-Draft           MQTT-TLS profile of ACE           November 2020
-
 
    o  Reorganised Section 2 such that "Unauthorised Request:
       Authorisation Server Discovery" is presented under Section 2.
@@ -1653,6 +1675,13 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    o  Added that client reauthentication is accepted only for the
       challenge/response PoP.
 
+
+
+Sengul & Kirby             Expires May 6, 2021                 [Page 30]
+
+Internet-Draft           MQTT-TLS profile of ACE           November 2020
+
+
    o  Added Ed25519 as mandatory to implement.
 
    o  Fixed typos.
@@ -1673,14 +1702,6 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
 
    o  Added that MQTT v5 brokers MAY also implement reduced interactions
       described for MQTTv3.1.1.
-
-
-
-
-Sengul & Kirby             Expires May 6, 2021                 [Page 30]
-
-Internet-Draft           MQTT-TLS profile of ACE           November 2020
-
 
    o  Added to Section 3.1, in case of an authorisation failure and QoS
       level 0, the RS sends a DISCONNECT with reason code '0x87 (Not
@@ -1707,6 +1728,16 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    o  Added the option of Broker certificate thumbprint in the 'rs_cnf'
       sent to the Client.
 
+
+
+
+
+
+Sengul & Kirby             Expires May 6, 2021                 [Page 31]
+
+Internet-Draft           MQTT-TLS profile of ACE           November 2020
+
+
    o  Clarified the use of a random nonce from the TLS Exporter for PoP,
       added to the IANA requirements that the label should be
       registered.
@@ -1728,15 +1759,6 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    o  Clarified protection of Application Message payload as out of
       scope, and cited draft-palombini-ace-coap-pubsub-profile for a
       potential solution
-
-
-
-
-
-Sengul & Kirby             Expires May 6, 2021                 [Page 31]
-
-Internet-Draft           MQTT-TLS profile of ACE           November 2020
-
 
    o  Expanded Client connection authorization to capture different
       options for Client and Broker authentication over TLS and MQTT
@@ -1764,6 +1786,14 @@ Internet-Draft           MQTT-TLS profile of ACE           November 2020
    o  Improved consistency in the use of terminology and upper/lower
       case.
 
+
+
+
+Sengul & Kirby             Expires May 6, 2021                 [Page 32]
+
+Internet-Draft           MQTT-TLS profile of ACE           November 2020
+
+
    o  Defined Broker and MQTTS.
 
    o  Clarified HTTPS use for C-AS and RS-AS communication.  Removed
@@ -1784,16 +1814,6 @@ Acknowledgements
    like to thank Paul Fremantle for the initial discussions on MQTT v5.0
    support.
 
-
-
-
-
-
-Sengul & Kirby             Expires May 6, 2021                 [Page 32]
-
-Internet-Draft           MQTT-TLS profile of ACE           November 2020
-
-
 Authors' Addresses
 
    Cigdem Sengul
@@ -1812,26 +1832,6 @@ Authors' Addresses
    UK
 
    Email: anthony@anthony.org
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

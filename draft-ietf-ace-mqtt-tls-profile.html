@@ -416,7 +416,7 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Sengul, C. and A. Kirby" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-mqtt-tls-profile-07" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-ace-mqtt-tls-profile-08" />
   <meta name="dct.issued" scheme="ISO8601" content="2020-02" />
   <meta name="dct.abstract" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in a Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
   <meta name="description" content="This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in a Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.   " />
@@ -454,7 +454,7 @@
   </table>
 
   <p class="title">Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication and Authorization for Constrained Environments (ACE) Framework<br />
-  <span class="filename">draft-ietf-ace-mqtt-tls-profile-07</span></p>
+  <span class="filename">draft-ietf-ace-mqtt-tls-profile-08</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>This document specifies a profile for the ACE (Authentication and Authorization for Constrained Environments) framework to enable authorization in a Message Queuing Telemetry Transport (MQTT)-based publish-subscribe messaging system.  Proof-of-possession keys, bound to OAuth2.0 access tokens, are used to authenticate and authorize MQTT Clients. The protocol relies on TLS for confidentiality and MQTT server (broker) authentication.  </p>
@@ -570,7 +570,7 @@
 <a href="#rfc.section.1.2">1.2.</a> ACE-Related Terminology</h1>
 <p id="rfc.section.1.2.p.1">Certain security-related terms such as "authentication", "authorization", "confidentiality", "(data) integrity", "message authentication code", and "verify" are taken from  <a href="#RFC4949" class="xref">[RFC4949]</a>.  </p>
 <p id="rfc.section.1.2.p.2">The terminology for entities in the architecture is defined in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a> such as "Client" (C), "Resource Server" (RS) and "Authorization Server" (AS).  </p>
-<p id="rfc.section.1.2.p.3">The term "resource" is used to refer to an MQTT Topic Name, which is defined in <a href="#mqtt-defs" class="xref">Section 1.3</a>.  Hence, the "Resource Owner" is any entity that can authoritatively speak for the topic.  This document also defines a Client Authorisation Server, for Clients that are not able to support both HTTP and MQTT communication.  </p>
+<p id="rfc.section.1.2.p.3">The term "resource" is used to refer to an MQTT Topic Name, which is defined in <a href="#mqtt-defs" class="xref">Section 1.3</a>.  Hence, the "Resource Owner" is any entity that can authoritatively speak for the topic.  This document also defines a Client Authorisation Server, for Clients that are not able to support HTTP.  </p>
 <p></p>
 
 <dl>
@@ -607,7 +607,7 @@
 <br> The level of assurance for the delivery of an Application Message. The QoS level can be 0-2, where "0" indicates "At most once delivery", "1" "At least once delivery", and "2" "Exactly once delivery".  </dd>
 <dt>Property</dt>
 <dd style="margin-left: 8">
-<br> The last field of the Variable Header in a number of MQTT control messages (e.g. CONNECT, CONNACK) is a set of properties.  A Property consists of an Identifier which defines its usage and data type, followed by a value.  The Identifier is encoded as a Variable Byte Integer. For example, "Authentication Data" property with an identifier 22.  </dd>
+<br> The last field of the Variable Header is a set of properties for several MQTT control messages (e.g. CONNECT, CONNACK) .  A Property consists of an Identifier which defines its usage and data type, followed by a value.  The Identifier is encoded as a Variable Byte Integer. For example, "Authentication Data" property with an Identifier 22.  </dd>
 <dt>Topic Name</dt>
 <dd style="margin-left: 8">
 <br> The label attached to an Application Message, which is matched to a Subscription.  </dd>
@@ -710,12 +710,13 @@
 <ul>
 <li>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization, including the "authz-info" topic. Publishing to the "authz-info" topic is described in <a href="#app-authzinfo" class="xref">Section 2.2.2</a>.</li>
 <li>"TLS:Anon-MQTT:ace": The token is transported inside the CONNECT message, and MUST be validated using one of the methods described in <a href="#app-authzinfo" class="xref">Section 2.2.2</a>. This option also supports a tokenless connection request for AS discovery.</li>
-<li>"TLS:Known(RPK/PSK)-MQTT:none": For the RPK, the token MUST have been published to the "authz-info" topic.  For the PSK, the token MAY be, alternatively, provided as an "identity" in the "identities" field in the client's "pre_shared_key" extension.  The TLS session set-up is as described in <a href="#I-D.ietf-ace-dtls-authorize" class="xref">DTLS profile for ACE</a>.</li>
+<li>"TLS:Known(RPK/PSK)-MQTT:none": For the RPK, the token MUST have been published to the "authz-info" topic.  For the PSK, the token MAY be, alternatively, provided as an "identity" in the "identities" field in the client's "pre_shared_key" extension in TLS 1.3.  The TLS session set-up is as described in <a href="#I-D.ietf-ace-dtls-authorize" class="xref">DTLS profile for ACE</a>.</li>
 <li>"TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen as the token transported in the CONNECT overwrites any permissions passed during the TLS authentication.</li>
 </ul>
 
-<p> It is RECOMMENDED that the Client implements "TLS:Anon-MQTT:ace" as a first choice when working with protected topics.  However, depending on the Client capability, Client MAY implement only "TLS:Known(RPK/PSK)-MQTT:none", and consequently "TLS:Anon-MQTT:None" to submit its token to "authz-info".  The Broker MUST accept "TLS:Anon-MQTT:ace".  To support Clients with different capabilities, the Broker MAY support multiple authentication options, e.g. support "TLS:Known(RPK)-MQTT:none" and "TLS:Anon-MQTT:None", to enable RPK-based client authentication, but fall back to "TLS:Anon-MQTT:ace" if the Client does not send a client certificate (i.e. it sends an empty Certificate message) during the TLS handshake.  </p>
-<p id="rfc.section.2.2.1.p.2">The Broker MUST be authenticated during the TLS handshake.  If the Client authentication uses TLS:Known(RPK/PSK), then the Broker is authenticated using the respective method.  Otherwise, to authenticate the Broker, the client MUST validate a public key from a X.509 certificate or an RPK from the Broker against the 'rs_cnf' parameter in the token response.  The AS MAY include the thumbprint of the RS's X.509 certificate in the 'rs_cnf' (thumbprint as defined in <a href="#I-D.ietf-cose-x509" class="xref">[I-D.ietf-cose-x509]</a>). In this case, the client MUST validate the RS certificate against this thumbprint.  </p>
+<p> It is RECOMMENDED that the Client implements "TLS:Anon-MQTT:ace" as a first choice when working with protected topics.  However, depending on the Client capability, Client MAY implement "TLS:Known(RPK/PSK)-MQTT:none", and consequently "TLS:Anon-MQTT:None" to submit its token to "authz-info".  </p>
+<p id="rfc.section.2.2.1.p.2">The Broker MUST support "TLS:Anon-MQTT:ace".  To support Clients with different capabilities, the Broker MAY provide multiple client authentication options, e.g. support "TLS:Known(RPK)-MQTT:none" and "TLS:Anon-MQTT:None", to enable RPK-based client authentication, but fall back to "TLS:Anon-MQTT:ace" if the Client does not send a client certificate (i.e. it sends an empty Certificate message) during the TLS handshake.  </p>
+<p id="rfc.section.2.2.1.p.3">The Broker MUST be authenticated during the TLS handshake.  If the Client authentication uses TLS:Known(RPK/PSK), then the Broker is authenticated using the respective method.  Otherwise, to authenticate the Broker, the client MUST validate a public key from a X.509 certificate or an RPK from the Broker against the 'rs_cnf' parameter in the token response.  The AS MAY include the thumbprint of the RS's X.509 certificate in the 'rs_cnf' (thumbprint as defined in <a href="#I-D.ietf-cose-x509" class="xref">[I-D.ietf-cose-x509]</a>). In this case, the client MUST validate the RS certificate against this thumbprint.  </p>
 <h1 id="rfc.section.2.2.2">
 <a href="#rfc.section.2.2.2">2.2.2.</a> <a href="#app-authzinfo" id="app-authzinfo">authz-info: The Authorization Information Topic</a>
 </h1>
@@ -729,7 +730,7 @@
 <a href="#rfc.section.2.2.3">2.2.3.</a> <a href="#token-CONNECT" id="token-CONNECT">Transporting Access Token Inside the MQTT CONNECT</a>
 </h1>
 <p id="rfc.section.2.2.3.p.1">This section describes how the Client transports the token to the Broker (RS) inside the CONNECT message. If this method is used, the Client TLS connection is expected to be anonymous, and the Broker is authenticated during the TLS connection set-up.  The approach described in this section is similar to an earlier proposal by Fremantle et al <a href="#fremantle14" class="xref">[fremantle14]</a>.  </p>
-<p id="rfc.section.2.2.3.p.2">After sending the CONNECT, the client MUST wait to receive the CONNACK from the Broker. The only messages it is allowed to send are DISCONNECT or AUTH that is in response to the broker AUTH.  Similarly, the server MUST NOT process any packets before it has sent a CONNACK.  The only exceptions are client DISCONNECT or an AUTH response from the Client.  </p>
+<p id="rfc.section.2.2.3.p.2">After sending the CONNECT, the client MUST wait to receive the CONNACK from the Broker. The only messages it is allowed to send are DISCONNECT or AUTH that is in response to the Broker AUTH.  Similarly, the Broker MUST NOT process any packets before it has sent a CONNACK.  The only exceptions are DISCONNECT or an AUTH response from the Client.  </p>
 <p><a href="#mqtt5_connect_message" class="xref">Figure 2</a> shows the structure of the MQTT CONNECT message used in MQTT v5.0.  A CONNECT message is composed of a fixed header, a variable header and a payload.  The fixed header contains the Control Packet Type (CPT), Reserved, and Remaining Length fields.  The Variable Header contains the Protocol Name, Protocol Level, Connect Flags, Keep Alive, and Properties fields.  The Connect Flags in the variable header specify the properties of the MQTT session.  It also indicates the presence or absence of some fields in the Payload.  The payload contains one or more encoded fields, namely a unique Client identifier for the Client, a Will Topic, Will Payload, User Name and Password.  All but the Client identifier can be omitted depending on the flags in the Variable Header.  </p>
 <div id="rfc.figure.2"></div>
 <div id="mqtt5_connect_message"></div>
@@ -751,7 +752,7 @@
        +------------------------------------------------------+
         </pre>
 <p class="figure">Figure 2: MQTT v5 CONNECT control message with ACE authentication. (CPT=Control Packet Type)</p>
-<p id="rfc.section.2.2.3.p.4">The CONNECT message flags are Username, Password, Will retain, Will QoS, Will Flag, Clean Start, and Reserved.  <a href="#mqtt_connect_flags" class="xref">Figure 12</a> shows how the flags MUST be set to use AUTH packets for authentication and authorisation, i.e. the username and password flags MUST be set to 0.  An MQTT v5.0 RS MAY also support token transport using Username and Password to provide a security option for MQTT v3.1.1 clients, as described in  <a href="#MQTTv311" class="xref">Section 6</a>.  </p>
+<p id="rfc.section.2.2.3.p.4">The CONNECT message flags are Username, Password, Will retain, Will QoS, Will Flag, Clean Start, and Reserved.  <a href="#mqttv5_connect_flags" class="xref">Figure 3</a> shows how the flags MUST be set to use AUTH packets for authentication and authorisation, i.e. the username and password flags MUST be set to 0.  An MQTT v5.0 RS MAY also support token transport using Username and Password to provide a security option for MQTT v3.1.1 clients, as described in  <a href="#MQTTv311" class="xref">Section 6</a>.  </p>
 <div id="rfc.figure.3"></div>
 <div id="mqttv5_connect_flags"></div>
 <pre>
@@ -763,7 +764,7 @@
 +-----------------------------------------------------------+
          </pre>
 <p class="figure">Figure 3: CONNECT flags for AUTH</p>
-<p id="rfc.section.2.2.3.p.5">The Will Flag indicates that a Will message needs to be sent if the network connection is not closed normally. The situations in which the Will message is published include disconnections due to I/O or network failures, and the server closing the network connection due to a protocol error.  The Client MAY set the Will Flag as desired (marked as 'X' in <a href="#mqttv5_connect_flags" class="xref">Figure 3</a>).  If the Will Flag is set to 1 and the Broker accepts the connection request, the Broker stores the Will message and  publish it when the network connection is closed according to Will QoS and Will retain parameters and MQTT Will management rules.  To avoid publishing Will Messages in the case of temporary network disconnections, the Client MAY specify a Will Delay Interval in the Will Properties.  <a href="#disconnections" class="xref">Section 5</a> explains how the Broker deals with the retained messages in further detail.  </p>
+<p id="rfc.section.2.2.3.p.5">The Will Flag indicates that a Will message needs to be sent if the network connection is not closed normally. The situations in which the Will message is published include disconnections due to I/O or network failures, and the server closing the network connection due to a protocol error.  The Client MAY set the Will Flag as desired (marked as 'X' in <a href="#mqttv5_connect_flags" class="xref">Figure 3</a>).  If the Will Flag is set to 1 and the Broker accepts the connection request, the Broker stores the Will message and  publish it when the network connection is closed according to Will QoS and Will retain parameters and MQTT Will management rules.  To avoid publishing Will Messages in the case of temporary network disconnections, the Client specifies a Will Delay Interval in the Will Properties.  <a href="#disconnections" class="xref">Section 5</a> explains how the Broker deals with the retained messages in further detail.  </p>
 <p id="rfc.section.2.2.3.p.6">In MQTT v5.0, the Client signals a clean session (i.e. the session does not continue an existing session), by setting the Clean Start Flag to 1 and, the Session Expiry Interval to 0 in the CONNECT message. In this profile, the Broker SHOULD always start with a clean session regardless of how these parameters are set. Starting a clean session helps the Broker avoid keeping unnecessary session state for unauthorised clients. If the Broker starts a clean session, the Broker MUST set the Session Present flag to 0 in the CONNACK packet to signal this to the Client.  </p>
 <p id="rfc.section.2.2.3.p.7">The Broker MAY support session continuation e.g., if the Broker requires it for QoS reasons.  With session continuation, the Broker maintains and uses client state from the existing session. The session state kept at the server MAY include token and its introspection result (for reference tokens) in addition to the MQTT session state.  The MQTT session state is identified by the Client identifier and includes state on client subscriptions; messages with QoS levels 1 and 2, and which have not been completely acknowledged or pending transmission to the Client; and if the Session is currently not connected, the time at which the Session will end and Session State will be discarded.  </p>
 <p id="rfc.section.2.2.3.p.8">When reconnecting to a Broker that supports session continuation, the Client MUST still provide a token, in addition to using the same Client identifier, setting the Clean Start to 0 and supplying a Session Expiry interval in the CONNECT message.  The Broker MUST perform proof-of-possession validation on the provided token.  If the token matches the stored state, the Broker MAY skip introspecting a token by reference, and use the stored introspection result.  The Broker MUST also verify the Client is authorized to receive or send packets that are pending transmission. When a Client connects with a long Session Expiry Interval, the Broker may need to  maintain Client's MQTT session state after it disconnects for an extended period.  Brokers SHOULD implement administrative policies to limit misuse.  </p>
@@ -792,7 +793,7 @@
 +-----------------------------------------------------------------+
          </pre>
 <p class="figure">Figure 4: Authentication Data for PoP based on TLS exporter content</p>
-<p id="rfc.section.2.2.4.1.p.1">For this option, the Authentication Data MUST contain the two-byte integer token length, the token, and the keyed message digest (MAC) or the Client signature (as shown in <a href="#authdata_tlsexporter" class="xref">Figure 4</a>).  The Proof-of-Possession key in the token is used to calculate to the keyed message digest (MAC) or the Client signature based on the contained obtained from the TLS exporter (<a href="#RFC5705" class="xref">[RFC5705]</a> for TLS 1.2 and for TLS 1.3, Section 7.5 of <a href="#RFC8446" class="xref">[RFC8446]</a>).  This content is exported from the TLS session using the exporter label 'EXPORTER-ACE-MQTT-Sign-Challenge', an empty context, and length of 32 bytes.  The token is also validated as described in  <a href="#token_validation" class="xref">Section 2.2.5</a> and the server responds with a CONNACK with the appropriate response code.  The client cannot reauthenticate using this method during the same session ( see <a href="#reauthentication" class="xref">Section 4</a>).  </p>
+<p id="rfc.section.2.2.4.1.p.1">For this option, the Authentication Data MUST contain the two-byte integer token length, the token, and the keyed message digest (MAC) or the Client signature (as shown in <a href="#authdata_tlsexporter" class="xref">Figure 4</a>).  The Proof-of-Possession key in the token is used to calculate the keyed message digest (MAC) or the Client signature based on the content obtained from the TLS exporter (<a href="#RFC5705" class="xref">[RFC5705]</a> for TLS 1.2 and for TLS 1.3, Section 7.5 of <a href="#RFC8446" class="xref">[RFC8446]</a>).  This content is exported from the TLS session using the exporter label 'EXPORTER-ACE-MQTT-Sign-Challenge', an empty context, and length of 32 bytes.  The token is also validated as described in  <a href="#token_validation" class="xref">Section 2.2.5</a> and the server responds with a CONNACK with the appropriate response code.  The client cannot reauthenticate using this method during the same session ( see <a href="#reauthentication" class="xref">Section 4</a>).  </p>
 <h1 id="rfc.section.2.2.4.2">
 <a href="#rfc.section.2.2.4.2">2.2.4.2.</a> <a href="#pop_challenge" id="pop_challenge">Proof-of-Possession via Broker-generated Challenge/Response</a>
 </h1>
@@ -892,6 +893,7 @@
             </pre>
 <p class="figure">Figure 10: Example scope</p>
 <p id="rfc.section.3.p.3">An example scope may contain: </p>
+<p id="rfc.section.3.p.4">If the Will Flag is set, then the Broker MUST check that the token allows the publication of the Will message (i.e. the Will Topic filter is in the scope array).  </p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> PUBLISH Messages from the Publisher Client to the Broker</h1>
 <p id="rfc.section.3.1.p.1">On receiving the PUBLISH message, the Broker MUST use the type of message (i.e. PUBLISH) and the Topic name in the message header to match against the scope array items in the cached token or its introspection result.  Following the example in the previous section, a client sending a PUBLISH message to 'topic2/a' would be allowed, as the scope array includes the '["topic2/#",["pub"]]'.  </p>
@@ -979,7 +981,7 @@
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#IANA" id="IANA">IANA Considerations</a>
 </h1>
-<p id="rfc.section.7.p.1">This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge' (introduced in <a href="#pop_nonce" class="xref">Section 2.2.4.1</a> in this document) in the TLS Exporter Label Registry <a href="#RFC8447" class="xref">TLS-REGISTRIES</a>.  </p>
+<p id="rfc.section.7.p.1">This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge' (introduced in <a href="#pop_nonce" class="xref">Section 2.2.4.1</a> in this document) in the TLS Exporter Label Registry <a href="#RFC8447" class="xref">[RFC8447]</a>.  </p>
 <p id="rfc.section.7.p.2">In addition, the following registrations are done for the ACE OAuth Profile Registry following the procedure specified in <a href="#I-D.ietf-ace-oauth-authz" class="xref">[I-D.ietf-ace-oauth-authz]</a>.  </p>
 <p id="rfc.section.7.p.3">Note to the RFC editor: Please replace all occurrences of "[RFC-XXXX]" with the RFC number of this specification and delete this paragraph.  </p>
 <p id="rfc.section.7.p.4">Name: mqtt_tls</p>
@@ -1172,7 +1174,20 @@
 <h1 id="rfc.appendix.B">
 <a href="#rfc.appendix.B">Appendix B.</a> <a href="#document_updates" id="document_updates">Document Updates</a>
 </h1>
-<p id="rfc.section.B.p.1">Version 06 to 07: </p>
+<p id="rfc.section.B.p.1">Version 07 to 08: </p>
+
+<ul>
+<li>Fixed several nits, typos based on WG reviews.</li>
+<li>Added missing references.</li>
+<li>Added the definition for Property defined by MQTT, and Client Authorisation Server.</li>
+<li>Added artwork to show Authorisation Data format for various PoP-related message exchange.</li>
+<li>Removed all MQTT-related must/should/may.</li>
+<li>Made AS discovery optional.</li>
+<li>Clarified what the client and server must implement for client authentication; cleaned up TLS 1.3 related language.</li>
+</ul>
+
+<p> </p>
+<p id="rfc.section.B.p.2">Version 06 to 07: </p>
 
 <ul>
 <li>Corrected the title.</li>
@@ -1183,7 +1198,7 @@
 </ul>
 
 <p> </p>
-<p id="rfc.section.B.p.2">Version 05 to 06: </p>
+<p id="rfc.section.B.p.3">Version 05 to 06: </p>
 
 <ul>
 <li>Replace the originally proposed scope format with AIF model. Defined the AIF-MQTT, gave an example with a JSON array. Added a normative reference to the AIF draft.</li>
@@ -1196,7 +1211,7 @@
 </ul>
 
 <p> </p>
-<p id="rfc.section.B.p.3">Version 04 to 05: </p>
+<p id="rfc.section.B.p.4">Version 04 to 05: </p>
 
 <ul>
 <li>Reorganised Section 2 such that "Unauthorised Request: Authorisation Server Discovery" is presented under Section 2.</li>
@@ -1212,7 +1227,7 @@
 </ul>
 
 <p> </p>
-<p id="rfc.section.B.p.4">Version 03 to 04: </p>
+<p id="rfc.section.B.p.5">Version 03 to 04: </p>
 
 <ul>
 <li>Linked the terms Broker and MQTT server more at the introduction of the document.</li>
@@ -1229,7 +1244,7 @@
 </ul>
 
 <p> </p>
-<p id="rfc.section.B.p.5">Version 02 to 03: </p>
+<p id="rfc.section.B.p.6">Version 02 to 03: </p>
 
 <ul>
 <li>Added the option of Broker certificate thumbprint in the 'rs_cnf' sent to the Client.</li>
@@ -1241,7 +1256,7 @@
 </ul>
 
 <p> </p>
-<p id="rfc.section.B.p.6">Version 01 to 02: </p>
+<p id="rfc.section.B.p.7">Version 01 to 02: </p>
 
 <ul>
 <li>Clarified protection of Application Message payload as out of scope, and cited draft-palombini-ace-coap-pubsub-profile for a potential solution </li>
@@ -1254,7 +1269,7 @@
 </ul>
 
 <p> </p>
-<p id="rfc.section.B.p.7">Version 00 to 01: </p>
+<p id="rfc.section.B.p.8">Version 00 to 01: </p>
 
 <ul>
 <li>Present the MQTTv5 as the RECOMMENDED version, and MQTT v3.1.1 for backward compatibility. </li>
