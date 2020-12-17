@@ -571,7 +571,7 @@
 		    <artwork align="left"><![CDATA[
        0            8            16            24            32
        +------------------------------------------------------+
-       |CPT=1 | Rsvd.|Remaining len.| Protocol  name len. = 4 |
+       |CPT=1 | Rsvd.|Remaining len.| Protocol name len. = 4  |
        +------------------------------------------------------+
        |                      'M' 'Q' 'T' 'T'                 |
        +------------------------------------------------------+
@@ -657,12 +657,12 @@
                 Note that, according to the MQTT standard, the Broker uses the Client identifier to identify the session state.
                 In the case of a Client identifier collision,
                 a client may take over another client's session. Given that clients provide a token
-                at each connection, clients will only send or receive messages to their authorized topics. 
-                Therefore, while this issue is not expected to affect security, 
+                at each connection, clients will only send or receive messages to their authorized topics.
+                Therefore, while this issue is not expected to affect security,
                 it may affect QoS (i.e. PUBLISH or QoS messages saved for Client A may be delivered to a Client B).
-                In addition, if this Client identifier represents a Client already connected to the Broker, 
+                In addition, if this Client identifier represents a Client already connected to the Broker,
                 the Broker sends a DISCONNECT packet to the existing Client with Reason Code of '0x8E (Session taken over)',
-                and closes the connection to the client. 
+                and closes the connection to the client.
             </t>
 	    </section>
         <section anchor="AUTH-method" title="Authentication Using AUTH Property">
@@ -857,7 +857,7 @@
         <t>
             To authorize a Client's PUBLISH and SUBSCRIBE messages,
             the Broker uses the scope field in the token (or in the introspection result).
-            The scope field contains the publish and subscribe permissions for the Client. 
+            The scope field contains the publish and subscribe permissions for the Client.
             The scope is a JSON array, each item following the <xref target="I-D.ietf-ace-aif">Authorization Information 
             Format (AIF) for ACE</xref>.  Using the Concise Data Definition Language (CDDL) <xref target="RFC8610"></xref>,
             the specific data model for MQTT is:
@@ -878,7 +878,7 @@
         </t>
         <t>
             If the scope is empty i.e., the JSON array is empty, the RS records
-            no permissions for the client for any topic. In this case, the client 
+            no permissions for the client for any topic. In this case, the client
             is not able to publish or subscribe to any protected topics.
         </t>
         <t> An example scope may contain:
@@ -887,7 +887,7 @@
  [["topic1", ["pub","sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
             ]]></artwork>
             </figure>
-            This access token gives publish ("pub") and subscribe ("sub") permissions to the "topic1", 
+            This access token gives publish ("pub") and subscribe ("sub") permissions to the "topic1",
             publish permission to all the subtopics of "topic2",
             and subscribe permission to all "topic3", skipping one level.
         </t>
@@ -1046,7 +1046,7 @@
          <artwork align="left"><![CDATA[
        0            8            16            24            32
        +------------------------------------------------------+
-       |CPT=1 | Rsvd.|Remaining len.| Protocol  name len. = 4 |
+       |CPT=1 | Rsvd.|Remaining len.| Protocol name len. = 4  |
        +------------------------------------------------------+
        |                      'M' 'Q' 'T' 'T'                 |
        +------------------------------------------------------+
@@ -1254,8 +1254,6 @@
         &RFC6749;
         &RFC7800;
         &RFC8747;
-        &RFC8032;
-        &RFC6234;
         &RFC8610;
         &RFC7519;
         &RFC7230;
@@ -1309,6 +1307,8 @@
             &RFC7252;
             &RFC7049;
             &RFC8392;
+            &RFC6234;
+                    &RFC8032;
              <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
 	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
