@@ -5,8 +5,8 @@
 ACE Working Group                                              C. Sengul
 Internet-Draft                                         Brunel University
 Intended status: Standards Track                                A. Kirby
-Expires: June 20, 2021                                          Oxbotica
-                                                       December 17, 2020
+Expires: June 21, 2021                                          Oxbotica
+                                                       December 18, 2020
 
 
 Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 20, 2021.
+   This Internet-Draft will expire on June 21, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 1]
+Sengul & Kirby            Expires June 21, 2021                 [Page 1]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 2]
+Sengul & Kirby            Expires June 21, 2021                 [Page 2]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -165,7 +165,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 3]
+Sengul & Kirby            Expires June 21, 2021                 [Page 3]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -186,7 +186,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
    for PoP semantics for JWTs.  The Client-AS and RS-AS MAY also use
    protocols other than HTTP, e.g.  Constrained Application Protocol
    (CoAP) [RFC7252] or MQTT.  Implementations MAY also use "application/
-   ace+cbor" content type, and CBOR encoding [RFC7049], and CBOR Web
+   ace+cbor" content type, and CBOR encoding [RFC8949], and CBOR Web
    Token (CWT) [RFC8392] and associated PoP semantics to reduce the
    protocol memory and bandwidth requirements.  For more information,
    see Proof-of-Possession Key Semantics for CBOR Web Tokens (CWTs)
@@ -221,7 +221,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 4]
+Sengul & Kirby            Expires June 21, 2021                 [Page 4]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -277,7 +277,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 5]
+Sengul & Kirby            Expires June 21, 2021                 [Page 5]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -333,7 +333,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 6]
+Sengul & Kirby            Expires June 21, 2021                 [Page 6]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -389,7 +389,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 7]
+Sengul & Kirby            Expires June 21, 2021                 [Page 7]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -445,7 +445,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 8]
+Sengul & Kirby            Expires June 21, 2021                 [Page 8]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -501,7 +501,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                 [Page 9]
+Sengul & Kirby            Expires June 21, 2021                 [Page 9]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -557,7 +557,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 10]
+Sengul & Kirby            Expires June 21, 2021                [Page 10]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -613,7 +613,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 11]
+Sengul & Kirby            Expires June 21, 2021                [Page 11]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -669,7 +669,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 12]
+Sengul & Kirby            Expires June 21, 2021                [Page 12]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -725,7 +725,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 13]
+Sengul & Kirby            Expires June 21, 2021                [Page 13]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -781,7 +781,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 14]
+Sengul & Kirby            Expires June 21, 2021                [Page 14]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -837,7 +837,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 15]
+Sengul & Kirby            Expires June 21, 2021                [Page 15]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -863,7 +863,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
                      |             |
                      |<------------+ CONNACK '0x00 (Success)'
 
-         Figure 8: PoP Challenge/Response Protocol Flow - Success
+              Figure 8: PoP Challenge/Response Flow - Success
 
 2.2.5.  Token Validation
 
@@ -893,7 +893,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 16]
+Sengul & Kirby            Expires June 21, 2021                [Page 16]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -949,13 +949,13 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 17]
+Sengul & Kirby            Expires June 21, 2021                [Page 17]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
  AIF-MQTT = AIF-Generic<topic_filter, permissions>
- AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
+ AIF-Generic<topic_filter, permissions> = [*[topic_filter, permissions]]
  topic_filter = tstr
  permissions = [+permission]
  permission = "pub"/"sub"
@@ -1005,7 +1005,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 18]
+Sengul & Kirby            Expires June 21, 2021                [Page 18]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1061,7 +1061,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 19]
+Sengul & Kirby            Expires June 21, 2021                [Page 19]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1117,7 +1117,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 20]
+Sengul & Kirby            Expires June 21, 2021                [Page 20]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1173,7 +1173,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 21]
+Sengul & Kirby            Expires June 21, 2021                [Page 21]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1229,7 +1229,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 22]
+Sengul & Kirby            Expires June 21, 2021                [Page 22]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1285,7 +1285,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 23]
+Sengul & Kirby            Expires June 21, 2021                [Page 23]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1341,7 +1341,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 24]
+Sengul & Kirby            Expires June 21, 2021                [Page 24]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1389,15 +1389,15 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
    [I-D.ietf-cose-x509]
               Schaad, J., "CBOR Object Signing and Encryption (COSE):
               Header parameters for carrying and referencing X.509
-              certificates", draft-ietf-cose-x509-07 (work in progress),
-              September 2020.
+              certificates", draft-ietf-cose-x509-08 (work in progress),
+              December 2020.
 
 
 
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 25]
+Sengul & Kirby            Expires June 21, 2021                [Page 25]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1453,7 +1453,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 26]
+Sengul & Kirby            Expires June 21, 2021                [Page 26]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1509,7 +1509,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 27]
+Sengul & Kirby            Expires June 21, 2021                [Page 27]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1518,10 +1518,6 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
               (SHA and SHA-based HMAC and HKDF)", RFC 6234,
               DOI 10.17487/RFC6234, May 2011,
               <https://www.rfc-editor.org/info/rfc6234>.
-
-   [RFC7049]  Bormann, C. and P. Hoffman, "Concise Binary Object
-              Representation (CBOR)", RFC 7049, DOI 10.17487/RFC7049,
-              October 2013, <https://www.rfc-editor.org/info/rfc7049>.
 
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
@@ -1536,6 +1532,11 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
    [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
               May 2018, <https://www.rfc-editor.org/info/rfc8392>.
+
+   [RFC8949]  Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/info/rfc8949>.
 
 Appendix A.  Checklist for profile requirements
 
@@ -1564,8 +1565,7 @@ Appendix A.  Checklist for profile requirements
 
 
 
-
-Sengul & Kirby            Expires June 20, 2021                [Page 28]
+Sengul & Kirby            Expires June 21, 2021                [Page 28]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1621,7 +1621,7 @@ Appendix B.  Document Updates
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 29]
+Sengul & Kirby            Expires June 21, 2021                [Page 29]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1677,7 +1677,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 30]
+Sengul & Kirby            Expires June 21, 2021                [Page 30]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1733,7 +1733,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 31]
+Sengul & Kirby            Expires June 21, 2021                [Page 31]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1789,7 +1789,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 32]
+Sengul & Kirby            Expires June 21, 2021                [Page 32]
 
 Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
@@ -1845,4 +1845,4 @@ Authors' Addresses
 
 
 
-Sengul & Kirby            Expires June 20, 2021                [Page 33]
+Sengul & Kirby            Expires June 21, 2021                [Page 33]
