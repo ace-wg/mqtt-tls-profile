@@ -761,7 +761,7 @@
                 The client MAY also re-authenticate using this challenge-response flow,
                 as described in <xref target="reauthentication"></xref>.
             </t>
-                <figure align="center" anchor="pop_challenge_response" title="PoP Challenge/Response Protocol Flow - Success">
+                <figure align="center" anchor="pop_challenge_response" title="PoP Challenge/Response Flow - Success">
                     <artwork align="left"><![CDATA[
                                 Resource
                     Client      Server
@@ -864,7 +864,7 @@
             <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
             <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
  AIF-MQTT = AIF-Generic<topic_filter, permissions>
- AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
+ AIF-Generic<topic_filter, permissions> = [*[topic_filter, permissions]]
  topic_filter = tstr
  permissions = [+permission]
  permission = "pub"/"sub"
