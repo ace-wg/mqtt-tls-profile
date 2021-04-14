@@ -5,13 +5,13 @@
 ACE Working Group                                              C. Sengul
 Internet-Draft                                         Brunel University
 Intended status: Standards Track                                A. Kirby
-Expires: June 21, 2021                                          Oxbotica
-                                                       December 18, 2020
+Expires: October 16, 2021                                       Oxbotica
+                                                          April 14, 2021
 
 
 Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication
      and Authorization for Constrained Environments (ACE) Framework
-                   draft-ietf-ace-mqtt-tls-profile-09
+                   draft-ietf-ace-mqtt-tls-profile-11
 
 Abstract
 
@@ -38,11 +38,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 21, 2021.
+   This Internet-Draft will expire on October 16, 2021.
 
 Copyright Notice
 
-   Copyright (c) 2020 IETF Trust and the persons identified as the
+   Copyright (c) 2021 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Sengul & Kirby            Expires June 21, 2021                 [Page 1]
+Sengul & Kirby          Expires October 16, 2021                [Page 1]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    to this document.  Code Components extracted from this document must
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Sengul & Kirby            Expires June 21, 2021                 [Page 2]
+Sengul & Kirby          Expires October 16, 2021                [Page 2]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 1.  Introduction
@@ -165,32 +165,33 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                 [Page 3]
+Sengul & Kirby          Expires October 16, 2021                [Page 3]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    proposal outlined in the ACE Pub-Sub Profile
    [I-D.ietf-ace-pubsub-profile].
 
-   To provide communication confidentiality and RS authentication, TLS
-   is used, and TLS 1.3 [RFC8446] is RECOMMENDED.  This document makes
-   the same assumptions as Section 4 of the ACE framework
-   [I-D.ietf-ace-oauth-authz] regarding Client and RS registration with
-   the AS and setting up keying material.  While the Client-Broker
-   exchanges are only over MQTT, the required Client-AS and RS-AS
-   interactions are described for HTTPS-based communication [RFC7230],
-   using 'application/ace+json' content type, and unless otherwise
-   specified, using JSON encoding.  The token MAY be a reference or JSON
-   Web Token (JWT) [RFC7519].  For JWTs, this document follows [RFC7800]
-   for PoP semantics for JWTs.  The Client-AS and RS-AS MAY also use
-   protocols other than HTTP, e.g.  Constrained Application Protocol
-   (CoAP) [RFC7252] or MQTT.  Implementations MAY also use "application/
-   ace+cbor" content type, and CBOR encoding [RFC8949], and CBOR Web
-   Token (CWT) [RFC8392] and associated PoP semantics to reduce the
-   protocol memory and bandwidth requirements.  For more information,
-   see Proof-of-Possession Key Semantics for CBOR Web Tokens (CWTs)
-   [RFC8747].
+   To provide communication confidentiality and RS authentication to the
+   MQTT clients, TLS is used, and TLS 1.3 [RFC8446] is RECOMMENDED.
+   This document makes the same assumptions as Section 4 of the ACE
+   framework [I-D.ietf-ace-oauth-authz] regarding Client and RS
+   registration with the AS and setting up keying material.  While the
+   Client-Broker exchanges are only over MQTT, the required Client-AS
+   and RS-AS interactions are described for HTTPS-based communication
+   [RFC7230], using 'application/ace+json' content type, and unless
+   otherwise specified, using JSON encoding.  The token MAY be a
+   reference or JSON Web Token (JWT) [RFC7519].  For JWTs, this document
+   follows [RFC7800] for PoP semantics for JWTs.  The Client-AS and RS-
+   AS MAY also use protocols other than HTTP, e.g.  Constrained
+   Application Protocol (CoAP) [RFC7252] or MQTT; it is recommended that
+   TLS is used to secure these communication channels between Client-AS
+   and RS-AS.  Implementations MAY also use "application/ace+cbor"
+   content type, and CBOR encoding [RFC8949], and CBOR Web Token (CWT)
+   [RFC8392] and associated PoP semantics to reduce the protocol memory
+   and bandwidth requirements.  For more information, see Proof-of-
+   Possession Key Semantics for CBOR Web Tokens (CWTs) [RFC8747].
 
 1.1.  Requirements Language
 
@@ -220,10 +221,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-
-Sengul & Kirby            Expires June 21, 2021                 [Page 4]
+Sengul & Kirby          Expires October 16, 2021                [Page 4]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
            An entity that prepares and endorses authentication and
@@ -277,9 +277,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                 [Page 5]
+Sengul & Kirby          Expires October 16, 2021                [Page 5]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    Topic Name
@@ -333,9 +333,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                 [Page 6]
+Sengul & Kirby          Expires October 16, 2021                [Page 6]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
            Response to PUBLISH request with QoS level 2.  PUBREC can be
@@ -389,9 +389,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                 [Page 7]
+Sengul & Kirby          Expires October 16, 2021                [Page 7]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
                              +---------------------+
@@ -445,9 +445,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                 [Page 8]
+Sengul & Kirby          Expires October 16, 2021                [Page 8]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    'cnf' parameter in the web tokens are to be consumed by the RS and
@@ -501,9 +501,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                 [Page 9]
+Sengul & Kirby          Expires October 16, 2021                [Page 9]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    The Broker MUST support "TLS:Anon-MQTT:ace".  To support Clients with
@@ -557,9 +557,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 10]
+Sengul & Kirby          Expires October 16, 2021               [Page 10]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    RS MUST send a DISCONNECT with the reason code '0x99 (Payload format
@@ -613,9 +613,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 11]
+Sengul & Kirby          Expires October 16, 2021               [Page 11]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
           0            8            16            24            32
@@ -669,9 +669,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 12]
+Sengul & Kirby          Expires October 16, 2021               [Page 12]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    Interval in the Will Properties.  Section 5 explains how the Broker
@@ -725,9 +725,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 13]
+Sengul & Kirby          Expires October 16, 2021               [Page 13]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    Broker, the Broker sends a DISCONNECT packet to the existing Client
@@ -781,9 +781,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 14]
+Sengul & Kirby          Expires October 16, 2021               [Page 14]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 2.2.4.2.  Proof-of-Possession via Broker-generated Challenge/Response
@@ -837,9 +837,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 15]
+Sengul & Kirby          Expires October 16, 2021               [Page 15]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
                                 Resource
@@ -893,9 +893,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 16]
+Sengul & Kirby          Expires October 16, 2021               [Page 16]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 2.2.6.1.  Unauthorised Request and the Optional Authorisation Server
@@ -949,9 +949,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 17]
+Sengul & Kirby          Expires October 16, 2021               [Page 17]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
  AIF-MQTT = AIF-Generic<topic_filter, permissions>
@@ -1005,9 +1005,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 18]
+Sengul & Kirby          Expires October 16, 2021               [Page 18]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    authorized)'.  On receiving an acknowledgement with '0x87 (Not
@@ -1061,9 +1061,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 19]
+Sengul & Kirby          Expires October 16, 2021               [Page 19]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 4.  Token Expiration, Update and Reauthentication
@@ -1117,9 +1117,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 20]
+Sengul & Kirby          Expires October 16, 2021               [Page 20]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    case of a server-side DISCONNECT, the server returns the '0x87 Not
@@ -1173,9 +1173,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 21]
+Sengul & Kirby          Expires October 16, 2021               [Page 21]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    +-----------------------------------------------------------+
@@ -1229,9 +1229,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 22]
+Sengul & Kirby          Expires October 16, 2021               [Page 22]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    that they do not have permissions for.  The following lists how the
@@ -1285,9 +1285,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 23]
+Sengul & Kirby          Expires October 16, 2021               [Page 23]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    Description: Profile for delegating Client authentication and
@@ -1341,9 +1341,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 24]
+Sengul & Kirby          Expires October 16, 2021               [Page 24]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    a Session Expiry Interval feature.  The RS SHOULD implement
@@ -1397,9 +1397,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 25]
+Sengul & Kirby          Expires October 16, 2021               [Page 25]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    [MQTT-OASIS-Standard]
@@ -1453,9 +1453,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 26]
+Sengul & Kirby          Expires October 16, 2021               [Page 26]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
@@ -1495,7 +1495,7 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
               L. Seitz, "Datagram Transport Layer Security (DTLS)
               Profile for Authentication and Authorization for
               Constrained Environments (ACE)", draft-ietf-ace-dtls-
-              authorize-14 (work in progress), October 2020.
+              authorize-15 (work in progress), January 2021.
 
    [I-D.ietf-ace-pubsub-profile]
               Palombini, F., "Pub-Sub Profile for Authentication and
@@ -1509,9 +1509,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 27]
+Sengul & Kirby          Expires October 16, 2021               [Page 27]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    [RFC6234]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
@@ -1565,9 +1565,9 @@ Appendix A.  Checklist for profile requirements
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 28]
+Sengul & Kirby          Expires October 16, 2021               [Page 28]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    o  /authz-info endpoint: It MAY be supported using the method
@@ -1621,9 +1621,9 @@ Appendix B.  Document Updates
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 29]
+Sengul & Kirby          Expires October 16, 2021               [Page 29]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    o  Replace the originally proposed scope format with AIF model.
@@ -1677,9 +1677,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 30]
+Sengul & Kirby          Expires October 16, 2021               [Page 30]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    o  Added Ed25519 as mandatory to implement.
@@ -1733,9 +1733,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 31]
+Sengul & Kirby          Expires October 16, 2021               [Page 31]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    o  Clarified the use of a random nonce from the TLS Exporter for PoP,
@@ -1789,9 +1789,9 @@ Internet-Draft           MQTT-TLS profile of ACE           December 2020
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 32]
+Sengul & Kirby          Expires October 16, 2021               [Page 32]
 
-Internet-Draft           MQTT-TLS profile of ACE           December 2020
+Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
    o  Defined Broker and MQTTS.
@@ -1845,4 +1845,4 @@ Authors' Addresses
 
 
 
-Sengul & Kirby            Expires June 21, 2021                [Page 33]
+Sengul & Kirby          Expires October 16, 2021               [Page 33]
