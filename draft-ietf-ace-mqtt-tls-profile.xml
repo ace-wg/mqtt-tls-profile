@@ -1168,7 +1168,7 @@
          </t>
          </section>
         <section title="Media Type Registration">
-        <t>This document registers the the 'application/ace+json' media type
+        <t>This document registers the 'application/ace+json' media type
             for messages of the protocols defined in this document carrying
             parameters encoded in JSON.</t>
         <t>
@@ -1401,6 +1401,12 @@ those specified for the 'application/json' media type.</t>
      -->
 
 	<section anchor="document_updates" title="Document Updates">
+    <t> Version 10 to 11: Clarified the TLS use between RS-AS and Client-AS. 
+    </t>
+    <t> Version 09 to 10: Fixed version issues for references.
+    </t>
+    <t> Version 08 to 09: Fixed spacing issues and references.
+    </t>
     <t> Version 07 to 08:
         <list style="symbols">
             <t>Fixed several nits, typos based on WG reviews.</t>
