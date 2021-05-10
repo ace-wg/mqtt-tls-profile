@@ -5,8 +5,8 @@
 ACE Working Group                                              C. Sengul
 Internet-Draft                                         Brunel University
 Intended status: Standards Track                                A. Kirby
-Expires: October 16, 2021                                       Oxbotica
-                                                          April 14, 2021
+Expires: November 12, 2021                                      Oxbotica
+                                                            May 11, 2021
 
 
 Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 16, 2021.
+   This Internet-Draft will expire on November 12, 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Sengul & Kirby          Expires October 16, 2021                [Page 1]
+Sengul & Kirby          Expires November 12, 2021               [Page 1]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
 
    to this document.  Code Components extracted from this document must
@@ -96,23 +96,26 @@ Table of Contents
      6.1.  Token Transport . . . . . . . . . . . . . . . . . . . . .  21
      6.2.  Handling Authorization Errors . . . . . . . . . . . . . .  22
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  24
-   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  25
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  25
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  27
-   Appendix A.  Checklist for profile requirements . . . . . . . . .  28
-   Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  29
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  33
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  33
+     7.1.  TLS Exporter Label Registration . . . . . . . . . . . . .  23
+     7.2.  Media Type Registration . . . . . . . . . . . . . . . . .  23
+     7.3.  ACE OAuth Profile Registration  . . . . . . . . . . . . .  25
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  25
+   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  26
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  26
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  26
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  28
+   Appendix A.  Checklist for profile requirements . . . . . . . . .  29
+   Appendix B.  Document Updates . . . . . . . . . . . . . . . . . .  30
 
 
 
-
-Sengul & Kirby          Expires October 16, 2021                [Page 2]
+Sengul & Kirby          Expires November 12, 2021               [Page 2]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
+
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  34
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  34
 
 1.  Introduction
 
@@ -158,18 +161,19 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    o  Subscribe requests from Clients to the Broker
 
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021               [Page 3]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    Clients use MQTT PUBLISH message to publish to a topic.  This
    document does not protect the payload of the PUBLISH message from the
    Broker.  Hence, the payload is not signed or encrypted specifically
    for the subscribers.  This functionality MAY be implemented using the
-
-
-
-Sengul & Kirby          Expires October 16, 2021                [Page 3]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
    proposal outlined in the ACE Pub-Sub Profile
    [I-D.ietf-ace-pubsub-profile].
 
@@ -214,18 +218,18 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    The term "resource" is used to refer to an MQTT Topic Name, which is
    defined in Section 1.3.  Hence, the "Resource Owner" is any entity
    that can authoritatively speak for the topic.  This document also
+
+
+
+Sengul & Kirby          Expires November 12, 2021               [Page 4]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    defines a Client Authorisation Server, for Clients that are not able
    to support HTTP.
 
    Client Authorization Server (CAS)
-
-
-
-Sengul & Kirby          Expires October 16, 2021                [Page 4]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
            An entity that prepares and endorses authentication and
            authorization data for a Client, and communicates using HTTPS
            to the AS.
@@ -270,17 +274,17 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
            The last field of the Variable Header is a set of properties
            for several MQTT control messages (e.g.  CONNECT, CONNACK) .
            A Property consists of an Identifier which defines its usage
+
+
+
+Sengul & Kirby          Expires November 12, 2021               [Page 5]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
            and data type, followed by a value.  The Identifier is
            encoded as a Variable Byte Integer.  For example,
            "Authentication Data" property with an Identifier 22.
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021                [Page 5]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    Topic Name
            The label attached to an Application Message, which is
@@ -324,20 +328,21 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
            or from the Broker to a subscribing Client.
 
    PUBACK
+
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021               [Page 6]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
            Response to a PUBLISH request with QoS level 1.  A PUBACK can
            be sent from the Broker to a Client or from a Client to the
            Broker.
 
    PUBREC
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021                [Page 6]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
            Response to PUBLISH request with QoS level 2.  PUBREC can be
            sent from the Broker to a Client or from a Client to the
            Broker.
@@ -372,13 +377,22 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    This section specifies how Client connections are authorized by the
    MQTT Broker.  Figure 1 shows the basic protocol flow during
    connection set-up.  The token request and response use the token
-   endpoint at the AS, specified in Section 5.6 of the ACE framework
+   endpoint at the AS, specified in Section 5.8 of the ACE framework
    [I-D.ietf-ace-oauth-authz].  Steps (D) and (E) are optional and use
-   the introspection endpoint, specified in Section 5.7 of the ACE
+   the introspection endpoint, specified in Section 5.9 of the ACE
    framework.  The Client and the Broker use HTTPS to communicate to AS
    via these endpoints.  The Client and the Broker use MQTT to
    communicate between them.  The C-AS and Broker-AS communication MAY
    be implemented using protocols other than HTTPS, e.g.  CoAP or MQTT.
+
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021               [Page 7]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
 
    If the Client is resource-constrained or does not support HTTPS, a
    separate Client Authorisation Server may carry out the token request
@@ -386,13 +400,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    token.  The interactions between a Client and its Client
    Authorization Server for token onboarding, and support for MQTTS-
    based token requests at the AS are out of scope of this document.
-
-
-
-Sengul & Kirby          Expires October 16, 2021                [Page 7]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
                              +---------------------+
                              | Client              |
@@ -427,7 +434,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    The first step in the protocol flow (Figure 1 (A)) is the token
    acquisition by the Client from the AS.  The Client and the AS MUST
    perform mutual authentication.  The Client requests an access token
-   from the AS as described in Section 5.6.1 of the ACE framework
+   from the AS as described in Section 5.8.1 of the ACE framework
    [I-D.ietf-ace-oauth-authz].  The media format is 'application/
    ace+json'.  The AS uses JSON in the payload of its responses to the
    Client and the RS.
@@ -435,21 +442,21 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    If the AS successfully verifies the access token request and
    authorizes the Client for the indicated audience (i.e.  RS) and
    scopes (i.e. publish/subscribe permissions over topics as described
+
+
+
+Sengul & Kirby          Expires November 12, 2021               [Page 8]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    in Section 3), the AS issues an access token (Figure 1 (B)).  The
-   response includes the parameters described in Section 5.6.2 of the
+   response includes the parameters described in Section 5.8.2 of the
    ACE framework [I-D.ietf-ace-oauth-authz], and specifically, the
    "ace_profile" parameter is set to "mqtt_tls".  The returned token is
    a Proof-of-Possession (PoP) token by default.  This document follows
    [RFC7800] for PoP semantics for JWTs.  The PoP token includes a 'cnf'
    parameter with a symmetric or asymmetric PoP key.  Note that the
-
-
-
-Sengul & Kirby          Expires October 16, 2021                [Page 8]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
    'cnf' parameter in the web tokens are to be consumed by the RS and
    not the Client.  For the asymmetric case, the PoP token may include
    the 'rs_cnf' parameter containing the information about the public
@@ -458,7 +465,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    The AS returns error responses for JSON-based interactions following
    Section 5.2 of [RFC6749].  When CBOR is used, the interactions MUST
-   implement Section 5.6.3 of the ACE framework
+   implement Section 5.8.3 of the ACE framework
    [I-D.ietf-ace-oauth-authz].
 
 2.2.  Client Connection Request to the Broker (C)
@@ -489,6 +496,16 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
       TLS 1.3.  The TLS session set-up is as described in DTLS profile
       for ACE [I-D.ietf-ace-dtls-authorize].
 
+
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021               [Page 9]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    o  "TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen as
       the token transported in the CONNECT overwrites any permissions
       passed during the TLS authentication.
@@ -498,13 +515,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    on the Client capability, Client MAY implement "TLS:Known(RPK/PSK)-
    MQTT:none", and consequently "TLS:Anon-MQTT:None" to submit its token
    to "authz-info".
-
-
-
-Sengul & Kirby          Expires October 16, 2021                [Page 9]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    The Broker MUST support "TLS:Anon-MQTT:ace".  To support Clients with
    different capabilities, the Broker MAY provide multiple client
@@ -538,10 +548,19 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    The Broker stores and indexes all tokens received to the "authz-info"
    topic in its key store (similar to DTLS profile for ACE
    [I-D.ietf-ace-dtls-authorize]).  This profile follows the
-   recommendation of Section 5.8.1 of the ACE framework
+   recommendation of Section 5.10.1 of the ACE framework
    [I-D.ietf-ace-oauth-authz], and expects that the Broker stores only
    one token per proof-of-possession key, and any other token linked to
    the same key overwrites an existing token.
+
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 10]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
 
    The Broker MUST verify the validity of the token (i.e. through local
    validation or introspection, if the token is a reference) as
@@ -554,14 +573,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    claims cannot be obtained in the case of an introspected token, the
    Broker MUST send a DISCONNECT message with the reason code '0x87 (Not
    authorized)'.  If the PUBLISH payload does not parse to a token, the
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 10]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
    RS MUST send a DISCONNECT with the reason code '0x99 (Payload format
    invalid)'.
 
@@ -599,24 +610,19 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    Header contains the Protocol Name, Protocol Level, Connect Flags,
    Keep Alive, and Properties fields.  The Connect Flags in the variable
    header specify the properties of the MQTT session.  It also indicates
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 11]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    the presence or absence of some fields in the Payload.  The payload
    contains one or more encoded fields, namely a unique Client
    identifier for the Client, a Will Topic, Will Payload, User Name and
    Password.  All but the Client identifier can be omitted depending on
    the flags in the Variable Header.
-
-
-
-
-
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 11]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
           0            8            16            24            32
           +------------------------------------------------------+
@@ -660,20 +666,19 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    network failures, and the server closing the network connection due
    to a protocol error.  The Client MAY set the Will Flag as desired
    (marked as 'X' in Figure 3).  If the Will Flag is set to 1 and the
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 12]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    Broker accepts the connection request, the Broker stores the Will
    message and publish it when the network connection is closed
    according to Will QoS and Will retain parameters and MQTT Will
    management rules.  To avoid publishing Will Messages in the case of
    temporary network disconnections, the Client specifies a Will Delay
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 12]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
    Interval in the Will Properties.  Section 5 explains how the Broker
    deals with the retained messages in further detail.
 
@@ -717,19 +722,19 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    identifier to identify the session state.  In the case of a Client
    identifier collision, a client may take over another client's
    session.  Given that clients provide a token at each connection,
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 13]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    clients will only send or receive messages to their authorized
    topics.  Therefore, while this issue is not expected to affect
    security, it may affect QoS (i.e.  PUBLISH or QoS messages saved for
    Client A may be delivered to a Client B).  In addition, if this
    Client identifier represents a Client already connected to the
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 13]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
    Broker, the Broker sends a DISCONNECT packet to the existing Client
    with Reason Code of '0x8E (Session taken over)', and closes the
    connection to the client.
@@ -773,18 +778,17 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    session using the exporter label 'EXPORTER-ACE-MQTT-Sign-Challenge',
    an empty context, and length of 32 bytes.  The token is also
    validated as described in Section 2.2.5 and the server responds with
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 14]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    a CONNACK with the appropriate response code.  The client cannot
    reauthenticate using this method during the same session ( see
    Section 4).
-
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 14]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
 2.2.4.2.  Proof-of-Possession via Broker-generated Challenge/Response
 
@@ -829,18 +833,17 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    Next, the token is validated as described in Section 2.2.5.  The
    success case is illustrated in Figure 8.  The client MAY also re-
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 15]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    authenticate using this challenge-response flow, as described in
    Section 4.
-
-
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 15]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
                                 Resource
                     Client      Server
@@ -870,7 +873,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    The RS MUST verify the validity of the token either locally (e.g. in
    the case of a self-contained token) or the RS MAY send an
    introspection request to the AS.  The RS MUST verify the claims
-   according to the rules set in the Section 5.8.1.1 of the ACE
+   according to the rules set in the Section 5.10.1.1 of the ACE
    framework [I-D.ietf-ace-oauth-authz].
 
    To authenticate the Client, the RS validates the signature or the
@@ -890,12 +893,9 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 16]
+Sengul & Kirby          Expires November 12, 2021              [Page 16]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
 
 2.2.6.1.  Unauthorised Request and the Optional Authorisation Server
@@ -913,7 +913,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    "ace_as_hint".  The value of the user property is a UTF-8 encoded
    JSON string containing the mandatory "AS" parameter, and the optional
    parameters "audience", "kid", "cnonce", and "scope" as defined in
-   Section 5.1.2 of the ACE framework [I-D.ietf-ace-oauth-authz].
+   Section 5.3 of the ACE framework [I-D.ietf-ace-oauth-authz].
 
 2.2.6.2.  Authorisation Success
 
@@ -949,9 +949,9 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 
-Sengul & Kirby          Expires October 16, 2021               [Page 17]
+Sengul & Kirby          Expires November 12, 2021              [Page 17]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
 
  AIF-MQTT = AIF-Generic<topic_filter, permissions>
@@ -1005,9 +1005,9 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 
-Sengul & Kirby          Expires October 16, 2021               [Page 18]
+Sengul & Kirby          Expires November 12, 2021              [Page 18]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
 
    authorized)'.  On receiving an acknowledgement with '0x87 (Not
@@ -1061,9 +1061,9 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 
-Sengul & Kirby          Expires October 16, 2021               [Page 19]
+Sengul & Kirby          Expires November 12, 2021              [Page 19]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
 
 4.  Token Expiration, Update and Reauthentication
@@ -1076,7 +1076,7 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    The token expiration is checked by checking the 'exp' claim of a JWT
    or introspection response, or via performing an introspection request
-   with the AS as described in Section 5.7 of the ACE framework
+   with the AS as described in Section 5.9 of the ACE framework
    [I-D.ietf-ace-oauth-authz].  Token expirations may trigger the RS to
    send PUBACK, SUBACK and DISCONNECT messages with return code set to
    "Not authorized".  After sending a DISCONNECT message, the network
@@ -1117,9 +1117,9 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 
-Sengul & Kirby          Expires October 16, 2021               [Page 20]
+Sengul & Kirby          Expires November 12, 2021              [Page 20]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
 
    case of a server-side DISCONNECT, the server returns the '0x87 Not
@@ -1173,9 +1173,9 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 
-Sengul & Kirby          Expires October 16, 2021               [Page 21]
+Sengul & Kirby          Expires November 12, 2021              [Page 21]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
 
    +-----------------------------------------------------------+
@@ -1229,9 +1229,9 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 
 
-Sengul & Kirby          Expires October 16, 2021               [Page 22]
+Sengul & Kirby          Expires November 12, 2021              [Page 22]
 
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
 
 
    that they do not have permissions for.  The following lists how the
@@ -1266,37 +1266,101 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
 7.  IANA Considerations
 
+   Note to RFC Editor: Please replace all occurrences of "[this
+   document]" with the RFC number of this specification and delete this
+   paragraph.
+
+7.1.  TLS Exporter Label Registration
+
    This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge'
    (introduced in Section 2.2.4.1 in this document) in the TLS Exporter
    Label Registry [RFC8447].
 
-   In addition, the following registrations are done for the ACE OAuth
-   Profile Registry following the procedure specified in
+7.2.  Media Type Registration
+
+   This document registers the 'application/ace+json' media type for
+   messages of the protocols defined in this document carrying
+   parameters encoded in JSON.
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 23]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
+   o  Type name: application
+
+   o  Subtype name:ace+json
+
+   o  Required parameters: none
+
+   o  Optional parameters: none
+
+   o  Encoding considerations: Encoding considerations are identical to
+      those specified for the 'application/json' media type.
+
+   o  Security considerations: Section 8 of [this document]
+
+   o  Interoperability considerations: none
+
+   o  Published specification: [this document]
+
+   o  Applications that use this media type:This media type is intended
+      for authorization server-client and authorization server-resource
+      server communication as part of the ACE framework using JSON
+      encoding as specified in [this document].
+
+   o  Fragment identifier considerations:none
+
+   o  Additional information:
+
+      *  Deprecated alias names for this type:none
+
+      *  Magic number(s):none
+
+      *  File extension(s):none
+
+      *  Macintosh file type code(s):none
+
+   o  Person & email address to contact for further information: Cigdem
+      Sengul (csengul@acm.org)
+
+   o  Intended usage: COMMON
+
+   o  Restrictions on usage:none
+
+   o  Author: Cigdem Sengul (csengul@acm.org)
+
+   o  Change controller: IETF
+
+   o  Provisional registration? (standards tree only): no
+
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 24]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
+7.3.  ACE OAuth Profile Registration
+
+   The following registrations are done for the ACE OAuth Profile
+   Registry following the procedure specified in
    [I-D.ietf-ace-oauth-authz].
 
-   Note to the RFC editor: Please replace all occurrences of "[RFC-
-   XXXX]" with the RFC number of this specification and delete this
-   paragraph.
+   o  Name: mqtt_tls
 
-   Name: mqtt_tls
+   o  Description: Profile for delegating Client authentication and
+      authorization using MQTT as the application protocol and TLS For
+      transport layer security.
 
+   o  CBOR Value:
 
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 23]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
-   Description: Profile for delegating Client authentication and
-   authorization using MQTT as the application protocol and TLS For
-   transport layer security.
-
-   CBOR Value:
-
-   Reference: [RFC-XXXX]
+   o  Reference: [this document]
 
 8.  Security Considerations
 
@@ -1330,6 +1394,14 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    repeated connection attempts, abnormal terminations, and Clients that
    connect but do not send any data.  If the RS supports the public
    "authz-info" topic, described in Section 2.2.2, then this may be
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 25]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    vulnerable to a DDoS attack, where many Clients use the "authz-info"
    public topic to transport fictitious tokens, which RS may need to
    store indefinitely.
@@ -1338,14 +1410,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    Interval, the RS may need to maintain Client's MQTT session state
    after it disconnects for an extended period.  For MQTT v3.1.1, the
    session state may need to be stored indefinitely, as it does not have
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 24]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
-
    a Session Expiry Interval feature.  The RS SHOULD implement
    administrative policies to limit misuse of the session continuation
    by the Client.
@@ -1371,36 +1435,34 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    [I-D.ietf-ace-aif]
               Bormann, C., "An Authorization Information Format (AIF)
-              for ACE", draft-ietf-ace-aif-00 (work in progress), July
-              2020.
+              for ACE", draft-ietf-ace-aif-02 (work in progress),
+              February 2021.
 
    [I-D.ietf-ace-oauth-authz]
               Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments (ACE) using the OAuth 2.0
-              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-36
-              (work in progress), November 2020.
+              Framework (ACE-OAuth)", draft-ietf-ace-oauth-authz-40
+              (work in progress), April 2021.
 
    [I-D.ietf-ace-oauth-params]
               Seitz, L., "Additional OAuth Parameters for Authorization
               in Constrained Environments (ACE)", draft-ietf-ace-oauth-
-              params-13 (work in progress), April 2020.
+              params-14 (work in progress), March 2021.
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 26]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
 
    [I-D.ietf-cose-x509]
               Schaad, J., "CBOR Object Signing and Encryption (COSE):
               Header parameters for carrying and referencing X.509
               certificates", draft-ietf-cose-x509-08 (work in progress),
               December 2020.
-
-
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 25]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    [MQTT-OASIS-Standard]
               Banks, A., Ed. and R. Gupta, Ed., "OASIS Standard MQTT
@@ -1445,18 +1507,17 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
               <https://www.rfc-editor.org/info/rfc7519>.
 
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 27]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    [RFC7800]  Jones, M., Bradley, J., and H. Tschofenig, "Proof-of-
               Possession Key Semantics for JSON Web Tokens (JWTs)",
               RFC 7800, DOI 10.17487/RFC7800, April 2016,
               <https://www.rfc-editor.org/info/rfc7800>.
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 26]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1495,24 +1556,23 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
               L. Seitz, "Datagram Transport Layer Security (DTLS)
               Profile for Authentication and Authorization for
               Constrained Environments (ACE)", draft-ietf-ace-dtls-
-              authorize-15 (work in progress), January 2021.
+              authorize-16 (work in progress), March 2021.
 
    [I-D.ietf-ace-pubsub-profile]
               Palombini, F., "Pub-Sub Profile for Authentication and
               Authorization for Constrained Environments (ACE)", draft-
               ietf-ace-pubsub-profile-01 (work in progress), July 2020.
 
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 28]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
               <https://www.rfc-editor.org/info/rfc4949>.
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 27]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    [RFC6234]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
               (SHA and SHA-based HMAC and HKDF)", RFC 6234,
@@ -1558,17 +1618,18 @@ Appendix A.  Checklist for profile requirements
 
    o  Unique profile identifier: mqtt_tls
 
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 29]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    o  Token introspection: RS uses HTTPS /introspect interface of AS.
 
    o  Token request: Client or its Client AS uses HTTPS /token interface
       of AS.
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 28]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    o  /authz-info endpoint: It MAY be supported using the method
       described in Section 2.2.2, but is not protected.
@@ -1579,6 +1640,12 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
       Section 2.2 and in Section 4.
 
 Appendix B.  Document Updates
+
+   Version 10 to 11: Clarified the TLS use between RS-AS and Client-AS.
+
+   Version 09 to 10: Fixed version issues for references.
+
+   Version 08 to 09: Fixed spacing issues and references.
 
    Version 07 to 08:
 
@@ -1606,6 +1673,15 @@ Appendix B.  Document Updates
    o  In Section 2.2.3, added the constraint on which packets the Client
       can send, and the server can process after CONNECT before CONNACK.
 
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 30]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    o  In Section 2.2.3, clarified that session state is identified by
       Client Identifier, and listed its content.
 
@@ -1615,16 +1691,6 @@ Appendix B.  Document Updates
    o  Corrected the buggy scope example in Section 3.1.
 
    Version 05 to 06:
-
-
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 29]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    o  Replace the originally proposed scope format with AIF model.
       Defined the AIF-MQTT, gave an example with a JSON array.  Added a
@@ -1663,6 +1729,15 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
       Added to the Security Considerations the potential misuse of
       session continuation.
 
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 31]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    o  Fixed the Authentication Data to include token length for the
       Challenge/Response PoP.
 
@@ -1674,13 +1749,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    o  Added that client reauthentication is accepted only for the
       challenge/response PoP.
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 30]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    o  Added Ed25519 as mandatory to implement.
 
@@ -1716,6 +1784,16 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
    o  Added MQTT to the TLS exporter label to make it application
       specific: 'EXPORTER-ACE-MQTT-Sign-Challenge'.
 
+
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 32]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    o  Added a format for Authentication Data so that length values
       prefix the token (or client nonce) when Authentication Data
       contains more than one piece of information.
@@ -1727,16 +1805,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    o  Added the option of Broker certificate thumbprint in the 'rs_cnf'
       sent to the Client.
-
-
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 31]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    o  Clarified the use of a random nonce from the TLS Exporter for PoP,
       added to the IANA requirements that the label should be
@@ -1774,6 +1842,14 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    o  Added MQTT AUTH to terminology.
 
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 33]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    o  Typo fixes, and simplification of figures.
 
    Version 00 to 01:
@@ -1785,14 +1861,6 @@ Internet-Draft           MQTT-TLS profile of ACE              April 2021
 
    o  Improved consistency in the use of terminology and upper/lower
       case.
-
-
-
-
-Sengul & Kirby          Expires October 16, 2021               [Page 32]
-
-Internet-Draft           MQTT-TLS profile of ACE              April 2021
-
 
    o  Defined Broker and MQTTS.
 
@@ -1825,6 +1893,19 @@ Authors' Addresses
    Email: csengul@acm.org
 
 
+
+
+
+
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 34]
+
+Internet-Draft           MQTT-TLS profile of ACE                May 2021
+
+
    Anthony Kirby
    Oxbotica
    1a Milford House, Mayfield Road, Summertown
@@ -1845,4 +1926,35 @@ Authors' Addresses
 
 
 
-Sengul & Kirby          Expires October 16, 2021               [Page 33]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sengul & Kirby          Expires November 12, 2021              [Page 35]
