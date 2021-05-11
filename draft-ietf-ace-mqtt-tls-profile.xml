@@ -51,7 +51,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-11" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-12" ipr="trust200902">
     <!-- category values: std, bcp, info, exp, and historic
        ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
           or pre5378Trust200902
