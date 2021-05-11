@@ -11,7 +11,7 @@ Expires: November 12, 2021                                      Oxbotica
 
 Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication
      and Authorization for Constrained Environments (ACE) Framework
-                   draft-ietf-ace-mqtt-tls-profile-11
+                   draft-ietf-ace-mqtt-tls-profile-12
 
 Abstract
 
