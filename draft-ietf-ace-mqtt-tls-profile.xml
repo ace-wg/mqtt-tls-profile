@@ -1304,13 +1304,15 @@ those specified for the 'application/json' media type.</t>
         &RFC7250;
         &RFC8446;
         &RFC5705;
-        &RFC8447;
         &RFC6749;
         &RFC7800;
         &RFC8747;
         &RFC8610;
         &RFC7519;
         &RFC7230;
+        &RFC6234;
+        &RFC8032;
+        <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
@@ -1361,9 +1363,7 @@ those specified for the 'application/json' media type.</t>
             &RFC7252;
             &RFC8949;
             &RFC8392;
-            &RFC6234;
-                    &RFC8032;
-             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
+            &RFC8447;
 	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
 			<title>
