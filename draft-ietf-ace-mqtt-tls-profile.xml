@@ -28,7 +28,6 @@
     <!ENTITY RFC8447 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8447.xml">
     <!ENTITY RFC8610 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8610.xml">
     <!ENTITY RFC8747 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8747.xml">
-    <!ENTITY RFC4648 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648.xml">
 	]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -1190,7 +1189,6 @@
                     this field MUST be prefixed with 'ace' keyword, 
                     i.e., the user name field is a concatenation of 'a', 'c', 'e' and the access token
                     represented as:
-                    </t>
                      <figure anchor="v31username" align="left" title="Username in CONNECT">
                     <artwork type="" name="" align="left" alt=""><![CDATA[
                      'U+0061'||'U+0063'||'U+0065'||UTF-8(access token)
@@ -1198,6 +1196,7 @@
                     </figure>
                     To this end, the access token MUST be base64url encoded
                     omitting the '=' padding characters <xref target="RFC4648"></xref>.
+                    </t>
                     <t>
                     The password field MUST be set to the keyed message digest (MAC)
                     or signature associated with the access token for proof-of-possession.
@@ -1403,7 +1402,6 @@ those specified for the 'application/json' media type.</t>
         &RFC7230;
         &RFC6234;
         &RFC8032;
-        &RFC4648;
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
