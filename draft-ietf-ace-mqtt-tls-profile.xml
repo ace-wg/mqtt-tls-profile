@@ -16,8 +16,11 @@
     <!ENTITY RFC8949 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8949.xml">
     <!ENTITY RFC7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
     <!ENTITY RFC7250 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7250.xml">
+    <!ENTITY RFC7251 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7251.xml">
     <!ENTITY RFC7252 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7252.xml">
+    <!ENTITY RFC7517 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7517.xml">
     <!ENTITY RFC7519 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7519.xml">
+    <!ENTITY RFC7748 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7748.xml">
     <!ENTITY RFC8446 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8446.xml">
     <!ENTITY RFC5705 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5705.xml">
     <!ENTITY RFC8032 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8032.xml">
@@ -421,13 +424,22 @@
      response (optional)
            ]]></artwork>
                 </figure>
+
         <section title="Client Token Request to the Authorization Server (AS)">
             <t>
                 The first step in the protocol flow (Figure 1 (A)) is the token acquisition by the Client
                 from the AS. The Client and the AS MUST perform mutual authentication.
                 The Client requests an access token from the AS as
-                described in Section 5.8.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. The media type is 'application/ace+json'.
+                described in Section 5.8.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. 
+                In order to use an asymmetric key (i.e., Raw Public Key), the client MUST add a "req_cnf" object 
+                carrying either its raw public key or a unique identifier for a public key that it has 
+                previously made known to the AS. The media type is 'application/ace+json'.
                 The AS uses JSON in the payload of its responses to the Client and the RS.
+            </t>
+            <t> On receipt of the token request, AS verifies the request. 
+            For asymmetric cryptography, the AS MUST check if the client that it 
+            communicates with is associated  with the RPK in the "req_cnf" parameter before issuing 
+            an access token to it. 
             </t>
             <t>
                 If the AS successfully verifies the access token request and authorizes the Client for the
@@ -438,11 +450,19 @@
                 specifically, the "ace_profile" parameter is set to "mqtt_tls".
                 The returned token is a Proof-of-Possession (PoP) token by default.
                 This document follows <xref target="RFC7800"></xref> for PoP semantics for JWTs.
+                </t>
+                <t>
                 The PoP token includes a 'cnf' parameter with a symmetric or asymmetric PoP key.
-                Note that the contents of the web tokens (including the 'cnf' parameter) are to be consumed by the RS and not the Client (the Client obtains the key information in a different manner).
-                For the asymmetric case, the PoP token may include the 'rs_cnf' parameter containing the information
-                about the public key to be used
-                by the RS to authenticate as described in <xref target="I-D.ietf-ace-oauth-params"></xref>.
+                Note that the contents of the web tokens (including the 'cnf' parameter) are to be consumed by the RS 
+                and not the Client (the Client obtains the key information in a different manner).
+                For the asymmetric case, the PoP token MUST include the 'rs_cnf' parameter containing the information
+                about the public key to be used by the RS to authenticate as described 
+                in <xref target="I-D.ietf-ace-oauth-params"></xref>. The authorization server MUST
+                ascertain that the RPK specified in "rs_cnf" belongs to the resource
+                server that the client wants to communicate with. For the symmetric case, the AS 
+                adds a "cnf" parameter to the access information, containing the 
+                <xref target="RFC7517"></xref> encoded key element, i.e., the shared secret that is to be used 
+                between the client and the RS.
             </t>
             <t> The AS returns error responses for JSON-based interactions
                 following Section 5.2 of <xref target="RFC6749"></xref>.
@@ -452,7 +472,7 @@
             </t>
         </section>
         <section title="Client Connection Request to the Broker (C)" anchor="connect_v5">
-            <section title="Client-Server Authentication over TLS and MQTT" anchor="auth_options">
+            <section title="Overview of Client-RS Authentication Methods over TLS and MQTT" anchor="auth_options">
                 <t>
                     The Client and the Broker MUST perform mutual authentication.
                     The Client MUST authenticate to the Broker either over MQTT or TLS before performing any other action.
@@ -462,7 +482,7 @@
                     The "None" and "Anon" options do not actually provide client authentication, but can be used either
                     during authentication or in combination with authentication at the other layer.
                     The process of authentication may include sending messages at TLS:Anon-MQTT:None, for example to
-publish a token to the "authz-info" topic.
+                    publish a token to the "authz-info" topic.
                     Combined, client authentication has the following options:
                     <list style="symbols">
                         <t>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization,
@@ -470,10 +490,11 @@ publish a token to the "authz-info" topic.
                         <t>"TLS:Anon-MQTT:ace": The token is transported inside the CONNECT message, and MUST be
                             validated using one of the methods described in <xref target="app-authzinfo"></xref>. This option also supports
                             a tokenless connection request for AS discovery.</t>
-                        <t>"TLS:Known(RPK/PSK)-MQTT:none": For the RPK, the token MUST have been published to the "authz-info" topic.
-                            For the PSK, the token MAY be, alternatively, provided as an "identity" in the "identities" field
-                            in the client's "pre_shared_key" extension in TLS 1.3.
-                            The TLS session set-up is as described in <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.</t>
+                        <t>"TLS:Known(RPK/PSK)-MQTT:none": This specification supports client authentication with TLS with Raw Public
+                            Keys (RPK) <xref target="RFC7250"></xref> and with Pre-Shared Keys (PSK). For the RPK, the token MUST have 
+                            been published to the "authz-info" topic. For the PSK, the token MAY be, alternatively, 
+                            provided as an "identity" in the "identities" field in the client's "pre_shared_key" extension in TLS 1.3.
+                        </t>
                         <t>"TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen as the token transported in the CONNECT
                             overwrites any permissions passed during the TLS authentication.</t>
                     </list>
@@ -545,7 +566,52 @@ publish a token to the "authz-info" topic.
                     expected to cause confusion.
                 </t>
             </section>
-            <section anchor="token-CONNECT" title="Transporting Access Token Inside the MQTT CONNECT">
+            <section anchor="auth-TLS" title="Client Authentication over TLS">
+                <t>
+                The TLS session set-up is similar to the described in 
+                <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>.
+                This specification supports TLS with Raw Public Keys (RPK) 
+                <xref target="RFC7250"></xref> and with Pre-Shared Keys (PSK).
+                </t>
+                <section anchor="TLS-RPK" title="Raw Public Key Mode">
+                <t>
+                 In the RPK mode, the client proves that it can use the RPK bound to
+                 the token and the server shows that it can use a certain RPK.
+                 The resource server needs access to the token in order to complete
+                 this exchange.  Therefore, for the RPK mode, the client must upload 
+                 the access token to the resource server as specified in 
+                 <xref target="app-authzinfo"></xref> before initiating the handshake.
+                 The client MUST use its correct public key in the TLS handshake, 
+                 and MUST specify this public key in the SubjectPublicKeyInfo
+                structure of the TLS handshake as described in <xref target="RFC7250"></xref>.
+                </t>
+                <t>
+                An implementation that supports the RPK mode of this profile MUST at 
+                least support the cipher suite TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8 <xref target="RFC7250"></xref>.  
+                Implementations of this profile MUST implement support for 
+                curve25519 <xref target="RFC7748"></xref>.
+                </t>
+                </section>
+                <section anchor="TLS-PSK" title="Pre-Shared Key Mode">
+                <t>
+                In the PSK mode, client and server show with the TLS handshake that 
+                they can use the keying material that is bound to the access token.
+                By default, the AS generates a symmetric proof-of-possession key for the 
+                client.
+                </t>
+                <t>
+                To use TLS with pre-shared keys, the client follows the PSK key extension 
+                specified in <xref target="RFC8446"></xref> using the key conveyed in the "cnf" parameter
+                of the AS response. The same key is bound to the access token, 
+                in the "rs_cnf" claim. The client can upload the access as specified in 
+                 <xref target="app-authzinfo"></xref> before initiating the handshake. 
+                The token MAY be, alternatively, provided as an "identity" in the 
+                "identities" field in the client's "pre_shared_key" extension.
+                </t>
+                </section>
+            </section>
+            <section anchor="auth-ACE" title="Client Authentication over MQTT">
+            <section anchor="token-CONNECT" title="Transporting the Access Token Inside the MQTT CONNECT">
 		        <t>
                     This section describes how the Client transports the token to the Broker
                     (RS) inside the CONNECT message. If this method is used,
@@ -797,11 +863,12 @@ publish a token to the "authz-info" topic.
                     </figure>
                     </section>
                 </section>
-            <section title="Token Validation" anchor="token_validation">
+            </section>
+            <section title="Broker Token Validation" anchor="token_validation">
                 <t>
-                    The RS MUST verify the validity of the token either locally
+                    The Broker MUST verify the validity of the token either locally
                     (e.g. in the case of a self-contained token) or the RS MAY send an introspection request to the AS.
-                    The RS MUST verify the claims according to the rules set in the
+                    The Broker MUST verify the claims according to the rules set in the
                     Section 5.10.1.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
                 </t>
                 <t>
@@ -812,8 +879,20 @@ publish a token to the "authz-info" topic.
                     when the key used for the signature algorithm cannot be determined, or
                     the computed and received signature/MAC do not match.
 		        </t>
+                <t>
+                The  Broker MUST check if the access token is still valid, 
+                if it is the intended destination (i.e., the audience)
+                of the token, and if the token was issued by an authorized
+                 authorization server.  If the Client is using TLS RPK mode
+                 to authenticate to the Broker,  the AS constructs the access token 
+                 so that the Broker can associate the access token with the 
+                 Client's public key.  The "cnf" claim MUST contain either the client's RPK or, 
+                 if the key is already known by the RS (e.g., from previous communication), 
+                 a reference to it.
+                </t>
             </section>
-            <section title="The Broker's Response to Client Connection Request">
+            </section>
+            <section title="Broker Response to Client Connection Request">
                 <t>
                  Based on the validation result (obtained either via local inspection or using the introspection
                 interface of the AS), the Broker MUST send a CONNACK message to the Client.
@@ -863,7 +942,6 @@ publish a token to the "authz-info" topic.
                 </section>
             </section>
         </section>
-    </section>
     <section title="Authorizing PUBLISH and SUBSCRIBE Messages" anchor="scope">
         <t>
             To authorize a Client's PUBLISH and SUBSCRIBE messages,
@@ -1175,6 +1253,11 @@ publish a token to the "authz-info" topic.
          <t>
             This document registers 'EXPORTER-ACE-MQTT-Sign-Challenge' (introduced in <xref target="pop_nonce"></xref>
            in this document) in the TLS Exporter Label Registry <xref target="RFC8447"></xref>.
+           <list style="symbols">
+            <t>Recommended: No</t>
+            <t>DTLS-OK: No</t>
+            <t>Reference: [This document]</t>
+           </list>
          </t>
          </section>
         <section title="Media Type Registration">
@@ -1302,6 +1385,8 @@ those specified for the 'application/json' media type.</t>
             &RFC4648;
 	    &RFC8174;
         &RFC7250;
+        &RFC7748;
+        &RFC7251;
         &RFC8446;
         &RFC5705;
         &RFC6749;
@@ -1309,10 +1394,10 @@ those specified for the 'application/json' media type.</t>
         &RFC8747;
         &RFC8610;
         &RFC7519;
+        &RFC7517;
         &RFC7230;
         &RFC6234;
         &RFC8032;
-        <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
@@ -1364,6 +1449,7 @@ those specified for the 'application/json' media type.</t>
             &RFC8949;
             &RFC8392;
             &RFC8447;
+            <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
 	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
 			<title>
