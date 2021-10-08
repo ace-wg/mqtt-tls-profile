@@ -28,6 +28,7 @@
     <!ENTITY RFC8447 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8447.xml">
     <!ENTITY RFC8610 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8610.xml">
     <!ENTITY RFC8747 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8747.xml">
+    <!ENTITY RFC4648 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648.xml">
 	]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -1164,40 +1165,44 @@
          ]]></artwork>
          </figure>
                     <t>
-                        The Broker SHOULD NOT accept session continuation. 
-                        To this end, the Broker ignores how the Clean Session Flag is set, 
-                        and on connection success, the Broker
-                MUST set the Session Present flag to 0 in the CONNACK packet to indicate a clean session to 
-                the Client. If the Broker wishes to support session continuation, it MUST still perform
-                proof-of-possession validation on the provided Client token. 
-                MQTT v3.1.1 does not use a Session Expiry Interval, and the Client expects that the Broker maintains
-                the session state after it disconnects. 
-                However, stored Session state can be discarded as a result of administrator policies, and Brokers SHOULD
-                implement the necessary policies to limit misuse.
-                    </t>
-                    <t>The Client MAY set the Will Flag
-                         as desired (marked as 'X' in <xref
-                            target="mqtt_connect_flags"></xref>).
-                        Username and Password flags MUST be set to 1 to  ensure that the Payload of the
-                        CONNECT message includes both Username and Password fields.
+                    The Broker SHOULD NOT accept session continuation. To this end, the Broker ignores 
+                    how the Clean Session Flag is set, and on connection success, the Broker MUST set the 
+                    Session Present flag to 0 in the CONNACK packet to indicate a clean session to the 
+                    Client. If the Broker wishes to support session continuation, it MUST still perform
+                    proof-of-possession validation on the provided Client token. MQTT v3.1.1 does not use a 
+                    Session Expiry Interval, and the Client expects that the Broker maintain the session 
+                    state after it disconnects. However, stored Session state can be discarded as a result 
+                    of administrator policies, and Brokers SHOULD implement the necessary policies to limit 
+                    misuse.
                     </t>
                     <t>
-                        The CONNECT in MQTT v3.1.1 does not have a field to indicate the authentication
-                        method. To signal that the Username field contains an ACE token,
-                        this field MUST be prefixed with 'ace' keyword, which is followed by the access token.
-                        The Password field MUST be set to the keyed message digest (MAC)
-                         or signature associated with the access token
-			            for proof-of-possession.
-                        The Client MUST apply the PoP key on the challenge derived from the TLS
-                        session as described in <xref target="pop_nonce"></xref>.
+                    The Client MAY set the Will Flag as desired (marked as 'X' in
+                     <xref target="mqtt_connect_flags"></xref>). Username and Password flags MUST be
+                      set to 1 to  ensure that the Payload of the CONNECT message includes both Username 
+                      and Password fields. The MQTT Username is a UTF-8 encoded string (i.e.
+                    is prefixed by a 2-byte length field followed by UTF-8 encoded character data)
+                    and may be up to 65535 bytes. The MQTT Password is Binary Data, represented by a Two Byte Integer length which 
+                    indicates the number of data bytes, followed by that number of bytes. Thus, its length is limited up to 65535 bytes.
                     </t>
                     <t>
-                        In MQTT v3.1.1, the MQTT Username is a UTF-8 encoded string (i.e.
-                        is prefixed by a 2-byte length field followed by UTF-8 encoded character data)
-                         and may be up to 65535 bytes.
-                         Therefore, an access token that is not a valid UTF-8 MUST be Base64
-                          <xref target="RFC4648"></xref> encoded.
-                        (The MQTT Password allows binary data up to 65535 bytes.)
+                   The CONNECT in MQTT v3.1.1 does not have a field to indicate the authentication
+                    method. To signal that the Username field contains an ACE token,
+                    this field MUST be prefixed with 'ace' keyword, 
+                    i.e., the user name field is a concatenation of 'a', 'c', 'e' and the access token
+                    represented as:
+                    </t>
+                     <figure anchor="v31username" align="left" title="Username in CONNECT">
+                    <artwork type="" name="" align="left" alt=""><![CDATA[
+                     'U+0061'||'U+0063'||'U+0065'||UTF-8(access token)
+                    ]]></artwork>
+                    </figure>
+                    To this end, the access token MUST be base64url encoded
+                    omitting the '=' padding characters <xref target="RFC4648"></xref>.
+                    <t>
+                    The password field MUST be set to the keyed message digest (MAC)
+                    or signature associated with the access token for proof-of-possession.
+                    The Client MUST apply the PoP key on the challenge derived from the TLS
+                    session as described in <xref target="pop_nonce"></xref>.
                     </t>
 		  </section>
 		  <section anchor="errors_311" title="Handling Authorization Errors">
@@ -1398,6 +1403,7 @@ those specified for the 'application/json' media type.</t>
         &RFC7230;
         &RFC6234;
         &RFC8032;
+        &RFC4648;
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
