@@ -961,9 +961,15 @@
             </figure>
             Topic filters are implemented according to
             Section 4.7 of <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0
-                     - the OASIS Standard</xref> and includes special wildcard characters.
+                     - the OASIS Standard</xref> and may include special wildcard characters.
+            By default, Wildcard Subscriptions are supported.
             The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+',
             matches one topic level.
+            The Broker MAY signal in the CONNACK explicity whether wildcard subscriptions is supported
+            by returning a CONNACK property "Wildcard Subscription Available". 
+            A value is 0 means that Wildcard Subscriptions are not supported. 
+            A value of 1 means Wildcard Subscriptions are supported.
+            
         </t>
         <t>
             If the scope is empty i.e., the JSON array is empty, the RS records
@@ -1035,8 +1041,12 @@
             On receiving the SUBSCRIBE message, the Broker MUST use the type of message (i.e.
             SUBSCRIBE) and the Topic Filter in the message header to match
             against the scope field of the stored token or introspection result.
-            The Topic Filters MUST be equal or a subset of at least one of the 'topic_filter' fields
-            in the scope array found in the Client's token.
+            The Topic Filters MUST be equal to or be a subset of at least one of the 'topic_filter' fields
+            in the scope array found in the Client's token. For example, 
+            if a client sends a subscription request for topic "a/b/*", 
+            and has a token token permits "a/*",  this is a valid subscription request, as "a/b/*" is
+            a subset of "a/*". (The process is similar to a Broker matching the Topic Name
+            in a PUBLISH message against the Subscriptions known to the Server.)
         </t>
         <t>
             As a response to the SUBSCRIBE message, the Broker issues a SUBACK message.
