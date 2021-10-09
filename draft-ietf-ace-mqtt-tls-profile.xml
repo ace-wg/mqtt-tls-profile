@@ -1000,8 +1000,9 @@
                     PUBLISH and SUBSCRIBE messages, which are sent after a connection
                     set-up, do not contain access tokens. If the introspection result
                     is not cached, then the RS needs to introspect the saved token for
-                    each request. The Broker SHOULD also use a cache time out to introspect
-                    tokens regularly.
+                    each request. The Broker SHOULD also use a cache timeout to introspect
+                    tokens regularly. The timeout value is application-specific and SHOULD be chosen 
+       to reduce the risk of using stale introspection responses.
                     </t>
                 </section>
             </section>
@@ -1360,13 +1361,14 @@ those specified for the 'application/json' media type.</t>
 	 In the following, we comment on a few relevant issues based on the current MQTT specifications.
 	  </t>
 
-	  <t>After the RS validates an access token and accepts a connection from a client, it caches the token  
+	  <t>After the Broker validates an access token and accepts a connection from a client, it caches the token  
       to authorize a Client's publish and subscribe requests in an ongoing session. 
-      RS does not cache any invalid tokens.
+      Broker does not cache any invalid tokens.
       If a client's permissions get revoked but the access token has not expired,
-	  the RS may still grant publish/subscribe to revoked topics.
-      If the RS caches the token introspection responses, then the RS SHOULD use a reasonable cache timeout
-       to introspect tokens regularly.
+	  the Broker may still grant publish/subscribe to revoked topics.
+      If the Broker caches the token introspection responses, then the Broker SHOULD use a reasonable cache timeout
+       to introspect tokens regularly. The timeout value is application-specific and SHOULD be chosen 
+       to reduce the risk of using stale introspection responses.
 	  When permissions change dynamically, it is expected that AS also
        follows a reasonable expiration strategy for the access tokens.
 	  </t>
