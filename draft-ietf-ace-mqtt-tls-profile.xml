@@ -907,8 +907,11 @@
             (including Will Topic in the CONNECT), or a Topic Filter in a SUBSCRIBE message.
             </t>
             <t>
-            The scope is a JSON array, each item following the <xref target="I-D.ietf-ace-aif">Authorization Information 
-            Format (AIF) for ACE</xref>.  Using the Concise Data Definition Language (CDDL) <xref target="RFC8610"></xref>,
+            The scope in the token is a single value. For a JWT, the single scope 
+            has an internal structure of a JSON array, and for a CWT, this information is 
+            represented in CBOR following the <xref target="I-D.ietf-ace-aif">Authorization Information 
+            Format (AIF) for ACE</xref>.
+            Using the Concise Data Definition Language (CDDL) <xref target="RFC8610"></xref>,
             the specific data model for MQTT is:
             <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
             <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
@@ -932,12 +935,7 @@
             A value of 1 means Wildcard Subscriptions are supported.
             
         </t>
-        <t>
-            If the scope is empty i.e., the JSON array is empty, the Broker records
-            no permissions for the client for any topic. In this case, the Client
-            is not able to publish or subscribe to any protected topics.
-        </t>
-        <t> An example scope may contain:
+        <t> Following this model, an example scope may contain:
             <figure anchor="MQTTaifex" align="left" title="Example scope">
             <artwork type="" name="" align="left" alt=""><![CDATA[
  [["topic1", ["pub","sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
@@ -946,10 +944,15 @@
             This access token gives publish ("pub") and subscribe ("sub") permissions to the "topic1",
             publish permission to all the subtopics of "topic2",
             and subscribe permission to all "topic3", skipping one level.
-            The Topic Names or Topic Filters in the Will Topic in the CONNECT message
-            during connection set-up, and if the connection request succeeds, in the future PUBLISH and 
-            SUBSCRIBE messages MUST be an exact match to or a subset of at least one of the 
-            'topic_filter' fields in the scope array found in the Client's token.
+        </t>
+        <t>
+            If the scope is empty, the Broker records
+            no permissions for the client for any topic. In this case, the Client
+            is not able to publish or subscribe to any protected topics.
+            Otherwise, the scope is used to authorise the Will Topic in the CONNECT message during connection set-up, and if the connection request 
+            succeeds, the Topic Names or Topic Filters requested in the future PUBLISH and SUBSCRIBE messages. 
+            For the authorisation to succeed, the Broker MUST verify that the topic name or filter in question is either an 
+            an exact match to or a subset of at least one 'topic_filter' in the scope.
         </t>
             </section>
             <section title="Broker Response to Client Connection Request">
