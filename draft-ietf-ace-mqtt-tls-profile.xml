@@ -888,8 +888,8 @@
                     For self-contained tokens the Broker MUST process the security protection of the token first, as specified by the respective token format, 
                     i.e. a CWT token uses COSE while a JWT token uses JOSE.  For a token-by-reference, the 
                     Broker uses the "cnf" structure returned as a result of token introspection as specified in <xref target="RFC7519"></xref>. 
-                    HS256 (HMAC-SHA-256) <xref target="RFC6234"></xref> and Ed25519 <xref target="RFC8032"></xref> are mandatory to implement depending on the choice
-                    of symmetric or asymmetric validation.
+                    HS256 (HMAC-SHA-256) <xref target="RFC6234"></xref> and Ed25519 <xref target="RFC8032"></xref> are mandatory to implement
+                    for the Broker. The Client MUST implement at least one depending on the choice of symmetric or asymmetric validation.
                     Validation of the signature or MAC MUST fail if the signature algorithm is set to "none",
                     when the key used for the signature algorithm cannot be determined, or
                     the computed and received signature/MAC do not match.
