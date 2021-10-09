@@ -619,7 +619,6 @@
                     authenticated during the TLS connection set-up.
                     The approach described in this section is similar to an earlier proposal
                      by Fremantle et al <xref target="fremantle14"></xref>.
-                    </t>
 		        </t>
                 <t>
                     After sending the CONNECT, the client MUST wait to receive the CONNACK from
