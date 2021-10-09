@@ -686,7 +686,12 @@
                 is published include disconnections due to I/O or network failures,
                 and the server closing the network connection due to a protocol error.
                 The Client MAY set the Will Flag as desired (marked as 'X' in <xref target="mqttv5_connect_flags"></xref>).
-                If the Will Flag is set to 1 and the Broker accepts the connection request, the Broker
+                If the Will Flag is set to 1,  the Broker MUST check that the token
+                allows the publication of the Will message (i.e., the Will Topic filter is in the scope array). 
+                The check is performed against the token scope
+                described in <xref target="scope"></xref>. If the Will authorisation fails, the connection 
+                is refused as described in  <xref target="as_discovery"></xref>. 
+                If the Broker accepts the connection request, the Broker
                 stores the Will message and  publish it when the network connection is closed according to Will QoS and
 	            Will retain parameters and MQTT Will management rules.  To avoid publishing Will Messages
                 in the case of temporary network disconnections,
@@ -892,6 +897,61 @@
                 </t>
             </section>
             </section>
+            <section title="Token Scope and Authorisation" anchor="scope">
+            <t> During the CONNECT, if the the Will Flag is set to 1, the Broker MUST authorise
+                the publication of the Will Topic, and message using the token's scope field.
+                The token or its introspection result MUST also be cached, 
+                to authorize a Client's future PUBLISH and SUBSCRIBE messages. 
+            The scope field contains the publish and subscribe permissions for the Client.
+            The Broker uses the scope to match against the Topic Name in a PUBLISH message 
+            (including Will Topic in the CONNECT), or a Topic Filter in a SUBSCRIBE message.
+            </t>
+            <t>
+            The scope is a JSON array, each item following the <xref target="I-D.ietf-ace-aif">Authorization Information 
+            Format (AIF) for ACE</xref>.  Using the Concise Data Definition Language (CDDL) <xref target="RFC8610"></xref>,
+            the specific data model for MQTT is:
+            <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
+            <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
+ AIF-MQTT = AIF-Generic<topic_filter, permissions>
+ AIF-Generic<topic_filter, permissions> = [*[topic_filter, permissions]]
+ topic_filter = tstr
+ permissions = [+permission]
+ permission = "pub"/"sub"
+            ]]></artwork>
+            </figure>
+            Topic filters are implemented according to
+            Section 4.7 of <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0
+                     - the OASIS Standard</xref>.
+            By default, Wildcard Subscriptions are supported, and so, 
+            the topic filter may include special wildcard characters.
+            The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+',
+            matches one topic level.
+            The Broker MAY signal in the CONNACK explicity whether wildcard subscriptions is supported
+            by returning a CONNACK property "Wildcard Subscription Available". 
+            A value is 0 means that Wildcard Subscriptions are not supported. 
+            A value of 1 means Wildcard Subscriptions are supported.
+            
+        </t>
+        <t>
+            If the scope is empty i.e., the JSON array is empty, the Broker records
+            no permissions for the client for any topic. In this case, the Client
+            is not able to publish or subscribe to any protected topics.
+        </t>
+        <t> An example scope may contain:
+            <figure anchor="MQTTaifex" align="left" title="Example scope">
+            <artwork type="" name="" align="left" alt=""><![CDATA[
+ [["topic1", ["pub","sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
+            ]]></artwork>
+            </figure>
+            This access token gives publish ("pub") and subscribe ("sub") permissions to the "topic1",
+            publish permission to all the subtopics of "topic2",
+            and subscribe permission to all "topic3", skipping one level.
+            The Topic Names or Topic Filters in the Will Topic in the CONNECT message
+            during connection set-up, and if the connection request succeeds, in the future PUBLISH and 
+            SUBSCRIBE messages MUST be an exact match to or a subset of at least one of the 
+            'topic_filter' fields in the scope array found in the Client's token.
+        </t>
+            </section>
             <section title="Broker Response to Client Connection Request">
                 <t>
                  Based on the validation result (obtained either via local inspection or using the introspection
@@ -900,7 +960,8 @@
                   <section title="Unauthorised Request and the Optional Authorisation Server Discovery" anchor="as_discovery">
 	                <t>
 	                    If the Client does not provide a valid token or omits the Authentication Data field, or
-                        the token or Authentication data are malformed, authentication fails. 
+                        the token or Authentication data are malformed or if the Will flag is set, the authorisation checks for 
+                        the Will message fails, authentication fails. 
                         The Broker responds with the CONNACK reason code "0x87 (Not Authorized)" or any other applicable
                         reason code.
                     </t>
@@ -942,54 +1003,13 @@
                 </section>
             </section>
         </section>
-    <section title="Authorizing PUBLISH and SUBSCRIBE Messages" anchor="scope">
+    <section title="Authorizing PUBLISH and SUBSCRIBE Messages" anchor="pubsub_authorisation">
+
         <t>
-            To authorize a Client's PUBLISH and SUBSCRIBE messages,
-            the Broker uses the scope field in the token (or in the introspection result).
-            The scope field contains the publish and subscribe permissions for the Client.
-            The scope is a JSON array, each item following the <xref target="I-D.ietf-ace-aif">Authorization Information 
-            Format (AIF) for ACE</xref>.  Using the Concise Data Definition Language (CDDL) <xref target="RFC8610"></xref>,
-            the specific data model for MQTT is:
-            <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
-            <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
- AIF-MQTT = AIF-Generic<topic_filter, permissions>
- AIF-Generic<topic_filter, permissions> = [*[topic_filter, permissions]]
- topic_filter = tstr
- permissions = [+permission]
- permission = "pub"/"sub"
-            ]]></artwork>
-            </figure>
-            Topic filters are implemented according to
-            Section 4.7 of <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0
-                     - the OASIS Standard</xref> and may include special wildcard characters.
-            By default, Wildcard Subscriptions are supported.
-            The multi-level wildcard, '#', matches any number of levels within a topic, and the single-level wildcard, '+',
-            matches one topic level.
-            The Broker MAY signal in the CONNACK explicity whether wildcard subscriptions is supported
-            by returning a CONNACK property "Wildcard Subscription Available". 
-            A value is 0 means that Wildcard Subscriptions are not supported. 
-            A value of 1 means Wildcard Subscriptions are supported.
-            
+        Using the cached token or its introspection result, the Broker uses the scope field 
+        to match against the Topic Name in a PUBLISH message, or a Topic Filter in a SUBSCRIBE message.
         </t>
-        <t>
-            If the scope is empty i.e., the JSON array is empty, the RS records
-            no permissions for the client for any topic. In this case, the client
-            is not able to publish or subscribe to any protected topics.
-        </t>
-        <t> An example scope may contain:
-            <figure anchor="MQTTaifex" align="left" title="Example scope">
-            <artwork type="" name="" align="left" alt=""><![CDATA[
- [["topic1", ["pub","sub"]], ["topic2/#",["pub"]], ["+/topic3",["sub"]]]
-            ]]></artwork>
-            </figure>
-            This access token gives publish ("pub") and subscribe ("sub") permissions to the "topic1",
-            publish permission to all the subtopics of "topic2",
-            and subscribe permission to all "topic3", skipping one level.
-        </t>
-        <t>
-            If the Will Flag is set, then the Broker MUST check that the token
-            allows the publication of the Will message (i.e., the Will Topic filter is in the scope array).
-        </t>
+
         <section title="PUBLISH Messages from the Publisher Client to the Broker">
             <t>
                 On receiving the PUBLISH message, the Broker MUST use the type of
@@ -1041,7 +1061,7 @@
             On receiving the SUBSCRIBE message, the Broker MUST use the type of message (i.e.
             SUBSCRIBE) and the Topic Filter in the message header to match
             against the scope field of the stored token or introspection result.
-            The Topic Filters MUST be equal to or be a subset of at least one of the 'topic_filter' fields
+            The Topic Filters MUST be an exact match to or be a subset of at least one of the 'topic_filter' fields
             in the scope array found in the Client's token. For example, 
             if a client sends a subscription request for topic "a/b/*", 
             and has a token token permits "a/*",  this is a valid subscription request, as "a/b/*" is
