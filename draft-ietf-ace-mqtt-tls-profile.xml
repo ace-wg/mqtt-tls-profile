@@ -619,6 +619,7 @@
                     authenticated during the TLS connection set-up.
                     The approach described in this section is similar to an earlier proposal
                      by Fremantle et al <xref target="fremantle14"></xref>.
+                    </t>
 		        </t>
                 <t>
                     After sending the CONNECT, the client MUST wait to receive the CONNACK from
@@ -809,12 +810,16 @@
          ]]></artwork>
          </figure>
 	        <t>
-	            For this option, the RS follows a Broker-generated challenge/response protocol.
+	            For this option, the Broker follows a Broker-generated challenge/response protocol.
                 If the Authentication Data contains only the two-byte integer token length and
                 the token (as shown in <xref target="authdata_challenge_client"></xref>),
                 the RS MUST respond with an AUTH packet,
                 with the Authenticate Reason Code set to "0x18 (Continue Authentication)".
-                This packet includes the Authentication Method, which MUST be set to "ace"
+                The Broker also uses this method if the Authentication Data does not 
+                contain a token, but the Broker has a token stored for the connecting client.
+            </t>
+            <t>
+                The AUTH packet to continue authentication includes the Authentication Method, which MUST be set to "ace"
                 and Authentication Data. The Authentication Data MUST NOT be empty and contains
                 an 8-byte nonce as a challenge for the Client (<xref target="authdata_challenge_broker_challenge"></xref>).
             </t>
@@ -962,7 +967,8 @@
                 </t>
                   <section title="Unauthorised Request and the Optional Authorisation Server Discovery" anchor="as_discovery">
 	                <t>
-	                    If the Client does not provide a valid token or omits the Authentication Data field, or
+	                    If the Client does not provide a valid token, or omits the Authentication Data field and the Broker
+                        has no token stored for the Client, or
                         the token or Authentication data are malformed or if the Will flag is set, the authorisation checks for 
                         the Will message fails, authentication fails. 
                         The Broker responds with the CONNACK reason code "0x87 (Not Authorized)" or any other applicable
@@ -989,17 +995,14 @@
                     it MUST set Session Present to 1.
                     </t>
                     <t>
-                    If the Broker accepts the connection, it MUST store the token until the end of
-                    the connection. On Client or Broker disconnection,
-                    the Client is expected to transport a token again on the next connection attempt.
-                    </t>
-                    <t>
+                    Accepting the connection, the Broker MUST be prepared to store the token
+                    during the connection and after disconnection, for future use. 
                     If the token is not self-contained and the Broker uses token
                     introspection, it MAY cache the validation result to authorize
                     the subsequent PUBLISH and SUBSCRIBE messages.
                     PUBLISH and SUBSCRIBE messages, which are sent after a connection
                     set-up, do not contain access tokens. If the introspection result
-                    is not cached, then the RS needs to introspect the saved token for
+                    is not cached, then the Broker needs to introspect the saved token for
                     each request. The Broker SHOULD also use a cache timeout to introspect
                     tokens regularly. The timeout value is application-specific and SHOULD be chosen 
        to reduce the risk of using stale introspection responses.
@@ -1149,8 +1152,10 @@
         </t>
 	    <section anchor="token_311" title="Token Transport">
             <t> As in MQTT v5.0, the token MAY either be transported before by publishing
-             to the "authz-info" topic,
-            or inside the CONNECT message.
+             to the "authz-info" topic, or inside the CONNECT message. If the Client provided
+             the token via "authz-info" topic and will not update the token in the CONNECT message, 
+             it MUST authenticate over TLS. The Broker SHOULD still be prepared to store the Client access
+             token for future use (regardless of the method of transport).
             </t>
             <t>In MQTT v3.1.1, after the Client published to the "authz-info" topic,
                the Broker cannot communicate
@@ -1251,10 +1256,11 @@
 		    <t>
 		    <list style="symbols">
 		    <t>
-                CONNECT without a token: It is not possible to support AS discovery via sending a tokenless CONNECT
-                 message to the Broker. This is because a CONNACK packet in MQTT v3.1.1
+                CONNECT without a token: The tokenless CONNECT attempt MUST fail. This is
+                because the challenge-response based proof-of-possession is not possible for MQTT v3.1.1. 
+                It is also not possible to support AS discovery since a CONNACK packet in MQTT v3.1.1
                   does not include a means to provide additional information to the Client.
-			    Therefore, AS discovery needs to take place out-of-band. The tokenless CONNECT attempt MUST fail.
+			    Therefore, AS discovery needs to take place out-of-band. 
 		      </t>
 		      <t>
                 Client-RS PUBLISH authorization failure: In the case of a failure,
