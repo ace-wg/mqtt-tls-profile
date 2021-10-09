@@ -24,10 +24,12 @@
     <!ENTITY RFC8446 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8446.xml">
     <!ENTITY RFC5705 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5705.xml">
     <!ENTITY RFC8032 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8032.xml">
+    <!ENTITY RFC8152 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8152.xml">
     <!ENTITY RFC8392 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8392.xml">
     <!ENTITY RFC8447 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8447.xml">
     <!ENTITY RFC8610 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8610.xml">
-    <!ENTITY RFC8747 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8747.xml">
+    <!ENTITY RFC8705 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8705.xml">
+    <!ENTITY RFC8747 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8747.xml">    
 	]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -202,7 +204,8 @@
                 Implementations MAY also use "application/ace+cbor" content type, and CBOR encoding <xref target="RFC8949"></xref>, and
                 CBOR Web Token (CWT) <xref target="RFC8392"></xref> and associated PoP semantics to reduce the protocol memory and bandwidth
                 requirements.  For more information, see <xref target="RFC8747">Proof-of-Possession Key
-                Semantics for CBOR Web Tokens (CWTs)</xref>.
+                Semantics for CBOR Web Tokens (CWTs)</xref>.  
+                A JWT token uses JOSE while a CWT token uses COSE <xref target="RFC8152"></xref> for security protection.
             </t>
 
             <section title="Requirements Language">
@@ -881,7 +884,10 @@
                     Section 5.10.1.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
                 </t>
                 <t>
-                    To authenticate the Client, the RS validates the signature or the MAC, depending on how the PoP protocol is implemented.
+                    To authenticate the Client, the Broker validates the signature or the MAC, depending on how the PoP protocol is implemented.
+                    For self-contained tokens the Broker MUST process the security protection of the token first, as specified by the respective token format, 
+                    i.e. a CWT token uses COSE while a JWT token uses JOSE.  For a token-by-reference, the 
+                    Broker uses the "cnf" structure returned as a result of token introspection as specified in <xref target="RFC7519"></xref>. 
                     HS256 (HMAC-SHA-256) <xref target="RFC6234"></xref> and Ed25519 <xref target="RFC8032"></xref> are mandatory to implement depending on the choice
                     of symmetric or asymmetric validation.
                     Validation of the signature or MAC MUST fail if the signature algorithm is set to "none",
@@ -1442,6 +1448,8 @@ those specified for the 'application/json' media type.</t>
         &RFC7230;
         &RFC6234;
         &RFC8032;
+        &RFC8705;
+        &RFC8152;
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
