@@ -397,7 +397,8 @@
             <t>
                 This section specifies how Client connections are authorized by the MQTT
                 Broker. <xref target="protocol_flow"></xref> shows the basic protocol flow during connection
-                set-up. The token request and response use the token endpoint at the AS, specified in Section 5.8 of the <xref
+                set-up. The token request and response use the token endpoint at the AS, specified for HTTP-based interactions 
+                in Section 5.8 of the <xref
                 target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. Steps (D) and (E) are optional
                 and use the introspection endpoint, specified in Section 5.9 of the ACE framework.
                 The discussion in this document assumes that Client and the Broker use HTTPS to communicate with the AS
@@ -919,8 +920,10 @@
             <section title="Broker Token Validation" anchor="token_validation">
                 <t>
                     The Broker MUST verify the validity of the token either locally
-                    (e.g. in the case of a self-contained token) or the RS MAY send an introspection request to the AS.
-                    The Broker MUST verify the claims according to the rules set in the
+                    (e.g. in the case of a self-contained token) or the RS MAY send a request to the
+                    introspection endpoint of the AS (as described for HTTP-based interactions in Section 5.9 of 
+                    the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>).
+                    The Broker MUST verify the claims in the access token according to the rules set in the
                     Section 5.10.1.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
                 </t>
                 <t>
