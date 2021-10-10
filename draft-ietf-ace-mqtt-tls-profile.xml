@@ -790,7 +790,7 @@
                 an empty context, and length of 32 bytes.
                 The token is also validated as described in  <xref target="token_validation"></xref>
                 and the server responds with a CONNACK with the appropriate response code.
-                The client cannot reauthenticate using this method during the same session (
+                The client cannot reauthenticate using this method during the same TLS session (
                     see <xref target="reauthentication"></xref>).
 	        </t>
         </section>
@@ -1108,17 +1108,19 @@
             no more messages can be sent.
         </t>
         <t>
-		    If the Client used the challenge-respose PoP as defined
-            in <xref target="pop_challenge"></xref>, the Client MAY reauthenticate as a response to the
+		    The Client MAY reauthenticate as a response to the
             PUBACK and SUBACK that signal loss of authorization.
             The Clients MAY also proactively update their tokens, i.e., before
             they receive a message with a "Not authorized" return code.
             To start reauthentication, the Client MUST send an AUTH packet with the reason code
-            "0x19 (Re-authentication)".
-            The Client MUST
+            "0x19 (Re-authentication)". The Client MUST
 		    set the Authentication Method as "ace" and transport the new token in the Authentication Data.
+            To re-authenticate, the Client MUST NOT use Proof-of-Possession using a challenge from the TLS session 
+            during the same TLS session to avoid re-using the same challenge value from the TLS-Exporter.
+            For re-authentications in the same TLS-session,  the Client MUST use the challenge-response PoP as defined
+            in <xref target="pop_challenge"></xref>. 
             The Broker accepts reauthentication requests if the Client has already submitted
-            a token (may be expired) and validated via the challenge-response PoP.
+            a token (may be expired), for which it performed proof-of-possession.
             Otherwise, the Broker MUST deny the request.
 		    If the reauthentication fails, the Broker
 		    MUST send a DISCONNECT with the reason code "0x87 (Not Authorized)".
