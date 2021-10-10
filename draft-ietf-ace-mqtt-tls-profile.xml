@@ -198,7 +198,8 @@
                 content type, and unless otherwise specified, using JSON encoding. The token MAY be a
                 reference or JSON Web Token (JWT) <xref target="RFC7519"></xref>.
                 For JWTs, this document follows <xref target="RFC7800"></xref>
-                for PoP semantics for JWTs. The Client-AS and RS-AS MAY also use protocols other than HTTP,
+                for PoP semantics for JWTs, and the mechanisms for providing and verifying proof-of-possession
+                are detailed in  <xref target="connect_v5"></xref>. The Client-AS and RS-AS MAY also use protocols other than HTTP,
                 e.g. Constrained Application Protocol (CoAP) <xref target="RFC7252"></xref> or MQTT; it is recommended
                 that TLS is used to secure these communication channels between Client-AS and RS-AS.
                 Implementations MAY also use "application/ace+cbor" content type, and CBOR encoding <xref target="RFC8949"></xref>, and
@@ -254,16 +255,6 @@
                 </t>
                 <t>
                     <list hangIndent="8" style="hanging">
-                        <t hangText="UTF-8 encoded string">
-                            <vspace blankLines="0"/>
-                            A string prefixed with a two byte length field that gives the number of bytes in a UTF-8 encoded string itself.
-                            Unless stated otherwise all UTF-8 encoded strings can have any length in the range 0 to 65535 bytes.
-                        </t>
-                        <t hangText="Binary Data">
-                            <vspace blankLines="0"/>
-                            Binary Data is represented by a Two Byte Integer length which indicates the number of data bytes, followed by that number of bytes. 
-                            Thus, the length of Binary Data is limited to the range of 0 to 65,535 Bytes.
-                        </t>
                         <t hangText="MQTTS">
                             <vspace blankLines="0"/>
                             Secured transport profile of MQTT.  MQTTS runs over TLS.
@@ -287,6 +278,16 @@
                             <vspace blankLines="0"/>
                             The data carried by the MQTT protocol. The data has an associated Quality-of-Service (QoS) level and Topic
                             Name.
+                        </t>
+                        <t hangText="UTF-8 encoded string">
+                            <vspace blankLines="0"/>
+                            A string prefixed with a two byte length field that gives the number of bytes in a UTF-8 encoded string itself.
+                            Unless stated otherwise all UTF-8 encoded strings can have any length in the range 0 to 65535 bytes.
+                        </t>
+                        <t hangText="Binary Data">
+                            <vspace blankLines="0"/>
+                            Binary Data is represented by a Two Byte Integer length which indicates the number of data bytes, followed by that number of bytes. 
+                            Thus, the length of Binary Data is limited to the range of 0 to 65,535 Bytes.
                         </t>
                         <t hangText="QoS level">
                             <vspace blankLines="0"/>
@@ -494,31 +495,31 @@
                     and "Known(RPK/PSK)" for Raw Public Keys (RPK) <xref target="RFC7250"></xref> and Pre-Shared Keys (PSK), respectively.
                     The "None" and "Anon" options do not actually provide client authentication, but can be used either
                     during authentication or in combination with authentication at the other layer.
-                    When the Client uses TLS:Anon-MQTT:None, the Client can only publish or subscribe to public topics.
-                    Combined, client authentication has the following options:
+                    When the Client uses TLS:Anon,MQTT:None, the Client can only publish or subscribe to public topics.
+                    Thus, the client authentication procedures involve the following possible combinations:
                     <list style="symbols">
-                        <t>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization,
+                        <t>TLS:Anon,MQTT:None: This option is used only for the topics that do not require authorization,
                             including the "authz-info" topic. Publishing to the "authz-info" topic is described in <xref target="app-authzinfo"></xref>.</t>
-                        <t>"TLS:Anon-MQTT:ace": The token is transported inside the CONNECT message, and MUST be
+                        <t>TLS:Anon,MQTT:ace: The token is transported inside the CONNECT message, and MUST be
                             validated using one of the methods described in <xref target="app-authzinfo"></xref>. This option also supports
                             a tokenless connection request for AS discovery.</t>
-                        <t>"TLS:Known(RPK/PSK)-MQTT:none": This specification supports client authentication with TLS with Raw Public
+                        <t>TLS:Known(RPK/PSK),MQTT:none: This specification supports client authentication with TLS with Raw Public
                             Keys (RPK) <xref target="RFC7250"></xref> and with Pre-Shared Keys (PSK). For the RPK, the token MUST have 
                             been published to the "authz-info" topic. For the PSK, the token MAY be, alternatively, 
                             provided as an "identity" in the "identities" field in the client's "pre_shared_key" extension in TLS 1.3.
                         </t>
-                        <t>"TLS:Known(RPK/PSK)-MQTT:ace": This option SHOULD NOT be chosen as the token transported in the CONNECT
+                        <t>TLS:Known(RPK/PSK),MQTT:ace: This option SHOULD NOT be chosen as the token transported in the CONNECT
                             overwrites any permissions passed during the TLS authentication.</t>
                     </list>
-                     It is RECOMMENDED that the Client implements "TLS:Anon-MQTT:ace" as a first choice when working with protected topics.
-                     However, depending on the Client capability, Client MAY implement "TLS:Known(RPK/PSK)-MQTT:none", and
-                     consequently "TLS:Anon-MQTT:None" to submit its token to "authz-info".
+                     It is RECOMMENDED that the Client implements TLS:Anon,MQTT:ace as a first choice when working with protected topics.
+                     However, depending on the Client capability, Client MAY implement TLS:Known(RPK/PSK),MQTT:none, and
+                     consequently TLS:Anon,MQTT:None to submit its token to "authz-info".
                      </t>
                      <t>
-                     The Broker MUST support "TLS:Anon-MQTT:ace".
+                     The Broker MUST support TLS:Anon,MQTT:ace.
                      To support Clients with different capabilities, the Broker MAY provide multiple client authentication options,
-                     e.g. support "TLS:Known(RPK)-MQTT:none" and "TLS:Anon-MQTT:None",
-                     to enable RPK-based client authentication, but fall back to "TLS:Anon-MQTT:ace" if the Client does not
+                     e.g. support TLS:Known(RPK),MQTT:none and TLS:Anon,MQTT:None,
+                     to enable RPK-based client authentication, but fall back to TLS:Anon,MQTT:ace if the Client does not
                      send a client certificate (i.e., it sends an empty Certificate message) during the TLS handshake.
                 </t>
                 <t>
@@ -538,9 +539,9 @@
                     In the cases when the Client MUST transport the token to the Broker first,
                     the Client connects to the Broker to publish its token to the "authz-info" topic.
                     The "authz-info" topic MUST be publish-only (i.e., the Clients are not allowed to subscribe to it).
-                    "authz-info" is not protected, and hence, the Client uses the "TLS:Anon-MQTT:None" option over a TLS connection.
+                    "authz-info" is not protected, and hence, the Client uses the TLS:Anon,MQTT:None option over a TLS connection.
                     After publishing the token, the Client disconnects from the Broker and is expected to reconnect
-                    using client authentication over TLS (i.e., TLS:Known(RPK/PSK)-MQTT:none).
+                    using client authentication over TLS (i.e., TLS:Known(RPK/PSK),MQTT:none).
                 </t>
                 <t>
                     The Broker stores and indexes all tokens received to the "authz-info" topic in its key store
@@ -596,6 +597,8 @@
                  The client MUST use its correct public key in the TLS handshake, 
                  and MUST specify this public key in the SubjectPublicKeyInfo
                 structure of the TLS handshake as described in <xref target="RFC7250"></xref>.
+                The handshake only finishes if the client and the resource
+                 server are able to use their respective keying material.
                 </t>
                 <t>
                 An implementation that supports the RPK mode of this profile MUST at 
@@ -620,6 +623,11 @@
                 The token MAY be, alternatively, provided as an "identity" in the 
                 "identities" field in the client's "pre_shared_key" extension.
                 </t>
+                <t>
+                In PreSharedKey mode, the knowledge of the shared secret by the
+                client and the resource server is used for mutual authentication
+                between both peers.
+                </t>
                 </section>
             </section>
             <section anchor="auth-ACE" title="Client Authentication over MQTT">
@@ -636,8 +644,8 @@
                     After sending the CONNECT, the client MUST wait to receive the CONNACK from
                     the Broker. The only messages it is allowed to send are DISCONNECT
                     or AUTH that is in response to the Broker AUTH.
-                    Similarly, the Broker MUST NOT process any packets before it has sent a CONNACK.
-                    The only exceptions are DISCONNECT or an AUTH response from the Client.
+                    Similarly, except a DISCONNECT and AUTH response from the Client,
+                    the Broker MUST NOT process any packets before it has sent a CONNACK.
                 </t>
 		        <t>
 		            <xref target="mqtt5_connect_message"></xref> shows the structure of the
@@ -653,6 +661,9 @@
                     The payload contains one or more encoded fields, namely a unique Client
                     identifier for the Client, a Will Topic, Will Payload, User Name and Password.
                     All but the Client identifier can be omitted depending on the flags in the Variable Header.
+                    The Client Identifier, identifies the Client to the Broker, and therefore, 
+                    is unique for each Client. It must be noted that the Client Identifier is an unauthenticated identifier,
+                    used within the MQTT protocol, and so, is not bound to the access token.
 		        </t>
 		  <figure align="center" anchor="mqtt5_connect_message"
                             title="MQTT v5 CONNECT Variable Header with Authetication Method property for ACE.">
@@ -795,7 +806,7 @@
          ]]></artwork>
          </figure>
 	        <t>
-                For this option, the Authentication Data MUST contain the two-byte integer token length,
+                For this option, the Authentication Data inside the client's CONNECT MUST contain the two-byte integer token length,
                 the token, and the keyed message digest (MAC) or the Client signature (as shown in 
                 <xref target="authdata_tlsexporter"></xref>).
                 The Proof-of-Possession key in the token is used to calculate
@@ -829,7 +840,7 @@
          </figure>
 	        <t>
 	            For this option, the Broker follows a Broker-generated challenge/response protocol.
-                If the Authentication Data contains only the two-byte integer token length and
+                If the Authentication Data inside the Client's CONNECT contains only the two-byte integer token length and
                 the token (as shown in <xref target="authdata_challenge_client"></xref>),
                 the RS MUST respond with an AUTH packet,
                 with the Authenticate Reason Code set to "0x18 (Continue Authentication)".
@@ -1009,8 +1020,6 @@
                  <section title="Authorisation Success" anchor="auth_success">
                    <t>
                     On success, the reason code of the CONNACK is "0x00 (Success)". 
-                    The AS informs the client that selected profile is "mqtt_tls" 
-                    using the "ace_profile" parameter in the token response.
                     If the Broker starts a new session, it MUST also set Session Present to 0
                     in the CONNACK packet to signal a clean session to the Client. Otherwise,
                     it MUST set Session Present to 1.
@@ -1065,9 +1074,10 @@
         <section title="PUBLISH Messages from the Broker to the Subscriber Clients">
 		    <t>
 		        To forward PUBLISH messages to the subscribing Clients, the Broker identifies all the
-                subscribers that have valid matching topic subscriptions (i.e., the tokens are valid, and
-                token scopes allow a subscription to the particular topic).
-                The Broker sends a PUBLISH message with the Topic name to all the valid
+                subscribers that have valid matching topic subscriptions to the Topic name of the PUBLISH
+                message (i.e., the tokens are valid, and
+                token scopes allow a subscription to this particular Topic name).
+                The Broker forwards the PUBLISH message to all the valid
                 subscribers.
             </t>
             <t>
@@ -1316,7 +1326,7 @@
 		      </t>
 		      <t>RS-Client PUBLISH authorization failure:  When RS is forwarding PUBLISH messages to the subscribed Clients,
 		      it may discover that some of the subscribers are no more authorized due to expired tokens.
-               These token expirations SHOULD lead to disconnecting the Client rather than silently dropping messages.
+               These token expirations MUST lead to disconnecting the Client rather than silently dropping messages.
 		      </t>
 		    </list>
 		    </t>
@@ -1386,9 +1396,13 @@ those specified for the 'application/json' media type.</t>
 	    <t>
         <list style="symbols">
 	        <t>Name: mqtt_tls</t>
-	        <t>Description: Profile for delegating Client authentication and authorization using MQTT as the application protocol
-	        and TLS For transport layer security.</t>
-	        <t>CBOR Value: </t>
+	        <t>Description: Profile for delegating Client authentication and authorization using MQTT for the 
+            Client and Broker (RS) interactions, and HTTP for the AS interactions. 
+	        TLS is used for confidentiality and integrity protection, and server authentication. 
+            Client authentication can be provide either via TLS or using in-band proof-of-possession at the MQTT
+            application layer.
+            </t>
+	        <t>CBOR Value: To be assigned by IANA</t>
 	        <t>Reference: [this document]</t>
         </list>
         </t>
@@ -1424,8 +1438,8 @@ those specified for the 'application/json' media type.</t>
 	  abnormal terminations, and Clients that connect but do not send any data.
 	  If the RS supports the public "authz-info" topic, described in <xref target="app-authzinfo"></xref>,
 	  then this may be vulnerable to a DDoS attack, where many Clients use the "authz-info" public topic
-       to transport fictitious tokens,
-	  which RS may need to store indefinitely.</t>
+      to transport tokens that are not meant to be used, and which the RS may need to store until the 
+      tokens expire.</t>
 
       <t>For MQTT v5.0, when a Client connects with a long Session Expiry Interval, the RS may need to  maintain 
       Client's MQTT session state after it disconnects for an extended period. For MQTT v3.1.1, 
@@ -1556,15 +1570,15 @@ those specified for the 'application/json' media type.</t>
         <section anchor="app-profile-requirements" title="Checklist for profile requirements">
             <t>
                 <list style="symbols">
-                  <t>AS discovery: AS discovery is possible with the MQTT v5.0 described in <xref target="connect_v5"></xref>.
+                  <t>Optional AS discovery: AS discovery is supported with the MQTT v5.0 described in <xref target="connect_v5"></xref>.</t>
+                  <t>The communication protocol between the Client and RS: MQTT</t>
+                  <t>The security protocol between the Client and RS: TLS</t>
+                  <t>Client and RS mutual authentication: Several options are possible and described in <xref target="auth_options"></xref>.
+                  </t>
+                  <t> Proof-of-possession protocols: Specified in <xref target="AUTH-method"></xref>; both symmetric and asymmetric keys supported.
+                  </t>
+                  <t>Content format: For the HTTPS interactions with AS, "application/ace+json".
                     </t>
-                    <t>The communication protocol between the Client and RS: MQTT</t>
-                    <t>The security protocol between the Client and RS: TLS</t>
-                    <t>Client and RS mutual authentication: Several options are possible and described in <xref target="auth_options"></xref>.
-                    </t>
-                    <t>Content format: For the HTTPS interactions with AS, "application/ace+json".
-                    </t>
-                    <t>PoP protocols: Either symmetric or asymmetric keys can be supported.</t>
                     <t>Unique profile identifier: mqtt_tls</t>
                     <t>Token introspection: RS uses HTTPS introspect interface of AS.</t>
                     <t>Token request: Client or its Client AS uses the HTTPS token endpoint of the AS.</t>
@@ -1572,7 +1586,8 @@ those specified for the 'application/json' media type.</t>
                             target="app-authzinfo"></xref>, but is
                         not protected other than by the TLS channel between Client and RS.
                     </t>
-                    <t>Token transport: Via "authz-info" topic, or in
+                    <t>Token transport: Via "authz-info" topic, or TLS with PSK, provided as an "identity" in the 
+                "identities" field in the client's "pre_shared_key" extension, or in
                       MQTT CONNECT message for both versions of MQTT.
                       The AUTH extensions can also be used for authentication and re-authentication for
 		            MQTT v5.0, as described in <xref target="connect_v5"></xref> and in <xref target="reauthentication"></xref>.</t>
@@ -1619,7 +1634,7 @@ those specified for the 'application/json' media type.</t>
             <t>Replace the originally proposed scope format with AIF model. Defined the AIF-MQTT,
                gave an example with a JSON array. Added a normative reference to the AIF draft.</t>
             <t>Clarified client connection after submitting token via "authz-info" topic as 
-            TLS:Known(RPK/PSK)-MQTT:none. </t>
+            TLS:Known(RPK/PSK),MQTT:none. </t>
             <t>Expanded acronyms on their first use including the ones in the title.</t>
             <t>Added a definition for "Session".</t>
             <t>Corrected "CONNACK" definition, which earlier said it's the first packet sent by the broker.</t>
