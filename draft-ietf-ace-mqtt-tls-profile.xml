@@ -487,15 +487,14 @@
         <section title="Client Connection Request to the Broker (C)" anchor="connect_v5">
             <section title="Overview of Client-RS Authentication Methods over TLS and MQTT" anchor="auth_options">
                 <t>
-                    The Client and the Broker MUST perform mutual authentication.
+                    Unless the Client publishes and subscribes to only public topics, the Client and the Broker MUST perform mutual authentication.
                     The Client MUST authenticate to the Broker either over MQTT or TLS before performing any other action.
                     For MQTT, the options are "None" and "ace".
                     For TLS, the options are "Anon" for an anonymous client,
                     and "Known(RPK/PSK)" for Raw Public Keys (RPK) <xref target="RFC7250"></xref> and Pre-Shared Keys (PSK), respectively.
                     The "None" and "Anon" options do not actually provide client authentication, but can be used either
                     during authentication or in combination with authentication at the other layer.
-                    The process of authentication may include sending messages at TLS:Anon-MQTT:None, for example to
-                    publish a token to the "authz-info" topic.
+                    When the Client uses TLS:Anon-MQTT:None, the Client can only publish or subscribe to public topics.
                     Combined, client authentication has the following options:
                     <list style="symbols">
                         <t>"TLS:Anon-MQTT:None": This option is used only for the topics that do not require authorization,
