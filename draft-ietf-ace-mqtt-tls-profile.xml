@@ -254,6 +254,16 @@
                 </t>
                 <t>
                     <list hangIndent="8" style="hanging">
+                        <t hangText="UTF-8 encoded string">
+                            <vspace blankLines="0"/>
+                            A string prefixed with a two byte length field that gives the number of bytes in a UTF-8 encoded string itself.
+                            Unless stated otherwise all UTF-8 encoded strings can have any length in the range 0 to 65535 bytes.
+                        </t>
+                        <t hangText="Binary Data">
+                            <vspace blankLines="0"/>
+                            Binary Data is represented by a Two Byte Integer length which indicates the number of data bytes, followed by that number of bytes. 
+                            Thus, the length of Binary Data is limited to the range of 0 to 65,535 Bytes.
+                        </t>
                         <t hangText="MQTTS">
                             <vspace blankLines="0"/>
                             Secured transport profile of MQTT.  MQTTS runs over TLS.
@@ -635,6 +645,8 @@
                     MQTT CONNECT message used in MQTT v5.0.
                     A CONNECT message is composed of a fixed header, a variable header and a payload.
                     The fixed header contains the Control Packet Type (CPT), Reserved, and Remaining Length fields.
+                    Remaining Length is a Variable Byte Integer that represents the number of bytes 
+                    remaining within the current Control Packet, including data in the Variable Header and the Payload
                     The Variable Header contains the Protocol Name, Protocol Level,
                     Connect Flags, Keep Alive, and Properties fields.
                     The Connect Flags in the variable header specify the properties of the MQTT session.
@@ -644,23 +656,36 @@
                     All but the Client identifier can be omitted depending on the flags in the Variable Header.
 		        </t>
 		  <figure align="center" anchor="mqtt5_connect_message"
-                            title="MQTT v5 CONNECT control message with ACE authentication. (CPT=Control Packet Type)">
+                            title="MQTT v5 CONNECT Variable Header with Authetication Method property for ACE.">
 		    <artwork align="left"><![CDATA[
-       0            8            16            24            32
-       +------------------------------------------------------+
-       |CPT=1 | Rsvd.|Remaining len.| Protocol name len. = 4  |
-       +------------------------------------------------------+
-       |                      'M' 'Q' 'T' 'T'                 |
-       +------------------------------------------------------+
-       | Proto.level=5|Connect flags|          Keep alive     |
-       +------------------------------------------------------+
-       |                 Property length                      |
-       |          Auth. Method (0x15) | 'ace'                 |
-       |          Auth. Data (0x16)   | token or              |
-       |                                token + PoP data      |
-       +------------------------------------------------------+
-       |                     Payload                          |
-       +------------------------------------------------------+
+    
+       0             8             16
+       +---------------------------+
+       |Protocol name length = 4B  |
+       +---------------------------+
+       |     'M'            'Q'    |
+       +---------------------------+
+       |     'T'            'T'    |
+       +---------------------------+
+       |Proto.level=5|Connect flags|          
+       +---------------------------+
+       |        Keep alive         |
+       +---------------------------+
+       | CONNECT Properties Length |
+       |      (Upto  4 bytes)      |
+       +---------------------------+ 
+       | ( ..Other properties..)   |
+       +---------------------------+
+       |  Authentication Method    |
+       |      (0x15)  |   Len.     |
+       |      Len     |   'a'      | 
+       |      'c'     |   'e'      |
+       +---------------------------+
+       |  Authentication Data      |   
+       |     (0x16)   |    Len     |
+       |      Len     |   token    | 
+       |  or token + PoP data      |
+       +---------------------------+
         ]]></artwork>
            </figure>
             <t>
@@ -754,9 +779,7 @@
 	        </t>
             <t>
                 The Authentication Method is followed by the Authentication Data,
-                which has a property identifier 22 (0x16) and is binary data.
-                The binary data in MQTT is represented by a two-byte integer length,
-                 which indicates the number of data bytes, followed by that number of bytes.
+                which has a property identifier 22 (0x16) and is Binary Data.
                 Based on the Authentication Data, RS MUST support both options below:
                 <list style="symbols">
                     <t>Proof-of-Possession using a challenge from the TLS session</t>
@@ -1183,22 +1206,28 @@
                 the Client uses the username and password fields.
                 <xref target="mqtt_connect_message"></xref> shows the structure of the MQTT CONNECT message.
             </t>
-          <figure align="center" anchor="mqtt_connect_message" title="MQTT CONNECT control message. (CPT=Control Packet Type, Rsvd=Reserved, len.=length, Proto.=Protocol)">
+          <figure align="center" anchor="mqtt_connect_message" title="MQTT CONNECT variable header using username and password for ACE.">
          <artwork align="left"><![CDATA[
-       0            8            16            24            32
-       +------------------------------------------------------+
-       |CPT=1 | Rsvd.|Remaining len.| Protocol name len. = 4  |
-       +------------------------------------------------------+
-       |                      'M' 'Q' 'T' 'T'                 |
-       +------------------------------------------------------+
-       | Proto.level=4|Connect flags|          Keep alive     |
-       +------------------------------------------------------+
-       | Payload                                              |
-       |     Client Identifier                                |
-       |     Username as access token (UTF-8)                 |
-       |     Password length (2 Bytes)                        |
-       |     Password data as signature/MAC (binary)          |
-       +------------------------------------------------------+
+       0             8             16
+       +---------------------------+
+       |Protocol name length = 4B  |
+       +---------------------------+
+       |     'M'            'Q'    |
+       +---------------------------+
+       |     'T'            'T'    |
+       +---------------------------+
+       |Proto.level=5|Connect flags|          
+       +---------------------------+
+       |        Keep alive         |
+       +---------------------------+
+       |        Payload            | 
+       |  Client Identifier        |
+       |  (UTF-8 encoded string)   |
+       |  Username as access token |
+       |   (UTF-8 endoded string)  |
+       | Password for signature/MAC|
+       |     (Binary Data)         |
+       +---------------------------+
         ]]></artwork>
           </figure>
           <t>
@@ -1232,10 +1261,7 @@
                     The Client MAY set the Will Flag as desired (marked as 'X' in
                      <xref target="mqtt_connect_flags"></xref>). Username and Password flags MUST be
                       set to 1 to  ensure that the Payload of the CONNECT message includes both Username 
-                      and Password fields. The MQTT Username is a UTF-8 encoded string (i.e.
-                    is prefixed by a 2-byte length field followed by UTF-8 encoded character data)
-                    and may be up to 65535 bytes. The MQTT Password is Binary Data, represented by a Two Byte Integer length which 
-                    indicates the number of data bytes, followed by that number of bytes. Thus, its length is limited up to 65535 bytes.
+                      and Password fields. The MQTT Username is a UTF-8 encoded string, and the MQTT Password is Binary Data.
                     </t>
                     <t>
                    The CONNECT in MQTT v3.1.1 does not have a field to indicate the authentication
