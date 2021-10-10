@@ -703,32 +703,26 @@
             </t>
              <t>
                 In MQTT v5.0, the Client signals a clean session (i.e., the session does not continue an existing session),
-	            by setting the Clean Start Flag to 1 and,
-                the Session Expiry Interval to 0 in the CONNECT
-                message. In this profile, the Broker SHOULD always
-                start with a clean session regardless of how these parameters are set. Starting a clean session helps
-                the Broker avoid keeping unnecessary session state for unauthorised clients. If the Broker starts
-                a clean session, the Broker MUST set the Session Present flag to 0 in the CONNACK packet to signal
+	            by setting the Clean Start Flag to 1 in the CONNECT
+                message. In this profile, the Client SHOULD always
+                start with a clean session. The Broker MAY also signal that it does not support 
+                session continuation by setting Session Expiry Interval to 0 in the CONNACK.
+                If the Broker starts a clean session, the Broker MUST set the Session Present flag to 0 in the CONNACK packet to signal
                 this to the Client.
             </t>
             <t>
                 The Broker MAY support session continuation e.g., if the Broker requires it for QoS reasons.
-                With session continuation, the Broker maintains and uses
-                client state from the existing session. The session state kept at the server MAY include token and its
-                introspection result (for reference tokens) in addition to the MQTT session state.
-                The MQTT session state is identified by the Client identifier and includes
-                state on client subscriptions; messages with QoS levels 1 and 2, and which have
-                not been completely acknowledged or are pending transmission to the Client;
-                and if the Session is currently not connected,
-                the time at which the Session will end and Session State will be discarded.
-                The token/introspection state is not part of the MQTT session state, and proof-of-possession is required
-                for each new connection, regardless of whether MQTT session continuation is used.
+                In this case, if a CONNECT packet is received with Clean Start set to 0 and there is a Session associated 
+                with the Client Identifier, the Broker MUST resume communications with the Client based on state from the 
+                existing Session. In its response, the Broker MUST set the Session Present flag to 1 
+                in the CONNACK packet to signal session continuation to the Client.
+                The session state stored by the Client and the Broker is described in <xref target="disconnections"></xref> 
             </t>
             <t>
                 When reconnecting to a Broker that supports session continuation,
                 the Client MUST still provide a token, in addition to
                 using the same Client identifier,
-                setting the Clean Start to 0 and supplying a Session Expiry interval in the CONNECT message.
+                setting the Clean Start to 0.
                 The Broker MUST perform proof-of-possession validation on the provided token.
                 If the token matches the stored state,
                 the Broker MAY skip introspecting a token by reference, and use the stored introspection result.
@@ -1128,10 +1122,22 @@
     </section>
     <section title="Handling Disconnections and Retained Messages" anchor="disconnections">
 		<t>
-            In the case of a Client DISCONNECT,  the Broker
-            deletes all the session state but MUST keep the retained messages.
-            By setting a RETAIN flag in a PUBLISH message,
-            the publisher indicates to the Broker to store the most
+            In the case of a Client DISCONNECT, if the Session Expiry Interval is set to 0,  the Broker
+            doesn't maintain session state, but MUST keep the retained messages.
+            If the Broker maintains session state,  the state MAY include token and its
+            introspection result (for reference tokens) in addition to the MQTT session state.
+            The MQTT session state is identified by the Client identifier and includes
+            state on client subscriptions; messages with QoS levels 1 and 2, and which have
+            not been completely acknowledged or are pending transmission to the Client;
+             and if the Session is currently not connected,
+            the time at which the Session will end and Session State will be discarded.
+            The token/introspection state is not part of the MQTT session state, and proof-of-possession is required
+            for each new connection, regardless of whether MQTT session continuation is used.
+        </t>
+
+        <t>
+            The messages to be retained are indicated to the Broker by setting a RETAIN flag in a PUBLISH message.
+            This way, the publisher signals to the Broker to store the most
             recent message for the associated topic.  Hence, the new subscribers can receive
             the last sent message from the publisher for that particular topic without waiting
             for the next PUBLISH message.
@@ -1210,11 +1216,13 @@
          ]]></artwork>
          </figure>
                     <t>
-                    The Broker SHOULD NOT accept session continuation. To this end, the Broker ignores 
-                    how the Clean Session Flag is set, and on connection success, the Broker MUST set the 
-                    Session Present flag to 0 in the CONNACK packet to indicate a clean session to the 
-                    Client. If the Broker wishes to support session continuation, it MUST still perform
-                    proof-of-possession validation on the provided Client token. MQTT v3.1.1 does not use a 
+                    The Client SHOULD set the Clean flag to 1 to always start a new session. 
+                    If the Clean flag is set to 0, the Broker MUST resume communications 
+                    with the Client based on state from the current Session (as identified by the Client identifier). 
+                    If there is no Session associated with the Client identifier the Broker MUST create a new session.
+                    The Broker MUST set the Session Present flag in the CONNACK packet accordingly i.e., 0 to indicate a clean session to the 
+                    Client and 1 to indicate session continuation.
+                    The Broker MUST still perform proof-of-possession validation on the provided Client token. MQTT v3.1.1 does not use a 
                     Session Expiry Interval, and the Client expects that the Broker maintain the session 
                     state after it disconnects. However, stored Session state can be discarded as a result 
                     of administrator policies, and Brokers SHOULD implement the necessary policies to limit 
