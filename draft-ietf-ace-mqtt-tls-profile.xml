@@ -187,7 +187,7 @@
                 </list>
                 Clients use the MQTT PUBLISH packet to publish to a topic.
                 This document does not protect the payload of the PUBLISH packet from the Broker. Hence,
-                the payload is not signed or encrypted specifically for the subscribers. This functionality MAY 
+                the payload is not signed or encrypted specifically for the subscribers. This functionality may 
                 be implemented using the proposal outlined in the 
                 <xref target="I-D.ietf-ace-pubsub-profile">ACE Pub-Sub Profile</xref>.
             </t>
@@ -841,8 +841,7 @@
                 an empty context, and length of 32 bytes.
                 The token is also validated as described in  <xref target="token_validation"></xref>,
                 and the Broker responds with a CONNACK with the appropriate response code.
-                The Client cannot reauthenticate using this method during the same TLS session (
-                    see <xref target="reauthentication"></xref>).
+                The Client cannot reauthenticate using this method during the same TLS session (see <xref target="reauthentication"></xref>).
 	        </t>
         </section>
         <section title="Proof-of-Possession via Broker-generated Challenge/Response" anchor="pop_challenge">
