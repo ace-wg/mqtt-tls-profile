@@ -173,7 +173,7 @@ Internet-Draft           MQTT-TLS profile of ACE            October 2021
    Clients use the MQTT PUBLISH packet to publish to a topic.  This
    document does not protect the payload of the PUBLISH packet from the
    Broker.  Hence, the payload is not signed or encrypted specifically
-   for the subscribers.  This functionality MAY be implemented using the
+   for the subscribers.  This functionality may be implemented using the
    proposal outlined in the ACE Pub-Sub Profile
    [I-D.ietf-ace-pubsub-profile].
 
@@ -960,7 +960,7 @@ Internet-Draft           MQTT-TLS profile of ACE            October 2021
    token is also validated as described in Section 2.2.5, and the Broker
    responds with a CONNACK with the appropriate response code.  The
    Client cannot reauthenticate using this method during the same TLS
-   session ( see Section 4).
+   session (see Section 4).
 
 2.2.4.2.2.  Proof-of-Possession via Broker-generated Challenge/Response
 
