@@ -351,7 +351,7 @@
                             <vspace blankLines="0"/>
                             The Broker connection acknowledgment. CONNACK packets
                             contain return codes indicating either a success or an error state
-                            in response to a Client's CONNECT packet and any subsequent AUTH packets.
+                            in response to a Client's CONNECT packet.
                         </t>
                         <t hangText="AUTH">
                             <vspace blankLines="0"/>
