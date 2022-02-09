@@ -1166,7 +1166,7 @@
             "0x19 (Re-authentication)". The Client MUST
 		    set the Authentication Method as "ace" and transport the new token in the Authentication Data.
             To re-authenticate, the Client MUST NOT use Proof-of-Possession using a challenge from the TLS session 
-            during the same TLS session to avoid re-using the same challenge value from the TLS-Exporter.  Note that this means that servers will either need to record in the session ticket or database entry whether the TLS-Exporter-derived challenge was used, or always deny use of the TLS-Export-derived challenge for resumed sessions.  In TLS 1.3, the resumed connection would have a new exporter value, but the requirement is phrased this way for simplicity.
+            during the same TLS session to avoid re-using the same challenge value from the TLS-Exporter.  Note that this means that servers will either need to record in the session ticket or database entry whether the TLS-Exporter-derived challenge was used, or always deny use of the TLS-Exporter-derived challenge for resumed sessions.  In TLS 1.3, the resumed connection would have a new exporter value, but the requirement is phrased this way for simplicity.
             For re-authentications in the same TLS-session,  the Client MUST use the challenge-response PoP as defined
             in <xref target="pop_challenge"></xref>. 
             The Broker accepts reauthentication requests if the Client has already submitted
