@@ -786,7 +786,7 @@
                 the Client MUST still provide a token, in addition to
                 using the same Client Identifier, and
                 setting the Clean Start to 0.
-                The Broker MUST perform proof-of-possession validation on the provided token.
+                The Broker MUST still perform proof-of-possession validation on the provided token.
                 If the token matches the stored state,
                 the Broker MAY skip introspecting a token-by-reference and use the stored introspection result.
                 The Broker MUST also verify the Client is authorized to receive or send
@@ -859,10 +859,10 @@
          </figure>
          <figure align="center" anchor="authdata_challenge_broker_challenge" title="Authentication Data for Broker Challenge">
                 <artwork align="left"><![CDATA[
-+------------------------------+
-|Authentication|Nonce (8 bytes)|
-|Data Length   |               |
-+------------------------------+
++--------------------------+
+|Authentication|RS Nonce   |
+|Data Length   |(8 bytes)  |
++--------------------------+
          ]]></artwork>
          </figure>
 	        <t>
@@ -877,14 +877,14 @@
             <t>
                 The AUTH packet to continue authentication includes the Authentication Method, which MUST be set to "ace"
                 and Authentication Data. The Authentication Data MUST NOT be empty and contains
-                an 8-byte nonce as a challenge for the Client (<xref target="authdata_challenge_broker_challenge"></xref>).
+                an 8-byte RS nonce as a challenge for the Client (<xref target="authdata_challenge_broker_challenge"></xref>).
             </t>
 <figure align="center" anchor="authdata_challenge_client_response" title="Authentication Data for Client Challenge Response">
                 <artwork align="left"><![CDATA[
-+------------------------------------------------------------------+
-|Authentication|Client Nonce   |Client|MAC or Signature            |
-|Data Length   |Length         |nonce |(over RS nonce+Client nonce)|
-+------------------------------------------------------------------+
++---------------------------------------------------------+
+|Authentication|Client Nonce |MAC or Signature            |
+|Data Length   |(8 bytes)    |(over RS nonce+Client nonce)|
++---------------------------------------------------------+
          ]]></artwork>
          </figure>
             <t>
@@ -893,8 +893,8 @@
                 Similarly, the Client packet sets the Authentication Method to "ace".
                 The Authentication Data in the Client's response is formatted as shown
                 in <xref target="authdata_challenge_client_response"></xref> and includes the
-                client nonce length, the client nonce, and
-                the signature or MAC computed over the RS nonce concatenated with the client nonce
+                the 8-byte Client nonce, and
+                the signature or MAC computed over the RS nonce concatenated with the Client nonce
                 using PoP key in the token.
 	        </t>
             <t>
@@ -914,10 +914,10 @@
                      |             | contains only token
                      |             |
                      <-------------+ AUTH '0x18 (Cont. Authentication)'
-                     |             | 8-byte nonce as RS challenge
+                     |             | 8-byte RS nonce as challenge
                      |             |
                      |------------>| AUTH '0x18 (Cont. Authentication)'
-                     |             | 8-byte client nonce + signature/MAC
+                     |             | 8-byte Client nonce + signature/MAC
                      |             |
                      |             |---+ Token validation
                      |             |   | (may involve introspection)
