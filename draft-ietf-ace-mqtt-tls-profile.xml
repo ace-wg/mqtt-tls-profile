@@ -23,6 +23,7 @@
     <!ENTITY RFC7516 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7516.xml">
     <!ENTITY RFC7517 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7517.xml">
     <!ENTITY RFC7519 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7519.xml">
+    <!ENTITY RFC7525 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7525.xml">
     <!ENTITY RFC7627 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7627.xml">
     <!ENTITY RFC8422 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8422.xml">
     <!ENTITY RFC7925 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7925.xml">
@@ -524,12 +525,14 @@
                             including the "authz-info" topic. Publishing to the "authz-info" topic is described in <xref target="app-authzinfo"></xref>.</t>
                         <t>TLS:Anon,MQTT:ace: The token is transported inside the CONNECT packet and MUST be
                             validated using one of the methods described in <xref target="app-authzinfo"></xref>. This option also supports
-                            a tokenless connection request for AS discovery.  As per <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>, a separate step is needed to determine whether the discovered AS URI is authorized to act as an AS.</t>
+                            a tokenless connection request for AS discovery.  As per <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>, 
+                            a separate step is needed to determine whether the discovered AS URI is authorized to act as an AS.</t>
                         <t>TLS:Known(RPK/PSK),MQTT:none: This specification supports client authentication with TLS with Raw Public
                             Keys (RPK) <xref target="RFC7250"></xref> and with Pre-Shared Keys (PSK) following the procedures 
                             described in <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile</xref>. 
                              For the RPK, the Client
-                            MUST have published the token to the "authz-info" topic. For the PSK, the token MAY be published to the "authz-info" topic, or MAY be, alternatively, 
+                            MUST have published the token to the "authz-info" topic. For the PSK, the token MAY be published to the "authz-info" topic, 
+                            or MAY be, alternatively, 
                             provided as a  "PSK identity" (e.g. "identity" in the "identities" field in the client's "pre_shared_key" extension in TLS 1.3).
                         </t>
                         <t>TLS:Known(RPK/PSK),MQTT:ace: This option SHOULD NOT be chosen as the token transported in the CONNECT
@@ -605,7 +608,9 @@
             </section>
             <section anchor="auth-TLS" title="Client Authentication over TLS">
                 <t>
-                The TLS session setup is similar to the one described in the 
+                 This document supports TLS with Raw Public Keys (RPK) 
+                <xref target="RFC7250"></xref> and with Pre-Shared Keys (PSK).
+                The TLS session setup follows 
                 <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>, 
                   as the profile applies to TLS equally well 
                   <xref target="I-D.ietf-ace-extend-dtls-authorize-01">. 
@@ -613,56 +618,43 @@
                 stated in the document.
                 If TLS 1.2 is used, <xref target="RFC7925"></xref> describes 
                 how TLS can be used for constrained devices, alongside recommended cipher suites. 
-                Additionally, 
-                TLS 1.2 implementations MUST use "Extended Master Secret" <xref target="RFC7627"></xref>
+                Additionally, TLS 1.2 implementations MUST use "Extended Master Secret" <xref target="RFC7627"></xref>
                 to include handshake transcript into the master secret.  TLS implementations SHOULD use the
                 SNI (Server Name Indication) <xref target="RFC6066"></xref> and APLN (Application-Layer Protocol Negotiation) 
                 <xref target="RFC7301"></xref> extensions.
                 </t>
-                <t>
-                This document supports TLS with Raw Public Keys (RPK) 
-                <xref target="RFC7250"></xref> and with Pre-Shared Keys (PSK).
-                </t>
                 <section anchor="TLS-RPK" title="Raw Public Key Mode">
                 <t>
-                 In the RPK mode, the Client proves that it can use the RPK bound to
-                 the token, and the Broker shows that it can use a certain RPK.
-                 The Broker needs access to the token to complete
-                 this exchange.  Therefore, for the RPK mode, the client must upload 
-                 the access token to the Broker as specified in 
+                 This document follows the procedures defined in Section 3.2.2 of
+                 <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref> with 
+                 the following exceptions. 
+                 The client MUST upload the access token to the Broker using the method specified in 
                  <xref target="app-authzinfo"></xref> before initiating the handshake.
-                 The client MUST use its correct public key in the TLS handshake 
-                 and MUST specify this public key in the SubjectPublicKeyInfo
-                structure of the TLS handshake as described in <xref target="RFC7250"></xref>.
-                The handshake only finishes if the Client and the Broker are able to use their respective keying material.  While RFC 7250 allows independent negotiation of client and server use of raw public keys, this document assumes that if RPK is used, it is negotiated to be used by both parties.
-                </t>
-                <t>
-                An implementation that supports the RPK mode of this profile MUST at 
-                least support the cipher suite TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8 <xref target="RFC7251"></xref>.  
-                Implementations of this profile MUST implement support for 
-                the x25519 key-exchange group <xref target="RFC8422"></xref>,<xref target="RFC8446"/>.
                 </t>
                 </section>
                 <section anchor="TLS-PSK" title="Pre-Shared Key Mode">
                 <t>
-                In the PSK mode, the Client and the Broker show with the TLS handshake that 
-                they can use the keying material that is bound to the access token.
-                By default, the AS generates a symmetric proof-of-possession key for the 
-                Client.
-                </t>
+                 This document follows the procedures defined in Section 3.3.2 of
+                 <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref> with 
+                 the following exceptions. 
                 <t>
                 To use TLS 1.3 with pre-shared keys, the Client follows the PSK key extension 
                 specified in <xref target="RFC8446"></xref> using the key conveyed in the "cnf" parameter
                 of the AS response. The same key is bound to the access token 
-                in the "cnf" claim. The Client can upload the access as specified in 
-                 <xref target="app-authzinfo"></xref> before initiating the handshake. 
-                The token MAY be, alternatively, provided as an "identity" in the 
-                "identities" field in the client's "pre_shared_key" extension.
+                in the "cnf" claim. The Client can upload the token as specified in 
+                 <xref target="app-authzinfo"></xref> before initiating the handshake.
+                 The Client MUST indicate during the handshake which previously uploaded access token 
+                 it intends to use.  To do so, it MUST create a "COSE_Key" or "JWK" structure with the "kid"
+                 that was conveyed in the "rs_cnf" claim in the token response from
+                 the AS and the key type "symmetric". This structure is then included as the only element 
+                 in the "cnf" structure and used as a PSK identity in TLS.
+                 As an alternative to the access token upload, the client can provide the most recent access token, 
+                 JWT or CWT, as a PSK identity. 
                 </t>
                 <t>
-                In PreSharedKey mode, the knowledge of the shared secret by the
-                Client and the Broker is used for mutual authentication
-                between both peers.
+                In contrast to <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>, 
+                a client MAY NOT support the cipher suite TLS_PSK_WITH_AES_128_CCM_8, but
+                for TLS 1.2, MUST support TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 as recommended in <xref target="RFC7525"></xref>. 
                 </t>
                 </section>
             </section>
@@ -1591,6 +1583,7 @@ those specified for the 'application/json' media type.</t>
             &RFC8392;
             &RFC8447;
             &RFC7925;
+            &RFC7525;
 	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
 			<title>
