@@ -113,7 +113,7 @@
             </address>
         </author>
 
-    <date year="2021"/>
+    <date year="2022"/>
         <!-- If the month and year are both specified and are the current ones, xml2rfc will fill
              in the current day for you. If only the current year is specified, xml2rfc will fill
           in the current day and month for you. If the year is not the current one, it is
@@ -613,7 +613,7 @@
                 The TLS session setup follows 
                 <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>, 
                   as the profile applies to TLS equally well 
-                  <xref target="I-D.ietf-ace-extend-dtls-authorize-01">. 
+                  <xref target="I-D.ietf-ace-extend-dtls-authorize"></xref>. 
                 When there are exceptions to the DTLS profile, these are explicitly 
                 stated in the document.
                 If TLS 1.2 is used, <xref target="RFC7925"></xref> describes 
@@ -637,6 +637,7 @@
                  This document follows the procedures defined in Section 3.3.2 of
                  <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref> with 
                  the following exceptions. 
+                 </t>
                 <t>
                 To use TLS 1.3 with pre-shared keys, the Client follows the PSK key extension 
                 specified in <xref target="RFC8446"></xref> using the key conveyed in the "cnf" parameter
@@ -1631,8 +1632,7 @@ those specified for the 'application/json' media type.</t>
                             target="app-authzinfo"></xref>, but is
                         not protected other than by the TLS channel between Client and RS.
                     </t>
-                    <t>Token transport: Via "authz-info" topic, or TLS with PSK, provided as an "identity" in the 
-                "identities" field in the client's "pre_shared_key" extension, or in
+                    <t>Token transport: Via "authz-info" topic, or TLS with PSK, provided as a PSK identity, or in
                       MQTT CONNECT packet for both versions of MQTT.
                       The AUTH extensions can also be used for authentication and re-authentication for
 		            MQTT v5.0, as described in <xref target="connect_v5"></xref> and <xref target="reauthentication"></xref>.</t>
@@ -1644,7 +1644,7 @@ those specified for the 'application/json' media type.</t>
      -->
 
 	<section anchor="document_updates" title="Document Updates">
-    <t>Version 11 to 13: Addressing AD review comments.
+    <t>Version 11 to 14: Addressing AD review comments.
     </t>
     <t> Version 10 to 11: Clarified the TLS use between RS-AS and Client-AS. 
     </t>
