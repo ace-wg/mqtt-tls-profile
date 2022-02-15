@@ -1082,7 +1082,7 @@
                 On receiving the PUBLISH packet, the Broker MUST use the type of
                 packet (i.e., PUBLISH) and the Topic name in the packet header to match against the
                 scope array items in the cached token or its introspection result.
-                Following the example in the previous section, a client sending a PUBLISH for 'topic2/a' would be
+                Following the example in <xref target="scope"></xref>., a client sending a PUBLISH for 'topic2/a' would be
                 allowed, as the scope array includes the '["topic2/#",["pub"]]'.
             </t>
             <t>
@@ -1167,19 +1167,23 @@
 		    The Client MAY reauthenticate as a response to the
             PUBACK and SUBACK that signal loss of authorization.
             The Clients MAY also proactively update their tokens, i.e., before
-            they receive a packet with a "Not authorized" return code.
+            they receive a packet with a 'Not authorized' return code.
             To start reauthentication, the Client MUST send an AUTH packet with the reason code
-            "0x19 (Re-authentication)". The Client MUST
+            '0x19 (Re-authentication)'. The Client MUST
 		    set the Authentication Method as "ace" and transport the new token in the Authentication Data.
             To re-authenticate, the Client MUST NOT use Proof-of-Possession using a challenge from the TLS session 
-            during the same TLS session to avoid re-using the same challenge value from the TLS-Exporter.  Note that this means that servers will either need to record in the session ticket or database entry whether the TLS-Exporter-derived challenge was used, or always deny use of the TLS-Exporter-derived challenge for resumed sessions.  In TLS 1.3, the resumed connection would have a new exporter value, but the requirement is phrased this way for simplicity.
+            during the same TLS session to avoid re-using the same challenge value from the TLS-Exporter.  
+            Note that this means that servers will either need to record in the session ticket or database entry whether
+             the TLS-Exporter-derived challenge was used, or always deny use of the TLS-Exporter-derived challenge
+              for resumed sessions.  In TLS 1.3, the resumed connection would have a new exporter value, 
+              but the requirement is phrased this way for simplicity.
             For re-authentications in the same TLS-session,  the Client MUST use the challenge-response PoP as defined
             in <xref target="pop_challenge"></xref>. 
             The Broker accepts reauthentication requests if the Client has already submitted
             a token (may be expired), for which it performed proof-of-possession.
             Otherwise, the Broker MUST deny the request.
 		    If the reauthentication fails, the Broker
-		    MUST send a DISCONNECT with the reason code "0x87 (Not Authorized)".
+		    MUST send a DISCONNECT with the reason code '0x87 (Not Authorized)'.
 		</t>
     </section>
     <section title="Handling Disconnections and Retained Messages" anchor="disconnections">
@@ -1196,7 +1200,6 @@
             The token/introspection state is not part of the MQTT session state, and proof-of-possession is required
             for each new connection, regardless of whether MQTT session continuation is used.
         </t>
-
         <t>
             The messages to be retained are indicated to the Broker by setting a RETAIN flag in a PUBLISH packet.
             This way, the publisher signals to the Broker to store the most
@@ -1205,6 +1208,13 @@
             for the next PUBLISH packet.
             The Broker MUST continue publishing
             the retained messages as long as the associated tokens are valid.
+            In the MQTT standard, if QoS is 0 for the PUBLISH packet, the Broker may discard the
+            retained message any time. For QoS>1, the message expiry interval dictates how long the retained message is kept. 
+            However, it is important that Broker avoids sending messages indefinitely for the Clients that never update their tokens (i.e.,
+            the Client connects briefly with a valid token, sends a PUBLISH packet with RETAIN flag set to 1
+            and QoS>1, disconnects and never connects again). 
+            Therefore, the Broker MUST use the minimum of token expiry and message expiry interval to discard
+            a retained message.  
         </t>
         <t>
             In case of disconnections due to network errors or server disconnection due to a protocol error
