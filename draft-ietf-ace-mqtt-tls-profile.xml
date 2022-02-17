@@ -481,7 +481,8 @@
                 For RPK, the parameters are as described 
                 in Section 3.2.1 of the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile</xref>. 
                 For PSK, the document follows Section 3.3.1 of the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile</xref>.
-                In both cases,  if the response MUST contain an "ace_profile" parameter, this parameter is set 
+                In both cases,  if the response contains an "ace_profile" parameter, this parameter is set 
+
                 to "mqtt_tls".
                 The returned token is a Proof-of-Possession (PoP) token by default.
             </t>
