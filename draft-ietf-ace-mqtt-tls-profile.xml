@@ -463,7 +463,8 @@
                 from the AS. The Client and the AS MUST perform mutual authentication.
                 The Client requests an access token from the AS as
                 described in Section 5.8.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. 
-                The document follows the procedures defined for in Section 3.2.1 of the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile</xref>
+                The document follows the procedures defined in Section 3.2.1 of the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile</xref>
+
                 for RPK, and in Section 3.3.1 of the same document for PSK.
                 However, the content type of the request is set to 'application/ace+json', 
                 and the AS uses JSON in the payload of its responses to the Client and the RS.
