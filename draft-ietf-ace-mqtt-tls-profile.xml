@@ -978,7 +978,8 @@
             </t>
             <t>
             The scope in the token is a single value. For a JWT, the single scope 
-            is base64 encoded string, which has an internal structure of a JSON array. 
+            is base64url encoded string with any padding characters removed, which has an internal structure of a JSON array. 
+
             For a CWT, this information is represented in CBOR.  
             The internal structure follows the <xref target="I-D.ietf-ace-aif">Authorization Information 
             Format (AIF) for ACE</xref>.
