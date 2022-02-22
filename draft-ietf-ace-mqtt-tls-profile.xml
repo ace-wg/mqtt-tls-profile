@@ -470,7 +470,7 @@
                 and the AS uses JSON in the payload of its responses to the Client and the RS.
                 As explained earlier, implementations MAY also use "application/ace+cbor" content type.
             </t>
-            <t> On receipt of the token request, AS verifies the request. 
+            <t> On receipt of the token request, the AS verifies the request. 
                 If the AS successfully verifies the access token request and authorizes the Client for the
                 indicated audience (i.e., RS) and scopes (i.e., publish/subscribe permissions over topics as described
                 in <xref target="scope"></xref>),
@@ -492,7 +492,7 @@
                 Note that the contents of the web tokens (including the 'cnf' parameter) are to be consumed by the RS 
                 and not the Client (the Client obtains the key information in a different manner).
                 The RPK case is handled as described in  in Section 3.2.1 of the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile</xref>.
-                For the PSK, the procedures apply with the following exceptions to accommodate 
+                For the PSK case, the referenced procedures apply, with the following exceptions to accommodate 
                 JWT and JOSE use. 
                 In this case, the AS adds a "cnf" parameter to the access information 
                 carrying  <xref target="RFC7517">a JWK (JSON Web Key)</xref> object that contains 
@@ -527,7 +527,7 @@
                             including the "authz-info" topic. Publishing to the "authz-info" topic is described in <xref target="app-authzinfo"></xref>.</t>
                         <t>TLS:Anon,MQTT:ace: The token is transported inside the CONNECT packet and MUST be
                             validated using one of the methods described in <xref target="app-authzinfo"></xref>. This option also supports
-                            a tokenless connection request for AS discovery.  As per <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>, 
+                            a tokenless connection request for AS discovery.  As per the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>, 
                             a separate step is needed to determine whether the discovered AS URI is authorized to act as an AS.</t>
                         <t>TLS:Known(RPK/PSK),MQTT:none: This specification supports client authentication with TLS with Raw Public
                             Keys (RPK) <xref target="RFC7250"></xref> and with Pre-Shared Keys (PSK) following the procedures 
@@ -535,7 +535,7 @@
                              For the RPK, the Client
                             MUST have published the token to the "authz-info" topic. For the PSK, the token MAY be published to the "authz-info" topic, 
                             or MAY be, alternatively, 
-                            provided as a  "PSK identity" (e.g. "identity" in the "identities" field in the client's "pre_shared_key" extension in TLS 1.3).
+                            provided as a  "PSK identity" (e.g. an "identity" in the "identities" field in the client's "pre_shared_key" extension in TLS 1.3).
                         </t>
                         <t>TLS:Known(RPK/PSK),MQTT:ace: This option SHOULD NOT be chosen as the token transported in the CONNECT
                             overwrites any permissions passed during the TLS authentication.</t>
@@ -612,7 +612,7 @@
                 <t>
                  This document supports TLS with Raw Public Keys (RPK) 
                 <xref target="RFC7250"></xref> and with Pre-Shared Keys (PSK).
-                The TLS session setup follows 
+                The TLS session setup follows the
                 <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>, 
                   as the profile applies to TLS equally well 
                   <xref target="I-D.ietf-ace-extend-dtls-authorize"></xref>. 
@@ -620,15 +620,15 @@
                 stated in the document.
                 If TLS 1.2 is used, <xref target="RFC7925"></xref> describes 
                 how TLS can be used for constrained devices, alongside recommended cipher suites. 
-                Additionally, TLS 1.2 implementations MUST use "Extended Master Secret" <xref target="RFC7627"></xref>
+                Additionally, TLS 1.2 implementations MUST use the "Extended Master Secret" extension <xref target="RFC7627"></xref>
                 to incorporate the handshake transcript into the master secret.  TLS implementations SHOULD use the
 
                 SNI (Server Name Indication) <xref target="RFC6066"></xref> and APLN (Application-Layer Protocol Negotiation) 
-                <xref target="RFC7301"></xref> extensions.
+                <xref target="RFC7301"></xref> extensions so the TLS handshake authenticates as much of the protocol context as possible.
                 </t>
                 <section anchor="TLS-RPK" title="Raw Public Key Mode">
                 <t>
-                 This document follows the procedures defined in Section 3.2.2 of
+                 This document follows the procedures defined in Section 3.2.2 of the
                  <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref> with 
                  the following exceptions. 
                  The client MUST upload the access token to the Broker using the method specified in 
@@ -642,16 +642,16 @@
                  the following exceptions. 
                  </t>
                 <t>
-                To use TLS 1.3 with pre-shared keys, the Client follows the PSK key extension 
+                To use TLS 1.3 with pre-shared keys, the Client utilizes the PSK key extension 
                 specified in <xref target="RFC8446"></xref> using the key conveyed in the "cnf" parameter
                 of the AS response. The same key is bound to the access token 
                 in the "cnf" claim. The Client can upload the token as specified in 
                  <xref target="app-authzinfo"></xref> before initiating the handshake.
-                 The Client MUST indicate during the handshake which previously uploaded access token 
+                 When using a previously uploaded token, the Client MUST indicate during the handshake which previously uploaded access token 
                  it intends to use.  To do so, it MUST create a "COSE_Key" or "JWK" structure with the "kid"
                  that was conveyed in the "rs_cnf" claim in the token response from
                  the AS and the key type "symmetric". This structure is then included as the only element 
-                 in the "cnf" structure and used as a PSK identity in TLS.
+                 in the "cnf" structure and the encoded value of that "cnf" structure used as a PSK identity in TLS.
                  As an alternative to the access token upload, the client can provide the most recent access token, 
                  JWT or CWT, as a PSK identity. 
                 </t>
@@ -1215,7 +1215,7 @@
             the retained messages as long as the associated tokens are valid.
             In the MQTT standard, if QoS is 0 for the PUBLISH packet, the Broker may discard the
             retained message any time. For QoS>1, the message expiry interval dictates how long the retained message is kept. 
-            However, it is important that Broker avoids sending messages indefinitely for the Clients that never update their tokens (i.e.,
+            However, it is important that the Broker avoids sending messages indefinitely for the Clients that never update their tokens (i.e.,
             the Client connects briefly with a valid token, sends a PUBLISH packet with RETAIN flag set to 1
             and QoS>1, disconnects and never connects again). 
             Therefore, the Broker MUST use the minimum of token expiry and message expiry interval to discard
