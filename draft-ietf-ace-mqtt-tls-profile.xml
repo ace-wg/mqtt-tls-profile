@@ -657,8 +657,8 @@
                 </t>
                 <t>
                 In contrast to <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>, 
-                a client MAY omit support for the cipher suite TLS_PSK_WITH_AES_128_CCM_8, but
-                for TLS 1.2, MUST support TLS_ECDHE_PSK_WITH_AES_128_GCM_SHA256, the PSK analogue of a cipher suite recommended in <xref target="RFC7525"></xref>. 
+                a client MAY omit support for the cipher suites TLS_PSK_WITH_AES_128_CCM_8 and TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8, but
+                for TLS 1.2, MUST support TLS_ECDHE_PSK_WITH_AES_128_GCM_SHA256 for PSK and TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 for RPK, as recommended in <xref target="RFC7525"></xref> (and adjusted to be a PSK cipher suite as appropriate). 
                 </t>
                 </section>
             </section>
