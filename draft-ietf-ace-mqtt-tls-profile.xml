@@ -813,8 +813,8 @@
             <t>
                 Note that, according to the MQTT standard, the Broker uses the Client Identifier to identify the session state.
                 In the case of a Client Identifier collision,
-                a Client may take over another Client's session. Given that clients provide a token
-                with each CONNECT packet, clients will only send or receive messages to its authorized topics.
+                a Client may take over another Client's session. 
+                Given that the Broker MUST associate the Client with a valid token, a Client will only send or receive messages to its authorized topics.
                 Therefore, while this issue is not expected to affect security,
                 it may affect QoS (i.e., PUBLISH or QoS messages saved for Client A may be delivered to a Client B).
                 In addition, if this Client Identifier represents a Client already connected to the Broker,
