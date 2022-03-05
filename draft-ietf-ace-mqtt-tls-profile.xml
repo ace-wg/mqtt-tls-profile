@@ -206,7 +206,7 @@
                 For JWTs, this document follows <xref target="RFC7800"></xref>
                 for PoP semantics for JWTs, and the mechanisms for providing and verifying proof-of-possession
                 are detailed in  <xref target="connect_v5"></xref>. The Client-AS and RS-AS MAY also use protocols other than HTTP,
-                e.g. Constrained Application Protocol (CoAP) <xref target="RFC7252"></xref> or MQTT; it is recommended
+                e.g., Constrained Application Protocol (CoAP) <xref target="RFC7252"></xref> or MQTT; it is recommended
                 that TLS is used to secure these communication channels between Client-AS and RS-AS.
                 Implementations MAY also use "application/ace+cbor" content type, and CBOR encoding <xref target="RFC8949"></xref>, and
                 CBOR Web Token (CWT) <xref target="RFC8392"></xref> and associated PoP semantics to reduce the protocol memory and bandwidth
@@ -244,7 +244,7 @@
                   <t hangText="Client Authorization Server (CAS)">
                    <vspace blankLines="0"/>
                   An entity that prepares and endorses authentication and authorization data for a Client, 
-                  and communicates using HTTPS to the AS.
+                  and communicates to the AS using HTTPS.
                   </t>
                   </list>
                 </t>
@@ -289,7 +289,7 @@
                            <vspace blankLines="0"/>
                            The MQTT protocol operates by exchanging a series of MQTT Control packets.
                            Each packet is composed of a Fixed Header, a Variable Header (depending
-                           on the control packet type) and a Payload.
+                           on the control packet type), and a Payload.
                         </t>
                         <t hangText="UTF-8 encoded string">
                             <vspace blankLines="0"/>
@@ -410,7 +410,7 @@
         </section>
         <section title="Authorizing Connection Requests" anchor="token_acquisition">
             <t>
-            This section specifies how Client connections are authorized by the AS, 
+            This section specifies how Client connections are authorized by the AS 
             and verified by the MQTT Broker. <xref target="protocol_flow"></xref> shows the basic protocol flow 
             during connection setup. The token request and response use the token endpoint 
             at the AS, specified for HTTP-based interactions in Section 5.8 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>. 
@@ -427,7 +427,7 @@
             The interactions between a Client and its Client Authorization Server for token
             onboarding and support for MQTTS-based token requests at the AS are out of the scope of this document.
             </t>
-            <figure align="center" anchor="protocol_flow" title="Connection setup">
+            <figure align="center" anchor="protocol_flow" title="Connection Setup">
                     <artwork align="left"><![CDATA[
                           +---------------------+
                           | Client              |
@@ -576,7 +576,7 @@
                     The Broker stores and indexes all tokens received to the "authz-info" topic in its key store
                     (similar to the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile for ACE</xref>).
                     This profile follows the recommendation of
-                    Section 5.10.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>,
+                    Section 5.10.1 of the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>
                     and expects that the Broker stores only one token per proof-of-possession key, and any other
                     token linked to the same key overwrites an existing token.
                 </t>
@@ -670,7 +670,7 @@
                     the Client TLS connection is expected to be anonymous, and the Broker is
                     authenticated during the TLS connection setup.
                     The approach described in this section is similar to an earlier proposal
-                     by Fremantle et al <xref target="fremantle14"></xref>.
+                     by Fremantle, et al <xref target="fremantle14"></xref>.
 		        </t>
                 <t>
                     After sending the CONNECT, the client MUST wait to receive the CONNACK from
@@ -682,7 +682,7 @@
 		        <t>
 		            <xref target="mqtt5_connect_message"></xref> shows the structure of the
                     MQTT CONNECT packet used in MQTT v5.0.
-                    A CONNECT packet is composed of a fixed header, a variable header and a payload.
+                    A CONNECT packet is composed of a fixed header, a variable header, and a payload.
                     The fixed header contains the Control Packet Type (CPT), Reserved, and Remaining Length fields.
                     Remaining Length is a Variable Byte Integer that represents the number of bytes 
                     remaining within the current Control Packet, including data in the Variable Header and the Payload.
@@ -691,14 +691,14 @@
                     The Connect Flags in the variable header specify the properties of the MQTT session.
                     It also indicates the presence or absence of some fields in the Payload.
                     The payload contains one or more encoded fields, namely a unique Client
-                    Identifier for the Client, a Will Topic, Will Payload, User Name and Password.
+                    Identifier for the Client, a Will Topic, Will Payload, User Name, and Password.
                     All but the Client Identifier can be omitted depending on the flags in the Variable Header.
                     The Client Identifier identifies the Client to the Broker, and therefore, 
                     is unique for each Client. It must be noted that the Client Identifier is an unauthenticated identifier
                     used within the MQTT protocol and so is not bound to the access token.
 		        </t>
 		  <figure align="center" anchor="mqtt5_connect_message"
-                            title="MQTT v5 CONNECT Variable Header with Authentication Method property for ACE.">
+                            title="MQTT v5 CONNECT Variable Header with Authentication Method Property for ACE">
 		    <artwork align="left"><![CDATA[
     
        0             8             16
@@ -740,7 +740,7 @@
                 a security option for MQTT v3.1.1 clients, as
                 described in  <xref target="MQTTv311"></xref>.
             </t>
-            <figure align="center" anchor="mqttv5_connect_flags" title="CONNECT flags for AUTH">
+            <figure align="center" anchor="mqttv5_connect_flags" title="CONNECT Flags for AUTH">
                 <artwork align="left"><![CDATA[
 +-----------------------------------------------------------+
 |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
@@ -762,8 +762,8 @@
                 described in <xref target="scope"></xref>. If the Will authorization fails, the connection 
                 is refused as described in  <xref target="as_discovery"></xref>. 
                 If the Broker accepts the connection request, the Broker
-                stores the Will message and  publishes it when the network connection is closed according to Will QoS, and
-	            Will retain parameters and MQTT Will management rules.  To avoid publishing the Will Messages
+                stores the Will message and  publishes it when the network connection is closed according to Will QoS,
+	            Will retain parameters, and MQTT Will management rules.  To avoid publishing the Will Messages
                 in the case of temporary network disconnections,
                 the Client specifies a Will Delay Interval in the Will Properties.
                 <xref target="disconnections"></xref> explains how the Broker deals with the retained messages in further detail.
@@ -778,7 +778,7 @@
                 this to the Client.
             </t>
             <t>
-                The Broker MAY support session continuation, e.g. if the Broker requires it for QoS reasons.
+                The Broker MAY support session continuation, e.g., if the Broker requires it for QoS reasons.
                 In this case, if a CONNECT packet is received with Clean Start set to 0 and there is a Session associated 
                 with the Client Identifier, the Broker MUST resume communications with the Client based on the state from the 
                 existing Session. In its response, the Broker MUST set the Session Present flag to 1 
@@ -788,7 +788,7 @@
             <t>
                 When reconnecting to a Broker that supports session continuation,
                 the Client MUST still provide a token, in addition to
-                using the same Client Identifier, and
+                using the same Client Identifier and
                 setting the Clean Start to 0.
                 The Broker MUST still perform proof-of-possession validation on the provided token.
                 If the token matches the stored state,
@@ -806,7 +806,7 @@
                 Therefore, while this issue is not expected to affect security,
                 it may affect QoS (i.e., PUBLISH or QoS messages saved for Client A may be delivered to a Client B).
                 In addition, if this Client Identifier represents a Client already connected to the Broker,
-                the Broker sends a DISCONNECT packet to the existing Client with Reason Code of '0x8E (Session taken over)',
+                the Broker sends a DISCONNECT packet to the existing Client with Reason Code of '0x8E (Session taken over)'
                 and closes the connection to the Client.
             </t>
 	    </section>
@@ -825,11 +825,11 @@
                 Based on the Authentication Data, RS MUST support both options below:
                 <list style="symbols">
                     <t>Proof-of-Possession using a challenge from the TLS session</t>
-                    <t>Proof-of-Possession via Broker generated challenge/response</t>
+                    <t>Proof-of-Possession via Broker-generated challenge/response</t>
                 </list>
             </t>
         <section title="Proof-of-Possession Using a Challenge from the TLS session" anchor="pop_nonce">
-            <figure align="center" anchor="authdata_tlsexporter" title="Authentication Data for PoP based on TLS exporter content">
+            <figure align="center" anchor="authdata_tlsexporter" title="Authentication Data for PoP Based on TLS Exporter Content">
                 <artwork align="left"><![CDATA[
 +-----------------------------------------------------------------+
 |Authentication|Token Length|Token   |MAC or Signature            |
@@ -853,7 +853,7 @@
 	        </t>
         </section>
         <section title="Proof-of-Possession via Broker-generated Challenge/Response" anchor="pop_challenge">
-            <figure align="center" anchor="authdata_challenge_client" title="Authentication Data to Initiate PoP based on Challenge/Response">
+            <figure align="center" anchor="authdata_challenge_client" title="Authentication Data to Initiate PoP Based on Challenge/Response">
                 <artwork align="left"><![CDATA[
 +------------------------------------+
 |Authentication|Token Length|Token   |
@@ -936,7 +936,7 @@
             <section title="Broker Token Validation" anchor="token_validation">
                 <t>
                     The Broker MUST verify the validity of the token either locally
-                    (e.g. in the case of a self-contained token) or MAY send a request to the
+                    (e.g., in the case of a self-contained token) or MAY send a request to the
                     introspection endpoint of the AS (as described for HTTP-based interactions in Section 5.9 of 
                     the <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref>).
                     The Broker MUST verify the claims in the access token according to the rules set in
@@ -1131,7 +1131,7 @@
             The Topic Filters may include wildcard characters.
         </t>
         <t>
-            On receiving the SUBSCRIBE packet, the Broker MUST use the type of packet (i.e.
+            On receiving the SUBSCRIBE packet, the Broker MUST use the type of packet (i.e.,
             SUBSCRIBE) and the Topic Filter in the packet header to match
             against the scope field of the stored token or introspection result.
             The Topic Filters MUST be an exact match to or be a subset of at least one of the 'topic_filter' fields
@@ -1152,11 +1152,11 @@
         </t>
     </section>
     </section>
-    <section anchor="reauthentication" title="Token Expiration, Update and Reauthentication">
+    <section anchor="reauthentication" title="Token Expiration, Update, and Reauthentication">
         <t>
-            The Broker MUST check for token expiration whenever a CONNECT, PUBLISH or SUBSCRIBE is received
+            The Broker MUST check for token expiration whenever a CONNECT, PUBLISH, or SUBSCRIBE is received
             or sent. The Broker SHOULD check for token expiration on receiving a PINGREQUEST.
-            The Broker MAY also check for token expiration periodically, e.g. every hour. This may allow
+            The Broker MAY also check for token expiration periodically, e.g., every hour. This may allow
 		    for early detection of a token expiry.
 		</t>
 		<t>
@@ -1164,7 +1164,7 @@
              or via performing an
             introspection request with the AS as described in Section 5.9 of the <xref
             target="I-D.ietf-ace-oauth-authz">ACE framework</xref>.
-            Token expirations may trigger the Broker to send PUBACK, SUBACK and DISCONNECT packets with return code
+            Token expirations may trigger the Broker to send PUBACK, SUBACK, and DISCONNECT packets with return code
             set to "Not authorized". After sending a DISCONNECT, the network connection is closed, and
             no more messages can be sent.
         </t>
@@ -1195,7 +1195,7 @@
 		<t>
             In the case of a Client DISCONNECT, if the Session Expiry Interval is set to 0,  the Broker
             doesn't maintain session state but MUST keep the retained messages.
-            If the Broker maintains session state,  the state MAY include token and its
+            If the Broker maintains session state,  the state MAY include the token and its
             introspection result (for reference tokens) in addition to the MQTT session state.
             The MQTT session state is identified by the Client Identifier and includes
             state on client subscriptions; messages with QoS levels 1 and 2, and which have
@@ -1217,7 +1217,7 @@
             retained message any time. For QoS>1, the message expiry interval dictates how long the retained message is kept. 
             However, it is important that the Broker avoids sending messages indefinitely for the Clients that never update their tokens (i.e.,
             the Client connects briefly with a valid token, sends a PUBLISH packet with RETAIN flag set to 1
-            and QoS>1, disconnects and never connects again). 
+            and QoS>1, disconnects, and never connects again). 
             Therefore, the Broker MUST use the minimum of token expiry and message expiry interval to discard
             a retained message.  
         </t>
@@ -1245,9 +1245,9 @@
              it MUST authenticate over TLS. The Broker SHOULD still be prepared to store the Client access
              token for future use (regardless of the method of transport).
             </t>
-            <t>In MQTT v3.1.1, after the Client published to the "authz-info" topic,
+            <t>In MQTT v3.1.1, after the Client has published to the "authz-info" topic,
                the Broker cannot communicate
-                the result of the token validation as PUBACK reason codes or server-side DISCONNECT
+                the result of the token validation because PUBACK reason codes or server-side DISCONNECT
                 packets are not supported.
                 In any case, an invalid token would fail the subsequent TLS handshake,
                  which can prompt the Client to
@@ -1258,7 +1258,7 @@
                 the Client uses the username and password fields.
                 <xref target="mqtt_connect_message"></xref> shows the structure of the MQTT CONNECT packet.
             </t>
-          <figure align="center" anchor="mqtt_connect_message" title="MQTT CONNECT variable header using username and password for ACE.">
+          <figure align="center" anchor="mqtt_connect_message" title="MQTT CONNECT Variable Header Using Username and Password for ACE">
          <artwork align="left"><![CDATA[
        0             8             16
        +---------------------------+
@@ -1286,7 +1286,7 @@
             <xref target="mqtt_connect_flags"></xref> shows how the MQTT connect flags MUST be set to initiate
              a connection with the Broker.
           </t>
-        <figure align="center" anchor="mqtt_connect_flags" title="MQTT CONNECT flags. (Rsvd=Reserved)">
+        <figure align="center" anchor="mqtt_connect_flags" title="MQTT CONNECT Flags (Rsvd=Reserved)">
          <artwork align="left"><![CDATA[
 +-----------------------------------------------------------+
 |User name|Pass.|Will retain|Will QoS|Will Flag|Clean| Rsvd.|
@@ -1300,8 +1300,8 @@
                     The Client SHOULD set the Clean flag to 1 to always start a new session. 
                     If the Clean flag is set to 0, the Broker MUST resume communications 
                     with the Client based on the state from the current Session (as identified by the Client Identifier). 
-                    If there is no Session associated with the Client Identifier the Broker MUST create a new session.
-                    The Broker MUST set the Session Present flag in the CONNACK packet accordingly, i.e. 0 to indicate a clean session to the 
+                    If there is no Session associated with the Client Identifier, the Broker MUST create a new session.
+                    The Broker MUST set the Session Present flag in the CONNACK packet accordingly, i.e., 0 to indicate a clean session to the 
                     Client and 1 to indicate session continuation.
                     The Broker MUST still perform proof-of-possession validation on the provided Client token. MQTT v3.1.1 does not use a 
                     Session Expiry Interval, and the Client expects that the Broker maintains the session 
@@ -1367,7 +1367,7 @@
                'Failure' for the unauthorized topic(s). Note that, in both MQTT versions, a reason code is
                 returned for each Topic Filter.
 		      </t>
-		      <t>RS-Client PUBLISH authorization failure:  When RS is forwarding PUBLISH packets to the subscribed Clients,
+		      <t>RS-Client PUBLISH authorization failure:  When the RS is forwarding PUBLISH packets to the subscribed Clients,
 		      it may discover that some of the subscribers are no more authorized due to expired tokens.
                These token expirations MUST lead to disconnecting the Client rather than silently dropping messages.
 		      </t>
@@ -1466,8 +1466,8 @@ those specified for the 'application/json' media type.</t>
 
 	  <t>After the Broker validates an access token and accepts a connection from a client, it caches the token  
       to authorize a Client's publish and subscribe requests in an ongoing session. 
-      Broker does not cache any invalid tokens.
-      If a client's permissions get revoked, but the access token has not expired,
+      The Broker does not cache any invalid tokens.
+      If a client's permissions are revoked, but the access token has not expired,
 	  the Broker may still grant publish/subscribe to revoked topics.
       If the Broker caches the token introspection responses, then the Broker SHOULD use a reasonable cache timeout
        to introspect tokens regularly. The timeout value is application-specific and SHOULD be chosen 
