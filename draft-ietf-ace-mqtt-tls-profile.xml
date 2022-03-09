@@ -903,8 +903,8 @@
             </t>
             <t>
                 The Broker continues authentication using an AUTH packet that contains the Authentication Method 
-                and the Authentication Data. The Authentication Method MUST be set to "ace", and the Authentication Data MUST NOT be empty and contain
-                an 8-byte RS nonce as a challenge for the Client (<xref target="authdata_challenge_broker_challenge"></xref>).
+                and the Authentication Data. The Authentication Method MUST be set to "ace", and the Authentication Data MUST NOT be empty and 
+                MUST contain an 8-byte RS nonce as a challenge for the Client (<xref target="authdata_challenge_broker_challenge"></xref>).
             </t>
 <figure align="center" anchor="authdata_challenge_client_response" title="Authentication Data for Client Challenge Response">
                 <artwork align="left"><![CDATA[
@@ -1337,7 +1337,7 @@
                     Session Expiry Interval, and the Client expects that the Broker maintains the session 
                     state after it disconnects. However, stored Session state can be discarded as a result 
                     of administrator action or policies (e.g. defining an automated 
-                    response based on storage capabilities), and Brokers SHOULD implement the necessary policies to limit 
+                    response based on storage capabilities), and Brokers SHOULD implement administrative policies to limit 
                     misuse.
                     </t>
                     <t>
@@ -1562,6 +1562,7 @@ those specified for the "application/json" media type.</t>
         &RFC8442;
         &RFC8446;
         &RFC5705;
+        &RFC6234;
         &RFC6749;
         &RFC7800;
         &RFC8747;
@@ -1574,6 +1575,7 @@ those specified for the "application/json" media type.</t>
         &RFC7627;
         &RFC6066;
         &RFC7301;
+        &RFC8032;
             <reference anchor="MQTT-OASIS-Standard"
                        target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
@@ -1623,14 +1625,12 @@ those specified for the "application/json" media type.</t>
             <!-- Here we use entities that we defined at the beginning. -->
             <!-- A reference written by by an organization not a person. -->
             &RFC4949;
-            &RFC6234;
             &RFC7252;
             &RFC8949;
             &RFC8392;
             &RFC8447;
             &RFC7925;
             &RFC7525;
-            &RFC8032;
 	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
 			<title>
