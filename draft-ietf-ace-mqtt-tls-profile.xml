@@ -579,7 +579,7 @@
                     If the Client authentication uses TLS:Known(RPK/PSK),
                     then the Broker is authenticated using the respective method.
                     Otherwise, to authenticate the Broker, the Client MUST validate a
-                    public key from a X.509 certificate or an RPK from the Broker against the
+                    public key from an X.509 certificate or an RPK from the Broker against the
                     "rs_cnf" parameter in the token response, which contains information
                     about the public key used by the RS to authenticate if the token type is "pop" 
                     and asymmetric keys are used as defined in <xref target="I-D.ietf-ace-oauth-params"></xref>.
@@ -696,7 +696,7 @@
                     the Client TLS connection is expected to be anonymous, and the Broker is
                     authenticated during the TLS connection setup.
                     The approach described in this section is similar to an earlier proposal
-                     by Fremantle, et al <xref target="fremantle14"></xref>.
+                     by Fremantle, et al. <xref target="fremantle14"></xref>.
 		        </t>
                 <t>
                     After sending the CONNECT, the Client MUST wait to receive the CONNACK from
