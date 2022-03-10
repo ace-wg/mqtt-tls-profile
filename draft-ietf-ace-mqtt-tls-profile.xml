@@ -300,7 +300,7 @@
                         <t hangText="Binary Data">
                             <vspace blankLines="0"/>
                             Binary Data is represented by a two-byte length field which indicates the number of data bytes, followed by that number of bytes. 
-                            Thus, the length of Binary Data is limited to the range of 0 to 65,535 Bytes.
+                            Thus, the length of Binary Data is limited to the range of 0 to 65535 Bytes.
                         </t>
                         <t hangText="Variable Byte Integer">
                             <vspace blankLines="0"/>
@@ -386,7 +386,7 @@
                         </t>
                         <t hangText="SUBACK">
                             <vspace blankLines="0"/>
-                            Subscribe acknowledgment.
+                            Subscribe acknowledgment from the Broker to the Client.
                         </t>
 			            <t hangText="PINGREQ">
                             <vspace blankLines="0"/>
@@ -992,7 +992,7 @@
             <t>  
             The scope field contains the publish and subscribe permissions for the Client.
             Therefore, the token or its introspection result MUST be cached 
-                to allow a Client's future PUBLISH and SUBSCRIBE packets.
+                to allow a Client's future PUBLISH and SUBSCRIBE messages.
                  During the CONNECT, if the Will Flag is set to 1, the Broker MUST also authorize
                 the publication of the Will Topic and message using the token's scope field.
             The Broker uses the scope to match against the Topic Name in a PUBLISH packet
