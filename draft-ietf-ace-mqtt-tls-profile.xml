@@ -505,7 +505,7 @@
             </t>
             <t>
                 This document follows <xref target="RFC7800"></xref> for PoP semantics for JWTs 
-                (CWTs can also be used). The AS includes a "cnf" (confirmation) parameter to the PoP token, 
+                (CWTs MAY also be used). The AS includes a "cnf" (confirmation) parameter to the PoP token, 
                 to declare that the Client 
                 possesses a particular key and RS can cryptographically confirm that 
                 the Client has possession of that key. The "cnf" parameter
@@ -515,7 +515,7 @@
             <t>
                 Note that the contents of the web tokens (including the "cnf" parameter) are to be consumed by the RS 
                 and not the Client (the Client obtains the key information in a different manner).
-                The RPK case is handled as described in  in Section 3.2.1 of the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile</xref>.
+                The RPK case is handled as described in Section 3.2.1 of the <xref target="I-D.ietf-ace-dtls-authorize">DTLS profile</xref>.
                 For the PSK case, the referenced procedures apply, with the following exceptions to accommodate 
                 JWT and JOSE use. 
                 In this case, the AS adds a "cnf" parameter to the access information 
@@ -579,7 +579,7 @@
                     If the Client authentication uses TLS:Known(RPK/PSK),
                     then the Broker is authenticated using the respective method.
                     Otherwise, to authenticate the Broker, the Client MUST validate a
-                    public key from a X.509 certificate or an RPK from the Broker against the
+                    public key from an X.509 certificate or an RPK from the Broker against the
                     "rs_cnf" parameter in the token response, which contains information
                     about the public key used by the RS to authenticate if the token type is "pop" 
                     and asymmetric keys are used as defined in <xref target="I-D.ietf-ace-oauth-params"></xref>.
@@ -614,21 +614,21 @@
                 <t>
                     Depending on the QoS level of the PUBLISH packet, the Broker returns
                     the error response as a PUBACK, PUBREC, or DISCONNECT packet.
-                    If the QoS level is equal to 0, and the token is invalid or the claims
+                    If the QoS level is equal to 0, and the token is not valid or the claims
                     cannot be obtained in the case of an introspected token, the Broker MUST
                     send a DISCONNECT packet with the reason code 0x87 (Not authorized).
                     If the PUBLISH payload does not parse to a token, the Broker MUST send a DISCONNECT with
                     the reason code 0x99 (Payload format invalid).
                 </t>
                 <t>
-                    If the QoS level of the PUBLISH packet is greater than or equal to 1, and the token is invalid, or
+                    If the QoS level of the PUBLISH packet is greater than or equal to 1, and the token is not valid, or
                     the claims cannot be obtained in the case of an introspected token,
                     the Broker MUST send the reason code 0x87 (Not authorized) in the PUBACK or PUBREC.  If the PUBLISH payload does not parse to a token,
                     the PUBACK/PUBREC reason code is 0x99 (Payload format invalid).
                 </t>
                 <t>
                     It must be noted that when the Broker sends the "Not authorized" response, this corresponds
-                    to the token being invalid, and not that the actual PUBLISH packet was not authorized.
+                    to the token being not valid, and not that the actual PUBLISH packet was not authorized.
                     Given that the "authz-info" is a public topic, this response is not
                     expected to cause confusion.
                 </t>
@@ -696,7 +696,7 @@
                     the Client TLS connection is expected to be anonymous, and the Broker is
                     authenticated during the TLS connection setup.
                     The approach described in this section is similar to an earlier proposal
-                     by Fremantle, et al <xref target="fremantle14"></xref>.
+                     by Fremantle, et al. <xref target="fremantle14"></xref>.
 		        </t>
                 <t>
                     After sending the CONNECT, the Client MUST wait to receive the CONNACK from
@@ -919,8 +919,7 @@
                 with a reason code 0x18 (Continue Authentication).
                 Similarly, the Client packet sets the Authentication Method to "ace".
                 The Authentication Data in the Client's response is formatted as shown
-                in <xref target="authdata_challenge_client_response"></xref> and includes the
-                the 8-byte Client nonce, and
+                in <xref target="authdata_challenge_client_response"></xref> and includes the 8-byte Client nonce, and
                 the signature or MAC computed over the RS nonce concatenated with the Client nonce
                 using PoP key in the token.
 	        </t>
@@ -1144,7 +1143,7 @@
             </t>
             <t>
                 The Broker MUST NOT forward messages to unauthorized subscribers.
-                There is no way to inform the Clients with invalid tokens that an
+                There is no way to inform the Clients without valid tokens that an
                 authorization error has occurred other than sending a DISCONNECT packet.
                 Therefore, the Broker SHOULD send a DISCONNECT packet with the reason code 0x87 (Not authorized).
             </t>
@@ -1279,7 +1278,7 @@
                the Broker cannot communicate
                 the result of the token validation because PUBACK reason codes or server-side DISCONNECT
                 packets are not supported.
-                In any case, an invalid token would fail the subsequent TLS handshake,
+                In any case, the subsequent TLS handshake would fail without a valid token,
                  which can prompt the Client to
                 obtain a valid token.
             </t>
@@ -1497,7 +1496,7 @@ those specified for the "application/json" media type.</t>
 
 	  <t>After the Broker validates an access token and accepts a connection from a client, it caches the token  
       to authorize a Client's publish and subscribe requests in an ongoing session. 
-      The Broker does not cache any invalid tokens.
+      The Broker does not cache any tokens that cannot be validated.
       If a Client's permissions get revoked, but the access token has not expired,
 	  the Broker may still grant publish/subscribe to revoked topics.
       If the Broker caches the token introspection responses, then the Broker SHOULD use a reasonable cache timeout
@@ -1577,7 +1576,7 @@ those specified for the "application/json" media type.</t>
         &RFC7301;
         &RFC8032;
             <reference anchor="MQTT-OASIS-Standard"
-                       target="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
+                       target="https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
                     <title>
                         OASIS Standard MQTT Version 3.1.1 Plus Errata 01
@@ -1593,7 +1592,7 @@ those specified for the "application/json" media type.</t>
             </reference>
 
 	    <reference anchor="MQTT-OASIS-Standard-v5"
-		       target="http://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html">
+		       target="https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html">
 	       <front>
 		 <title>
 		   OASIS Standard MQTT Version 5.0
@@ -1616,7 +1615,7 @@ those specified for the "application/json" media type.</t>
             <?rfc include="reference.I-D.ietf-ace-oauth-authz.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
             <?rfc include="reference.I-D.draft-ietf-cose-x509-08.xml"?>
-            <?rfc include="reference.I-D.ietf-ace-aif.xml"?>
+            <?rfc include="reference.I-D.ietf-ace-aif-06"?>
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
             <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-01"?>
         </references>
@@ -1631,7 +1630,7 @@ those specified for the "application/json" media type.</t>
             &RFC8447;
             &RFC7925;
             &RFC7525;
-	    <reference anchor="fremantle14" target="http://dx.doi.org/10.1109/SIoT.2014.8">
+	    <reference anchor="fremantle14" target="https://dx.doi.org/10.1109/SIoT.2014.8">
 		<front>
 			<title>
 				Federated Identity and Access Management for the Internet of Things
@@ -1723,8 +1722,8 @@ those specified for the "application/json" media type.</t>
             <t>Expanded acronyms on their first use including the ones in the title.</t>
             <t>Added a definition for "Session".</t>
             <t>Corrected "CONNACK" definition, which earlier said it's the first packet sent by the Broker.</t>
-            <t>Added a statement that the the Broker will disconnect on almost any error and may not keep session state.</t>
-            <t>Clarified that the Broker does not cache invalid tokens.</t> 
+            <t>Added a statement that the Broker will disconnect on almost any error and may not keep session state.</t>
+            <t>Clarified that the Broker does not cache tokens that cannot be validated.</t> 
         </list>
     </t>
     <t> Version 04 to 05:
@@ -1739,7 +1738,7 @@ those specified for the "application/json" media type.</t>
                Clarified expected behaviour if session continuation is supported. Added to the Security 
                Considerations the potential misuse of session continuation.</t>
             <t>Fixed the Authentication Data to include token length for the Challenge/Response PoP.</t>
-            <t>Added that Authorization Server Discovery is triggered if a token is invalid and not only missing.</t>
+            <t>Added that Authorization Server Discovery is triggered if a token is not valid and not only missing.</t>
             <t>Clarified that the Broker should not accept any other packets from Client after CONNECT and
             before sending CONNACK.</t>
             <t> Added that client reauthentication is accepted only for the challenge/response PoP.</t> 
