@@ -15,7 +15,6 @@
     <!ENTITY RFC6749 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
     <!ENTITY RFC7800 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7800.xml">
     <!ENTITY RFC8949 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8949.xml">
-    <!ENTITY RFC7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
     <!ENTITY RFC7250 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7250.xml">
     <!ENTITY RFC7252 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7252.xml">
     <!ENTITY RFC7301 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7301.xml">
@@ -198,7 +197,7 @@
 		        <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref> regarding Client and RS
                 registration with the AS and setting up the keying material.
                 While the Client-Broker exchanges are only over MQTT, the required Client-AS and
-                RS-AS interactions are described for HTTPS-based communication <xref target="RFC7230"></xref>, 
+                RS-AS interactions are described for HTTPS-based communication <xref target="I-D.ietf-httpbis-semantics"></xref>, 
                 using "application/ace+json"
                 content type, and unless otherwise specified, using JSON encoding. The token MAY be a
                 opaque reference to authorization information  or JSON Web Token (JWT) <xref target="RFC7519"></xref>.
@@ -1481,9 +1480,33 @@ those specified for the "application/json" media type.</t>
             Client authentication can be provided either via TLS or using in-band PoP validation at the MQTT
             application layer.
             </t>
-	        <t>CBOR Value: To be assigned by IANA</t>
+	        <t>CBOR Value: To be assigned by IANA in the (-256, 255) range</t>
 	        <t>Reference: [this document]</t>
         </list>
+        </t>
+        </section>
+        <section title="AIF">
+        <t>For the media-types application/aif+cbor and application/aif+json
+        defined in Section 5.1 of <xref target="I-D.ietf-ace-aif"></xref>, IANA is requested to
+        register the following entries for the two media-type parameters Toid
+        and Tperm, in the respective sub-registry defined in Section 5.2 of
+        <xref target="I-D.ietf-ace-aif"></xref> within the "MIME Media Type Sub-Parameter"
+        registry group.
+        </t>
+        <t> For Toid:
+            <list style="symbols">
+                <t>Name: mqtt-topic-filter</t>
+                <t>Description/Specification: Topic Filter as defined in <xref target="mqtt-defs"></xref>.</t>
+                <t>Reference: [[This document]] (Section <xref target="scope"></xref>)</t>
+            </list>
+        </t>
+        <t> For Tperm:
+            <list style="symbols">
+                <t>Name: mqtt-permissions</t>
+                <t>Description/Specification: Permissions for MQTT client. Tperm is a string with 
+                a value either "pub" or "sub".</t>
+                <t>Reference: [[This document]]  (Section <xref target="scope"></xref> )</t>
+            </list>
         </t>
         </section>
         </section>
@@ -1575,7 +1598,6 @@ those specified for the "application/json" media type.</t>
         &RFC7519;
         &RFC7516;
         &RFC7517;
-        &RFC7230;
         &RFC8152;
         &RFC7627;
         &RFC6066;
@@ -1624,6 +1646,7 @@ those specified for the "application/json" media type.</t>
             <?rfc include="reference.I-D.ietf-ace-aif-07"?>
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
             <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-02"?>
+            <?rfc include="reference.I-D.ietf-httpbis-semantics-19"?>
         </references>
 
         <references title="Informative References">
