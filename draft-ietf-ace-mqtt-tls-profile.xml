@@ -645,7 +645,7 @@
                 stated in the document.
                 If TLS 1.2 is used, <xref target="RFC7925"></xref> describes 
                 how TLS can be used for constrained devices, alongside recommended cipher suites. 
-                Additionally, TLS 1.2 implementations MUST use the "Extended Master Secret" extension <xref target="RFC7627"></xref>
+                Additionally, TLS 1.2 implementations MUST use the "Extended Main Secret" extension <xref target="RFC7627"></xref>
                 to incorporate the handshake transcript into the master secret.  TLS implementations SHOULD use the
 
                 SNI (Server Name Indication) <xref target="RFC6066"></xref> and APLN (Application-Layer Protocol Negotiation) 
