@@ -152,7 +152,7 @@
                 are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
                 Since it is expected that MQTT deployments will continue to support MQTT v3.1.1 Clients,
 		        this document also describes a reduced set of protocol interactions for
-                <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
+                <xref target="MQTT-OASIS-Standard-v3.1.1">MQTT v3.1.1 - the OASIS Standard</xref>.
 		        However, MQTT v5.0 is the RECOMMENDED version as it works more naturally
                 with ACE-style authentication and authorization.
             </t>
@@ -254,7 +254,7 @@
                     which connect to the Broker to publish and subscribe to Application Messages, labelled
                     with their topics. For additional information,
                     please refer to the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0
-                     - the OASIS Standard</xref> or the <xref target="MQTT-OASIS-Standard">MQTT v3.1.1
+                     - the OASIS Standard</xref> or the <xref target="MQTT-OASIS-Standard-v3.1.1">MQTT v3.1.1
                       - the OASIS Standard</xref>.
                 </t>
                 <t>
@@ -1517,7 +1517,7 @@ those specified for the "application/json" media type.</t>
 	  in <xref target="I-D.ietf-ace-oauth-authz"></xref> apply to this work.
 	  </t>
 	  <t> In addition, the security considerations outlined in <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>
-	  and <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>
+	  and <xref target="MQTT-OASIS-Standard-v3.1.1">MQTT v3.1.1 - the OASIS Standard</xref>
 	   apply.  Mainly, this document provides an authorization solution for MQTT,
 	   the responsibility of which is left to the specific implementation in the MQTT standards.
 	 In the following, we comment on a few relevant issues based on the current MQTT specifications.
@@ -1603,7 +1603,7 @@ those specified for the "application/json" media type.</t>
         &RFC6066;
         &RFC7301;
         &RFC8032;
-            <reference anchor="MQTT-OASIS-Standard"
+            <reference anchor="MQTT-OASIS-Standard-v3.1.1"
                        target="https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
                     <title>
