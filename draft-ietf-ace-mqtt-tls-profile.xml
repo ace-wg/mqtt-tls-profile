@@ -1143,9 +1143,8 @@
             </t>
             <t>
                 The Broker MUST NOT forward messages to unauthorized subscribers.
-                To avoid silently dropping messages in case of an authorisation 
-                failure, the Broker MUST close the network connection and 
-                SHOULD inform the affected subscribers of the authorization failure.
+                To avoid silently dropping messages, the Broker MUST close the network connection and 
+                SHOULD inform the affected subscribers.
                 The only way to inform a client, in this case, would be sending a DISCONNECT packet.  
                 Therefore, the Broker SHOULD send a DISCONNECT packet with the reason code 0x87 (Not authorized)
                 before closing the network connection to these clients.
