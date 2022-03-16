@@ -440,7 +440,7 @@
             </t>
             <t>
             If the Client is resource-constrained or does not support HTTPS, a separate Client Authorization Server
-            may carry out the token request on behalf of the Client, and later, onboard the Client with the token.
+            may carry out the token request on behalf of the Client (Figure 1 (A) and (B)), and later, onboard the Client with the token.
             The interactions between a Client and its Client Authorization Server for token
             onboarding and support for MQTT-based token requests at the AS are out of the scope of this document.
             </t>
@@ -1131,6 +1131,8 @@
                 and closes the Network Connection.  Note that the server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
                 the server needs to drop the connection).
             </t>
+            <t> For all QoS levels, the Broker MAY return 0x80 Unspecified error if they do not want to leak the topic names to unauthorised clients.
+            </t>
         </section>
         <section title="PUBLISH Packets from the Broker to the Subscriber Clients">
 		    <t>
@@ -1174,7 +1176,9 @@
              For each Topic Filter,
             the SUBACK packet includes a return code matching the QoS level
             for the corresponding Topic Filter. In the case of failure, the return code is 0x87,
-            indicating that the Client is not authorized. A reason code is returned for each Topic Filter.
+            indicating that the Client is not authorized. The Broker MAY return 0x80 Unspecified error 
+            if they do not want to leak the topic names to unauthorised clients. 
+            A reason code is returned for each Topic Filter.
 		    Therefore, the Client may receive success codes for a subset of its Topic Filters while being
 		    unauthorized for the rest.
         </t>
