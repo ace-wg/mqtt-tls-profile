@@ -1615,9 +1615,9 @@ those specified for the "application/json" media type.</t>
             <?rfc include="reference.I-D.ietf-ace-oauth-authz.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
             <?rfc include="reference.I-D.draft-ietf-cose-x509-08.xml"?>
-            <?rfc include="reference.I-D.ietf-ace-aif-06"?>
+            <?rfc include="reference.I-D.ietf-ace-aif-07"?>
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
-            <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-01"?>
+            <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-02"?>
         </references>
 
         <references title="Informative References">
