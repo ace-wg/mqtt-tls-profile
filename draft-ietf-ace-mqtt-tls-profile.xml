@@ -186,7 +186,7 @@
                     <t>Subscribe requests from the Clients to the Broker</t>
                 </list>
                 Clients use the MQTT PUBLISH packet to publish to a topic.
-                The mechanisms specified in this document do not not protect the payload of the PUBLISH packet from the Broker. Hence,
+                The mechanisms specified in this document do not protect the payload of the PUBLISH packet from the Broker. Hence,
                 the payload is not signed or encrypted specifically for the subscribers. This functionality may 
                 be implemented using the proposal outlined in the 
                 <xref target="I-D.ietf-ace-pubsub-profile">ACE Pub-Sub Profile</xref>.
@@ -199,7 +199,7 @@
                 While the Client-Broker exchanges are only over MQTT, the required Client-AS and
                 RS-AS interactions are described for HTTPS-based communication <xref target="I-D.ietf-httpbis-semantics"></xref>, 
                 using "application/ace+json"
-                content type, and unless otherwise specified, using JSON encoding. The token MAY be a
+                content type, and unless otherwise specified, using JSON encoding. The token MAY be an
                 opaque reference to authorization information  or JSON Web Token (JWT) <xref target="RFC7519"></xref>.
                 For JWTs, this document follows <xref target="RFC7800"></xref>
                 for PoP semantics for JWTs, and the mechanisms for providing and verifying PoP
@@ -613,7 +613,7 @@
                 <t>
                     Depending on the QoS level of the PUBLISH packet, the Broker returns
                     the error response as a PUBACK, PUBREC, or DISCONNECT packet.
-                    If the QoS level is equal to 0, and the token is not valid or the claims
+                    If the QoS level is equal to 0, and the token is not valid, or the claims
                     cannot be obtained in the case of an introspected token, the Broker MUST
                     send a DISCONNECT packet with the reason code 0x87 (Not authorized).
                     If the PUBLISH payload does not parse to a token, the Broker MUST send a DISCONNECT with
@@ -645,7 +645,7 @@
                 If TLS 1.2 is used, <xref target="RFC7925"></xref> describes 
                 how TLS can be used for constrained devices, alongside recommended cipher suites. 
                 Additionally, TLS 1.2 implementations MUST use the "Extended Main Secret" extension <xref target="RFC7627"></xref>
-                to incorporate the handshake transcript into the master secret.  TLS implementations SHOULD use the
+                to incorporate the handshake transcript into the main secret.  TLS implementations SHOULD use the
 
                 SNI (Server Name Indication) <xref target="RFC6066"></xref> and APLN (Application-Layer Protocol Negotiation) 
                 <xref target="RFC7301"></xref> extensions so the TLS handshake authenticates as much of the protocol context as possible.
@@ -1130,7 +1130,7 @@
                 and closes the Network Connection.  Note that the server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
                 the server needs to drop the connection).
             </t>
-            <t> For all QoS levels, the Broker MAY return 0x80 Unspecified error if they do not want to leak the topic names to unauthorised clients.
+            <t> For all QoS levels, the Broker MAY return 0x80 Unspecified error if they do not want to leak the topic names to unauthorized clients.
             </t>
         </section>
         <section title="PUBLISH Packets from the Broker to the Subscriber Clients">
@@ -1176,7 +1176,7 @@
             the SUBACK packet includes a return code matching the QoS level
             for the corresponding Topic Filter. In the case of failure, the return code is 0x87,
             indicating that the Client is not authorized. The Broker MAY return 0x80 Unspecified error 
-            if they do not want to leak the topic names to unauthorised clients. 
+            if they do not want to leak the topic names to unauthorized clients. 
             A reason code is returned for each Topic Filter.
 		    Therefore, the Client may receive success codes for a subset of its Topic Filters while being
 		    unauthorized for the rest.
@@ -1497,7 +1497,7 @@ those specified for the "application/json" media type.</t>
             <list style="symbols">
                 <t>Name: mqtt-topic-filter</t>
                 <t>Description/Specification: Topic Filter as defined in <xref target="mqtt-defs"></xref>.</t>
-                <t>Reference: [[This document]] (Section <xref target="scope"></xref>)</t>
+                <t>Reference: [[This document]] (<xref target="scope"></xref>)</t>
             </list>
         </t>
         <t> For Tperm:
@@ -1505,7 +1505,7 @@ those specified for the "application/json" media type.</t>
                 <t>Name: mqtt-permissions</t>
                 <t>Description/Specification: Permissions for MQTT client. Tperm is a string with 
                 a value either "pub" or "sub".</t>
-                <t>Reference: [[This document]]  (Section <xref target="scope"></xref> )</t>
+                <t>Reference: [[This document]]  (<xref target="scope"></xref> )</t>
             </list>
         </t>
         </section>
