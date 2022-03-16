@@ -1438,8 +1438,8 @@
           <list style="symbols">
           <t>Type name: application </t>
           <t>Subtype name: ace+json </t>
-          <t>Required parameters: none </t>
-          <t>Optional parameters: none </t>
+          <t>Required parameters: N/A </t>
+          <t>Optional parameters: N/A </t>
           <t>Encoding considerations: Encoding considerations are identical to
 those specified for the "application/json" media type.</t>
           <t>Security considerations: Section 8 of [this document]</t>
@@ -1503,7 +1503,7 @@ those specified for the "application/json" media type.</t>
       If a Client's permissions get revoked, but the access token has not expired,
 	  the Broker may still grant publish/subscribe to revoked topics.
       If the Broker caches the token introspection responses, then the Broker SHOULD use a reasonable cache timeout
-       to introspect tokens regularly. The timeout value is application-specific and SHOULD be chosen 
+       to introspect tokens regularly. The timeout value is application-specific and should be chosen 
        to reduce the risk of using stale introspection responses.
 	  When permissions change dynamically, it is expected that AS also
        follows a reasonable expiration strategy for the access tokens.
