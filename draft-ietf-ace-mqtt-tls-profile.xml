@@ -644,8 +644,9 @@
                 stated in the document.
                 If TLS 1.2 is used, <xref target="RFC7925"></xref> describes 
                 how TLS can be used for constrained devices, alongside recommended cipher suites. 
-                Additionally, TLS 1.2 implementations MUST use the "Extended Main Secret" extension <xref target="RFC7627"></xref>
-                to incorporate the handshake transcript into the main secret.  TLS implementations SHOULD use the
+                Additionally, TLS 1.2 implementations MUST use the "Extended Main Secret" extension (terminology adopted 
+                from <xref target="I-D.ietf-tls-rfc8446bis"></xref>)
+                to incorporate the handshake transcript into the main secret  <xref target="RFC7627"></xref>.  TLS implementations SHOULD use the
 
                 SNI (Server Name Indication) <xref target="RFC6066"></xref> and APLN (Application-Layer Protocol Negotiation) 
                 <xref target="RFC7301"></xref> extensions so the TLS handshake authenticates as much of the protocol context as possible.
@@ -1672,6 +1673,7 @@ those specified for the "application/json" media type.</t>
 		</front>
 		<seriesInfo name="research" value="International Workshop on Secure Internet of Things"></seriesInfo>
 	    </reference>
+          <?rfc include="reference.I-D.draft-ietf-tls-rfc8446bis-04"?>
           <?rfc include="reference.I-D.draft-ietf-ace-pubsub-profile-04"?>
         </references>
 
