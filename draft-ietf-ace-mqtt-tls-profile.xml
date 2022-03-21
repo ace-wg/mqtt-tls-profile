@@ -15,7 +15,6 @@
     <!ENTITY RFC6749 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6749.xml">
     <!ENTITY RFC7800 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7800.xml">
     <!ENTITY RFC8949 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8949.xml">
-    <!ENTITY RFC7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
     <!ENTITY RFC7250 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7250.xml">
     <!ENTITY RFC7252 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7252.xml">
     <!ENTITY RFC7301 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7301.xml">
@@ -61,7 +60,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-15" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-16" ipr="trust200902">
     <!-- category values: std, bcp, info, exp, and historic
        ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
           or pre5378Trust200902
@@ -153,7 +152,7 @@
                 are described based on the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>.
                 Since it is expected that MQTT deployments will continue to support MQTT v3.1.1 Clients,
 		        this document also describes a reduced set of protocol interactions for
-                <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>.
+                <xref target="MQTT-OASIS-Standard-v3.1.1">MQTT v3.1.1 - the OASIS Standard</xref>.
 		        However, MQTT v5.0 is the RECOMMENDED version as it works more naturally
                 with ACE-style authentication and authorization.
             </t>
@@ -187,7 +186,7 @@
                     <t>Subscribe requests from the Clients to the Broker</t>
                 </list>
                 Clients use the MQTT PUBLISH packet to publish to a topic.
-                The mechanisms specified in this document do not not protect the payload of the PUBLISH packet from the Broker. Hence,
+                The mechanisms specified in this document do not protect the payload of the PUBLISH packet from the Broker. Hence,
                 the payload is not signed or encrypted specifically for the subscribers. This functionality may 
                 be implemented using the proposal outlined in the 
                 <xref target="I-D.ietf-ace-pubsub-profile">ACE Pub-Sub Profile</xref>.
@@ -198,9 +197,9 @@
 		        <xref target="I-D.ietf-ace-oauth-authz">ACE framework</xref> regarding Client and RS
                 registration with the AS and setting up the keying material.
                 While the Client-Broker exchanges are only over MQTT, the required Client-AS and
-                RS-AS interactions are described for HTTPS-based communication <xref target="RFC7230"></xref>, 
+                RS-AS interactions are described for HTTPS-based communication <xref target="I-D.ietf-httpbis-semantics"></xref>, 
                 using "application/ace+json"
-                content type, and unless otherwise specified, using JSON encoding. The token MAY be a
+                content type, and unless otherwise specified, using JSON encoding. The token MAY be an
                 opaque reference to authorization information  or JSON Web Token (JWT) <xref target="RFC7519"></xref>.
                 For JWTs, this document follows <xref target="RFC7800"></xref>
                 for PoP semantics for JWTs, and the mechanisms for providing and verifying PoP
@@ -255,7 +254,7 @@
                     which connect to the Broker to publish and subscribe to Application Messages, labelled
                     with their topics. For additional information,
                     please refer to the <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0
-                     - the OASIS Standard</xref> or the <xref target="MQTT-OASIS-Standard">MQTT v3.1.1
+                     - the OASIS Standard</xref> or the <xref target="MQTT-OASIS-Standard-v3.1.1">MQTT v3.1.1
                       - the OASIS Standard</xref>.
                 </t>
                 <t>
@@ -440,7 +439,7 @@
             </t>
             <t>
             If the Client is resource-constrained or does not support HTTPS, a separate Client Authorization Server
-            may carry out the token request on behalf of the Client, and later, onboard the Client with the token.
+            may carry out the token request on behalf of the Client (Figure 1 (A) and (B)), and later, onboard the Client with the token.
             The interactions between a Client and its Client Authorization Server for token
             onboarding and support for MQTT-based token requests at the AS are out of the scope of this document.
             </t>
@@ -614,7 +613,7 @@
                 <t>
                     Depending on the QoS level of the PUBLISH packet, the Broker returns
                     the error response as a PUBACK, PUBREC, or DISCONNECT packet.
-                    If the QoS level is equal to 0, and the token is not valid or the claims
+                    If the QoS level is equal to 0, and the token is not valid, or the claims
                     cannot be obtained in the case of an introspected token, the Broker MUST
                     send a DISCONNECT packet with the reason code 0x87 (Not authorized).
                     If the PUBLISH payload does not parse to a token, the Broker MUST send a DISCONNECT with
@@ -645,8 +644,9 @@
                 stated in the document.
                 If TLS 1.2 is used, <xref target="RFC7925"></xref> describes 
                 how TLS can be used for constrained devices, alongside recommended cipher suites. 
-                Additionally, TLS 1.2 implementations MUST use the "Extended Master Secret" extension <xref target="RFC7627"></xref>
-                to incorporate the handshake transcript into the master secret.  TLS implementations SHOULD use the
+                Additionally, TLS 1.2 implementations MUST use the "Extended Main Secret" extension (terminology adopted 
+                from <xref target="I-D.ietf-tls-rfc8446bis"></xref>)
+                to incorporate the handshake transcript into the main secret  <xref target="RFC7627"></xref>.  TLS implementations SHOULD use the
 
                 SNI (Server Name Indication) <xref target="RFC6066"></xref> and APLN (Application-Layer Protocol Negotiation) 
                 <xref target="RFC7301"></xref> extensions so the TLS handshake authenticates as much of the protocol context as possible.
@@ -1131,6 +1131,8 @@
                 and closes the Network Connection.  Note that the server-side DISCONNECT is a new feature of MQTT v5.0 (in MQTT v3.1.1,
                 the server needs to drop the connection).
             </t>
+            <t> For all QoS levels, the Broker MAY return 0x80 Unspecified error if they do not want to leak the topic names to unauthorized clients.
+            </t>
         </section>
         <section title="PUBLISH Packets from the Broker to the Subscriber Clients">
 		    <t>
@@ -1143,9 +1145,11 @@
             </t>
             <t>
                 The Broker MUST NOT forward messages to unauthorized subscribers.
-                There is no way to inform the Clients without valid tokens that an
-                authorization error has occurred other than sending a DISCONNECT packet.
-                Therefore, the Broker SHOULD send a DISCONNECT packet with the reason code 0x87 (Not authorized).
+                To avoid silently dropping messages, the Broker MUST close the network connection and 
+                SHOULD inform the affected subscribers.
+                The only way to inform a client, in this case, would be sending a DISCONNECT packet.  
+                Therefore, the Broker SHOULD send a DISCONNECT packet with the reason code 0x87 (Not authorized)
+                before closing the network connection to these clients.
             </t>
         </section>
     <section title="Authorizing SUBSCRIBE Packets">
@@ -1172,7 +1176,9 @@
              For each Topic Filter,
             the SUBACK packet includes a return code matching the QoS level
             for the corresponding Topic Filter. In the case of failure, the return code is 0x87,
-            indicating that the Client is not authorized. A reason code is returned for each Topic Filter.
+            indicating that the Client is not authorized. The Broker MAY return 0x80 Unspecified error 
+            if they do not want to leak the topic names to unauthorized clients. 
+            A reason code is returned for each Topic Filter.
 		    Therefore, the Client may receive success codes for a subset of its Topic Filters while being
 		    unauthorized for the rest.
         </t>
@@ -1435,8 +1441,8 @@
           <list style="symbols">
           <t>Type name: application </t>
           <t>Subtype name: ace+json </t>
-          <t>Required parameters: none </t>
-          <t>Optional parameters: none </t>
+          <t>Required parameters: N/A </t>
+          <t>Optional parameters: N/A </t>
           <t>Encoding considerations: Encoding considerations are identical to
 those specified for the "application/json" media type.</t>
           <t>Security considerations: Section 8 of [this document]</t>
@@ -1475,9 +1481,33 @@ those specified for the "application/json" media type.</t>
             Client authentication can be provided either via TLS or using in-band PoP validation at the MQTT
             application layer.
             </t>
-	        <t>CBOR Value: To be assigned by IANA</t>
+	        <t>CBOR Value: To be assigned by IANA in the (-256, 255) range</t>
 	        <t>Reference: [this document]</t>
         </list>
+        </t>
+        </section>
+        <section title="AIF">
+        <t>For the media-types application/aif+cbor and application/aif+json
+        defined in Section 5.1 of <xref target="I-D.ietf-ace-aif"></xref>, IANA is requested to
+        register the following entries for the two media-type parameters Toid
+        and Tperm, in the respective sub-registry defined in Section 5.2 of
+        <xref target="I-D.ietf-ace-aif"></xref> within the "MIME Media Type Sub-Parameter"
+        registry group.
+        </t>
+        <t> For Toid:
+            <list style="symbols">
+                <t>Name: mqtt-topic-filter</t>
+                <t>Description/Specification: Topic Filter as defined in <xref target="mqtt-defs"></xref>.</t>
+                <t>Reference: [[This document]] (<xref target="scope"></xref>)</t>
+            </list>
+        </t>
+        <t> For Tperm:
+            <list style="symbols">
+                <t>Name: mqtt-permissions</t>
+                <t>Description/Specification: Permissions for MQTT client. Tperm is a string with 
+                a value either "pub" or "sub".</t>
+                <t>Reference: [[This document]]  (<xref target="scope"></xref> )</t>
+            </list>
         </t>
         </section>
         </section>
@@ -1488,7 +1518,7 @@ those specified for the "application/json" media type.</t>
 	  in <xref target="I-D.ietf-ace-oauth-authz"></xref> apply to this work.
 	  </t>
 	  <t> In addition, the security considerations outlined in <xref target="MQTT-OASIS-Standard-v5">MQTT v5.0 - the OASIS Standard</xref>
-	  and <xref target="MQTT-OASIS-Standard">MQTT v3.1.1 - the OASIS Standard</xref>
+	  and <xref target="MQTT-OASIS-Standard-v3.1.1">MQTT v3.1.1 - the OASIS Standard</xref>
 	   apply.  Mainly, this document provides an authorization solution for MQTT,
 	   the responsibility of which is left to the specific implementation in the MQTT standards.
 	 In the following, we comment on a few relevant issues based on the current MQTT specifications.
@@ -1500,7 +1530,7 @@ those specified for the "application/json" media type.</t>
       If a Client's permissions get revoked, but the access token has not expired,
 	  the Broker may still grant publish/subscribe to revoked topics.
       If the Broker caches the token introspection responses, then the Broker SHOULD use a reasonable cache timeout
-       to introspect tokens regularly. The timeout value is application-specific and SHOULD be chosen 
+       to introspect tokens regularly. The timeout value is application-specific and should be chosen 
        to reduce the risk of using stale introspection responses.
 	  When permissions change dynamically, it is expected that AS also
        follows a reasonable expiration strategy for the access tokens.
@@ -1569,13 +1599,12 @@ those specified for the "application/json" media type.</t>
         &RFC7519;
         &RFC7516;
         &RFC7517;
-        &RFC7230;
         &RFC8152;
         &RFC7627;
         &RFC6066;
         &RFC7301;
         &RFC8032;
-            <reference anchor="MQTT-OASIS-Standard"
+            <reference anchor="MQTT-OASIS-Standard-v3.1.1"
                        target="https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">
                 <front>
                     <title>
@@ -1618,6 +1647,7 @@ those specified for the "application/json" media type.</t>
             <?rfc include="reference.I-D.ietf-ace-aif-07"?>
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
             <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-02"?>
+            <?rfc include="reference.I-D.ietf-httpbis-semantics-19"?>
         </references>
 
         <references title="Informative References">
@@ -1643,6 +1673,7 @@ those specified for the "application/json" media type.</t>
 		</front>
 		<seriesInfo name="research" value="International Workshop on Secure Internet of Things"></seriesInfo>
 	    </reference>
+          <?rfc include="reference.I-D.draft-ietf-tls-rfc8446bis-04"?>
           <?rfc include="reference.I-D.draft-ietf-ace-pubsub-profile-04"?>
         </references>
 
