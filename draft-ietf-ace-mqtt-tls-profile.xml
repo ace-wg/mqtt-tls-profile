@@ -1009,10 +1009,10 @@
             the specific data model for MQTT is:
             <figure anchor="MQTTaif" align="left" title="AIF-MQTT data model">
             <artwork type="CDDL" name="" align="left" alt=""><![CDATA[
- AIF-MQTT = AIF-Generic<topic_filter, permissions>
- AIF-Generic<topic_filter, permissions> = [* [topic_filter, permissions]]
- topic_filter = tstr
- permissions = [+permission]
+ AIF-MQTT = AIF-Generic<mqtt-topic-filter, mqtt-permissions>
+ AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
+ mqtt-topic-filter = tstr ; as per Section 4.7 of MQTT v5.0
+ mqtt-permissions = [+permission]
  permission = "pub"/"sub"
             ]]></artwork>
             </figure>
@@ -1497,16 +1497,18 @@ those specified for the "application/json" media type.</t>
         <t> For Toid:
             <list style="symbols">
                 <t>Name: mqtt-topic-filter</t>
-                <t>Description/Specification: Topic Filter as defined in <xref target="mqtt-defs"></xref>.</t>
+                <t>Description/Specification: Topic Filter as defined in <xref target="scope"></xref>.</t>
                 <t>Reference: [[This document]] (<xref target="scope"></xref>)</t>
             </list>
         </t>
         <t> For Tperm:
             <list style="symbols">
                 <t>Name: mqtt-permissions</t>
-                <t>Description/Specification: Permissions for MQTT client. Tperm is a string with 
-                a value either "pub" or "sub".</t>
-                <t>Reference: [[This document]]  (<xref target="scope"></xref> )</t>
+                <t>Description/Specification: Permissions for MQTT
+                client as defined in <xref target="scope"></xref>.
+                Tperm is an array of one or more text strings that each have
+                a value of either "pub" or "sub".</t>
+                <t>Reference: [[This document]]  (<xref target="scope"></xref>)</t>
             </list>
         </t>
         </section>
@@ -1644,10 +1646,10 @@ those specified for the "application/json" media type.</t>
             <?rfc include="reference.I-D.ietf-ace-oauth-authz.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
             <?rfc include="reference.I-D.draft-ietf-cose-x509-08.xml"?>
-            <?rfc include="reference.I-D.ietf-ace-aif-07"?>
+            <?rfc include="reference.I-D.ietf-ace-aif-07.xml"?>
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
-            <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-02"?>
-            <?rfc include="reference.I-D.ietf-httpbis-semantics-19"?>
+            <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-02.xml"?>
+            <?rfc include="reference.I-D.ietf-httpbis-semantics-19.xml"?>
         </references>
 
         <references title="Informative References">
@@ -1673,8 +1675,8 @@ those specified for the "application/json" media type.</t>
 		</front>
 		<seriesInfo name="research" value="International Workshop on Secure Internet of Things"></seriesInfo>
 	    </reference>
-          <?rfc include="reference.I-D.draft-ietf-tls-rfc8446bis-04"?>
-          <?rfc include="reference.I-D.draft-ietf-ace-pubsub-profile-04"?>
+          <?rfc include="reference.I-D.draft-ietf-tls-rfc8446bis-04.xml"?>
+          <?rfc include="reference.I-D.draft-ietf-ace-pubsub-profile-04.xml"?>
         </references>
 
         <section anchor="app-profile-requirements" title="Checklist for profile requirements">
