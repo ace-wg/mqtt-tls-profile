@@ -1644,10 +1644,10 @@ those specified for the "application/json" media type.</t>
             <?rfc include="reference.I-D.ietf-ace-oauth-authz.xml"?>
             <?rfc include="reference.I-D.ietf-ace-oauth-params.xml"?>
             <?rfc include="reference.I-D.draft-ietf-cose-x509-08.xml"?>
-            <?rfc include="reference.I-D.ietf-ace-aif-07"?>
+            <?rfc include="reference.I-D.ietf-ace-aif-07.xml"?>
             <?rfc include="reference.I-D.ietf-ace-dtls-authorize.xml"?>
-            <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-02"?>
-            <?rfc include="reference.I-D.ietf-httpbis-semantics-19"?>
+            <?rfc include="reference.I-D.ietf-ace-extend-dtls-authorize-02.xml"?>
+            <?rfc include="reference.I-D.ietf-httpbis-semantics-19.xml"?>
         </references>
 
         <references title="Informative References">
@@ -1673,8 +1673,8 @@ those specified for the "application/json" media type.</t>
 		</front>
 		<seriesInfo name="research" value="International Workshop on Secure Internet of Things"></seriesInfo>
 	    </reference>
-          <?rfc include="reference.I-D.draft-ietf-tls-rfc8446bis-04"?>
-          <?rfc include="reference.I-D.draft-ietf-ace-pubsub-profile-04"?>
+          <?rfc include="reference.I-D.draft-ietf-tls-rfc8446bis-04.xml"?>
+          <?rfc include="reference.I-D.draft-ietf-ace-pubsub-profile-04.xml"?>
         </references>
 
         <section anchor="app-profile-requirements" title="Checklist for profile requirements">
