@@ -504,12 +504,10 @@
             </t>
             <t>
                 This document follows <xref target="RFC7800"></xref> for PoP semantics for JWTs 
-                (CWTs MAY also be used). The AS includes a "cnf" (confirmation) parameter to the PoP token, 
+                (CWTs MAY also be used). The AS includes a "cnf" (confirmation) parameter in the PoP token, 
                 to declare that the Client 
                 possesses a particular key and RS can cryptographically confirm that 
-                the Client has possession of that key. The "cnf" parameter
-                is REQUIRED if a symmetric key is used, and
-                MAY be present for asymmetric PoP keys, as described in <xref target="I-D.ietf-ace-oauth-params"></xref>.
+                the Client has possession of that key, as described in <xref target="I-D.ietf-ace-oauth-params"></xref>.
             </t>
             <t>
                 Note that the contents of the web tokens (including the "cnf" parameter) are to be consumed by the RS 
