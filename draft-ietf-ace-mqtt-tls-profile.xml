@@ -1095,7 +1095,7 @@
                     setup, do not contain access tokens. If the introspection result
                     is not cached, the Broker needs to introspect the saved token for
                     each request. The Broker SHOULD also use a cache timeout to introspect
-                    tokens regularly. The timeout value is application-specific and SHOULD be chosen 
+                    tokens regularly. The timeout value is application-specific and should be chosen 
        to reduce the risk of using stale introspection responses.
                     </t>
                 </section>
