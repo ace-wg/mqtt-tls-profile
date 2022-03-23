@@ -60,7 +60,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-16" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-ace-mqtt-tls-profile-17" ipr="trust200902">
     <!-- category values: std, bcp, info, exp, and historic
        ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
           or pre5378Trust200902
@@ -1839,12 +1839,11 @@ those specified for the "application/json" media type.</t>
     </t>
 	</section>
 
-
 	<section anchor="Acknowledgments" title="Acknowledgments" numbered="no" toc="default">
 		<t>
-                The authors would like to thank Ludwig Seitz for his review and his input on the authorization information endpoint, 
-                and Benjamin Kaduk for his review, insightful comments, and contributions to resolving issues.
-
+                The authors would like to thank Ludwig Seitz for his review and his input on the authorization information endpoint; 
+                Benjamin Kaduk for his review, insightful comments, and contributions to resolving issues; and Carsten Bormann for his review and 
+                revisions to the AIF-MQTT data model.
                 The authors would like to thank Paul Fremantle for the initial discussions on MQTT v5.0 support.
               </t>
 	</section>
